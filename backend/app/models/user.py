@@ -53,7 +53,12 @@ class User(Base):
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
     
     # Relationships
-    client = relationship("Client", back_populates="user", uselist=False)
+    client = relationship(
+        "Client",
+        back_populates="user",
+        uselist=False,
+        foreign_keys="Client.user_id",
+    )
     assigned_clients = relationship(
         "Client",
         back_populates="assigned_manager",
