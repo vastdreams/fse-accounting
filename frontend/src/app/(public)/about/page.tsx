@@ -55,7 +55,7 @@ export default function AboutPage() {
             className="max-w-3xl"
           >
             <h1 className="font-serif text-4xl md:text-5xl text-cream-100 mb-6">
-              About FSE Accounting
+              About FSEgrowth
             </h1>
             <p className="text-lg text-slate-400 leading-relaxed">
               We&apos;re a modern accounting and advisory firm built for founders and operators.
@@ -79,7 +79,7 @@ export default function AboutPage() {
               </h2>
               <div className="space-y-4 text-slate-400">
                 <p>
-                  FSE Accounting was founded with a simple belief: businesses deserve 
+                  FSEgrowth was founded with a simple belief: businesses deserve 
                   better from their accountants. Not just compliance and tax returns, 
                   but genuine strategic partnership.
                 </p>

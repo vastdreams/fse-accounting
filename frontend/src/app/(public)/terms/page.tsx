@@ -24,7 +24,7 @@ export default function TermsPage() {
           <div className="max-w-3xl">
             <h1 className="font-serif text-4xl md:text-5xl text-cream-100 mb-6">Terms of Service</h1>
             <p className="text-lg text-slate-400 leading-relaxed">
-              These terms govern use of the FSE Accounting website. For service engagements, separate written
+              These terms govern use of the FSEgrowth website. For service engagements, separate written
               agreements may apply.
             </p>
             <p className="mt-3 text-sm text-slate-500">Last updated: {new Date().toISOString().slice(0, 10)}</p>

@@ -24,7 +24,7 @@ export default function PrivacyPage() {
           <div className="max-w-3xl">
             <h1 className="font-serif text-4xl md:text-5xl text-cream-100 mb-6">Privacy Policy</h1>
             <p className="text-lg text-slate-400 leading-relaxed">
-              This page explains how we collect and use information when you use the FSE Accounting website.
+              This page explains how we collect and use information when you use the FSEgrowth website.
             </p>
             <p className="mt-3 text-sm text-slate-500">Last updated: {new Date().toISOString().slice(0, 10)}</p>
           </div>

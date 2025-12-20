@@ -51,8 +51,8 @@ export default function Footer() {
                 <span className="text-xl font-serif font-bold text-background">F</span>
               </div>
               <div>
-                <span className="text-lg font-medium text-cream-100">FSE</span>
-                <span className="text-sm text-slate-400 block -mt-1">Accounting</span>
+                <span className="text-lg font-medium text-cream-100">FSEgrowth</span>
+                <span className="text-xs text-slate-400 block -mt-1">Accounting &amp; Advisory</span>
               </div>
             </Link>
             <p className="text-sm text-slate-400 leading-relaxed">
