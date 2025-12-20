@@ -1,7 +1,23 @@
 /**
- * PATH: src/app/(public)/page.tsx
- * PURPOSE: Homepage for FSE Accounting
- * ROLE IN ARCHITECTURE: Main landing page
+ * PATH: frontend/src/app/(public)/page.tsx
+ * PURPOSE:
+ *   - Public homepage for FSE Accounting and Advisory.
+ *
+ * ROLE IN ARCHITECTURE:
+ *   - Marketing / acquisition layer (public web).
+ *
+ * MAIN EXPORTS:
+ *   - HomePage(): React component for the homepage.
+ *
+ * NON-RESPONSIBILITIES:
+ *   - This file does NOT handle:
+ *     - Authentication/session logic
+ *     - API calls or data persistence
+ *     - Portal/admin functionality
+ *
+ * NOTES FOR FUTURE AI:
+ *   - Keep copy concrete (avoid vague terms like “premium” unless defined).
+ *   - Avoid unverifiable numeric claims above-the-fold without a source.
  */
 
 'use client';
@@ -42,10 +58,10 @@ const services = [
   },
 ];
 
-const stats = [
-  { value: '$50M+', label: 'Client Assets Managed' },
-  { value: '100+', label: 'Active Clients' },
-  { value: '15+', label: 'Years Experience' },
+const highlights = [
+  { value: 'Clean books', label: 'Reliable month-end closes and reporting.' },
+  { value: 'Tax + compliance', label: 'Practical support across filings and deadlines.' },
+  { value: 'CFO support', label: 'Budgets, forecasts, and decision support.' },
 ];
 
 export default function HomePage() {
@@ -68,7 +84,7 @@ export default function HomePage() {
             >
               <span className="w-2 h-2 rounded-full bg-copper-400 animate-pulse" />
               <span className="text-xs text-slate-400 tracking-wide uppercase">
-                Part of Finsoeasy Group
+                Sydney · Accounting &amp; Advisory
               </span>
             </motion.div>
 
@@ -78,8 +94,8 @@ export default function HomePage() {
               transition={{ duration: 0.8, delay: 0.1 }}
               className="font-serif text-cream-100 text-4xl md:text-5xl lg:text-6xl leading-[1.1] tracking-tight"
             >
-              Premium accounting for{' '}
-              <span className="text-gradient">ambitious</span> businesses
+              Accounting and CFO advisory for{' '}
+              <span className="text-gradient">growing</span> businesses
             </motion.h1>
 
             <motion.p
@@ -88,8 +104,8 @@ export default function HomePage() {
               transition={{ duration: 0.7, delay: 0.2 }}
               className="mt-6 text-lg md:text-xl text-slate-400 leading-relaxed max-w-2xl"
             >
-              From bookkeeping to CFO services, we provide the financial infrastructure 
-              that growing businesses need. Strategic advisory backed by deep technical expertise.
+              Bookkeeping, tax and reporting — plus hands-on CFO support when you need it.
+              Clear scope, clean numbers, and a secure portal for documents and approvals.
             </motion.p>
 
             <motion.div
@@ -106,19 +122,19 @@ export default function HomePage() {
               </Link>
             </motion.div>
 
-            {/* Stats */}
+            {/* Highlights */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.5 }}
               className="mt-16 pt-8 border-t border-border-subtle grid grid-cols-3 gap-8"
             >
-              {stats.map((stat, index) => (
-                <div key={index}>
+              {highlights.map((item) => (
+                <div key={item.value}>
                   <div className="text-2xl md:text-3xl font-serif text-cream-100">
-                    {stat.value}
+                    {item.value}
                   </div>
-                  <div className="text-sm text-slate-500 mt-1">{stat.label}</div>
+                  <div className="text-sm text-slate-500 mt-1">{item.label}</div>
                 </div>
               ))}
             </motion.div>
@@ -257,7 +273,7 @@ export default function HomePage() {
               Let&apos;s build your financial future
             </h2>
             <p className="text-slate-400 mb-8">
-              Join 100+ businesses who trust FSE with their accounting and advisory needs.
+              Join businesses who trust FSE with their accounting and advisory needs.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact" className="btn btn-primary">

@@ -1,6 +1,22 @@
 /**
- * PATH: src/components/Footer.tsx
- * PURPOSE: Site footer component
+ * PATH: frontend/src/components/Footer.tsx
+ * PURPOSE:
+ *   - Global site footer for public, portal, and admin routes.
+ *
+ * ROLE IN ARCHITECTURE:
+ *   - UI shell component (navigation/footer layer).
+ *
+ * MAIN EXPORTS:
+ *   - Footer(): React component.
+ *
+ * NON-RESPONSIBILITIES:
+ *   - This file does NOT handle:
+ *     - Routing logic beyond rendering links
+ *     - Auth / session checks
+ *
+ * NOTES FOR FUTURE AI:
+ *   - Keep footer links aligned with real routes (avoid 404s).
+ *   - Avoid unverifiable marketing claims.
  */
 
 import Link from 'next/link';
@@ -14,7 +30,6 @@ const footerLinks = {
   ],
   company: [
     { href: '/about', label: 'About Us' },
-    { href: '/team', label: 'Our Team' },
     { href: '/contact', label: 'Contact' },
   ],
   legal: [
@@ -40,7 +55,7 @@ export default function Footer() {
               </div>
             </Link>
             <p className="text-sm text-slate-400 leading-relaxed">
-              Premium accounting and advisory services for ambitious businesses.
+              Accounting, tax and CFO advisory for growing businesses.
             </p>
           </div>
 
@@ -94,15 +109,6 @@ export default function Footer() {
                   hello@fseaccounting.com
                 </a>
               </p>
-              <div className="pt-4">
-                <Link
-                  href="https://finsoeasy.com"
-                  target="_blank"
-                  className="text-xs text-slate-500 hover:text-copper-400 transition-colors"
-                >
-                  Part of Finsoeasy Group →
-                </Link>
-              </div>
             </div>
           </div>
         </div>

@@ -1,6 +1,22 @@
 /**
- * PATH: src/app/(public)/about/page.tsx
- * PURPOSE: About page
+ * PATH: frontend/src/app/(public)/about/page.tsx
+ * PURPOSE:
+ *   - About page describing the firm, values, and operating approach.
+ *
+ * ROLE IN ARCHITECTURE:
+ *   - Marketing / credibility layer (public web).
+ *
+ * MAIN EXPORTS:
+ *   - AboutPage(): React component.
+ *
+ * NON-RESPONSIBILITIES:
+ *   - This file does NOT handle:
+ *     - Hiring/team bios (use a dedicated team page when ready)
+ *     - Legal/regulated claims (avoid certification/registration claims without proof)
+ *
+ * NOTES FOR FUTURE AI:
+ *   - Avoid referencing other brands unless explicitly required.
+ *   - Prefer specific, operational language over marketing adjectives.
  */
 
 'use client';
@@ -42,9 +58,8 @@ export default function AboutPage() {
               About FSE Accounting
             </h1>
             <p className="text-lg text-slate-400 leading-relaxed">
-              We&apos;re a modern accounting firm built for ambitious businesses. 
-              Part of the Finsoeasy Group, we combine deep technical expertise 
-              with strategic advisory to help you grow.
+              We&apos;re a modern accounting and advisory firm built for founders and operators.
+              We combine tidy bookkeeping with practical CFO support so you can make decisions with confidence.
             </p>
           </motion.div>
         </div>
@@ -69,14 +84,13 @@ export default function AboutPage() {
                   but genuine strategic partnership.
                 </p>
                 <p>
-                  As part of the Finsoeasy Group, we bring a unique perspective to 
-                  accounting—combining capital markets experience with hands-on 
-                  operational expertise.
+                  We focus on the fundamentals first: clean books, a repeatable close process,
+                  and reporting that actually helps you run the business.
                 </p>
                 <p>
-                  Today, we work with over 100 clients across Australia and internationally, 
-                  from early-stage startups to established enterprises. Our team of qualified 
-                  professionals is dedicated to helping each client achieve their financial goals.
+                  We work with businesses across Australia and internationally, from early-stage teams
+                  to established operators. Expect clear scope, proactive communication, and secure
+                  document workflows via our client portal.
                 </p>
               </div>
             </motion.div>
@@ -98,7 +112,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Finsoeasy Connection */}
+            {/* How we work */}
       <section className="section bg-surface">
         <div className="container">
           <motion.div
@@ -107,21 +121,13 @@ export default function AboutPage() {
             viewport={{ once: true }}
             className="max-w-3xl mx-auto text-center"
           >
-            <h2 className="font-serif text-3xl text-cream-100 mb-6">
-              Part of Finsoeasy Group
-            </h2>
+            <h2 className="font-serif text-3xl text-cream-100 mb-6">How we work</h2>
             <p className="text-slate-400 mb-8">
-              FSE Accounting is a proud member of the Finsoeasy Group, a research-led 
-              capital and advisory firm operating across banking, construction, medical, 
-              and AI sectors. This connection gives our clients access to broader capital 
-              markets expertise and strategic advisory capabilities.
+              We start by getting the foundations right (systems, accounts, reconciliations), then run a
+              disciplined monthly close. As you grow, we add forecasting, modelling and CFO-level support.
             </p>
-            <Link
-              href="https://finsoeasy.com"
-              target="_blank"
-              className="btn btn-secondary"
-            >
-              Visit Finsoeasy →
+            <Link href="/services" className="btn btn-secondary">
+              Explore services →
             </Link>
           </motion.div>
         </div>

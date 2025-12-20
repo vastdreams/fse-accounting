@@ -1,7 +1,22 @@
 /**
- * PATH: src/app/layout.tsx
- * PURPOSE: Root layout for FSE Accounting
- * ROLE IN ARCHITECTURE: Application shell with metadata
+ * PATH: frontend/src/app/layout.tsx
+ * PURPOSE:
+ *   - Root Next.js App Router layout and SEO metadata for the FSE Accounting frontend.
+ *
+ * ROLE IN ARCHITECTURE:
+ *   - UI shell + SEO layer (shared across all routes).
+ *
+ * MAIN EXPORTS:
+ *   - metadata: Next.js Metadata config.
+ *   - RootLayout(): React Server Component wrapper.
+ *
+ * NON-RESPONSIBILITIES:
+ *   - This file does NOT handle:
+ *     - Navigation/footer rendering (handled by route group layouts)
+ *     - API client configuration
+ *
+ * NOTES FOR FUTURE AI:
+ *   - Keep descriptions concrete and consistent with on-page copy.
  */
 
 import type { Metadata } from 'next'
@@ -12,7 +27,8 @@ export const metadata: Metadata = {
     default: 'FSE Accounting and Advisory | Business Accounting Services',
     template: '%s | FSE Accounting',
   },
-  description: 'Premium accounting and advisory services for business clients. Bookkeeping, tax, CFO services, financial modelling, and corporate structuring.',
+  description:
+    'Business accounting, bookkeeping and tax support — plus CFO advisory, forecasting and financial modelling.',
   keywords: [
     'accounting',
     'advisory',
@@ -31,12 +47,12 @@ export const metadata: Metadata = {
     url: 'https://fseaccounting.com',
     siteName: 'FSE Accounting',
     title: 'FSE Accounting and Advisory',
-    description: 'Premium accounting and advisory services for business clients.',
+    description: 'Business accounting, bookkeeping and tax support — plus CFO advisory and modelling.',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'FSE Accounting and Advisory',
-    description: 'Premium accounting and advisory services for business clients.',
+    description: 'Business accounting, bookkeeping and tax support — plus CFO advisory and modelling.',
   },
   robots: {
     index: true,

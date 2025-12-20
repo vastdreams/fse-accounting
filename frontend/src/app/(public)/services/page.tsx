@@ -1,99 +1,29 @@
 /**
- * PATH: src/app/(public)/services/page.tsx
- * PURPOSE: Services overview page
+ * PATH: frontend/src/app/(public)/services/page.tsx
+ * PURPOSE:
+ *   - Public services overview page listing all offerings.
+ *
+ * ROLE IN ARCHITECTURE:
+ *   - Marketing / conversion layer (public web).
+ *
+ * MAIN EXPORTS:
+ *   - ServicesPage(): React component.
+ *
+ * NON-RESPONSIBILITIES:
+ *   - This file does NOT handle:
+ *     - Service pricing or quotes
+ *     - Auth-protected portal features
+ *
+ * NOTES FOR FUTURE AI:
+ *   - Service content lives in `frontend/src/lib/services.ts`.
+ *   - Keep slugs stable (SEO + deep links).
  */
 
 'use client';
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-
-const services = [
-  {
-    slug: 'bookkeeping',
-    icon: '📊',
-    title: 'Bookkeeping',
-    description: 'Accurate, real-time financial records that give you complete visibility into your business performance.',
-    features: ['Daily transaction recording', 'Bank reconciliation', 'Accounts payable/receivable', 'Financial reporting'],
-  },
-  {
-    slug: 'cost-accounting',
-    icon: '🎯',
-    title: 'Premium Cost Accounting',
-    description: 'Implementation of sophisticated cost accounting systems for manufacturing and service businesses.',
-    features: ['Activity-based costing', 'Job costing systems', 'Variance analysis', 'Profitability analysis'],
-  },
-  {
-    slug: 'financial-os',
-    icon: '⚙️',
-    title: 'Financial Operating System',
-    description: 'Build a modern financial technology stack with integrated systems and automation.',
-    features: ['System selection & implementation', 'Workflow automation', 'Integration setup', 'Training & support'],
-  },
-  {
-    slug: 'financial-modelling',
-    icon: '📈',
-    title: 'Financial Modelling',
-    description: 'Sophisticated models for fundraising, strategic planning, and business decision-making.',
-    features: ['3-statement models', 'Valuation models', 'Scenario analysis', 'Investor-ready outputs'],
-  },
-  {
-    slug: 'lending',
-    icon: '🏦',
-    title: 'Lending Advisory',
-    description: 'Navigate the lending landscape with expert guidance on financing options and applications.',
-    features: ['Loan structuring', 'Bank relationship management', 'Application preparation', 'Covenant monitoring'],
-  },
-  {
-    slug: 'tax-filings',
-    icon: '💰',
-    title: 'Tax Filings',
-    description: 'Strategic tax planning and compliance for businesses of all sizes and structures.',
-    features: ['Company tax returns', 'BAS/GST lodgement', 'Tax planning strategies', 'ATO audit support'],
-  },
-  {
-    slug: 'corporate-growth',
-    icon: '🌱',
-    title: 'Corporate Growth & Structuring',
-    description: 'Optimize your corporate structure for growth, tax efficiency, and asset protection.',
-    features: ['Entity structuring', 'Holding company setup', 'Trust structures', 'Restructuring advice'],
-  },
-  {
-    slug: 'acquisitions',
-    icon: '🤝',
-    title: 'Acquisitions & Planning',
-    description: 'End-to-end support for buying businesses, from due diligence to integration.',
-    features: ['Target identification', 'Financial due diligence', 'Deal structuring', 'Post-acquisition integration'],
-  },
-  {
-    slug: 'exit-planning',
-    icon: '🚀',
-    title: 'Exit Planning',
-    description: 'Maximize value and prepare your business for a successful sale or transition.',
-    features: ['Valuation analysis', 'Value enhancement', 'Succession planning', 'Transaction support'],
-  },
-  {
-    slug: 'hnwi-investments',
-    icon: '💎',
-    title: 'HNWI Investments',
-    description: 'Investment structuring and administration for high-net-worth individuals.',
-    features: ['Investment entity setup', 'Portfolio administration', 'Tax optimization', 'Reporting & compliance'],
-  },
-  {
-    slug: 'global-structuring',
-    icon: '🌏',
-    title: 'Global Structuring',
-    description: 'International tax planning and multi-jurisdictional compliance for global businesses.',
-    features: ['Cross-border structuring', 'Transfer pricing', 'International tax compliance', 'Treaty planning'],
-  },
-  {
-    slug: 'cfo-services',
-    icon: '👔',
-    title: 'CFO Services',
-    description: 'Fractional CFO expertise without the full-time commitment. Strategic financial leadership.',
-    features: ['Strategic planning', 'Cash flow management', 'Board reporting', 'Investor relations'],
-  },
-];
+import { SERVICES } from '@/lib/services';
 
 export default function ServicesPage() {
   return (
@@ -121,7 +51,7 @@ export default function ServicesPage() {
       <section className="section">
         <div className="container">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => (
+            {SERVICES.map((service, index) => (
               <motion.div
                 key={service.slug}
                 initial={{ opacity: 0, y: 20 }}
