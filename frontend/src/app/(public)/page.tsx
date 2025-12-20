@@ -114,8 +114,8 @@ export default function HomePage() {
               transition={{ duration: 0.7, delay: 0.2 }}
               className="mt-6 text-lg md:text-xl text-slate-400 leading-relaxed max-w-2xl"
             >
-              We build lender-ready packs and covenant reporting, backed by clean books and CFO support.
-              One portal for documents, approvals, and updates.
+              Best-in-class advisory and services from experienced executors who know how to build businesses. 
+              Beyond accounting, we provide CFO-level support and specialized lending advisory.
             </motion.p>
 
             <motion.div
