@@ -37,7 +37,6 @@ export const metadata: Metadata = {
     'CFO services',
     'financial modelling',
     'corporate structuring',
-    'Sydney',
     'Australia',
   ],
   authors: [{ name: 'FSE Accounting' }],

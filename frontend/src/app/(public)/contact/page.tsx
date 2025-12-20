@@ -195,7 +195,7 @@ export default function ContactPage() {
                     <span className="text-copper-400">📍</span>
                     <div>
                       <p className="font-medium text-cream-100">Location</p>
-                      <p>Sydney, Australia</p>
+                      <p>Australia</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">

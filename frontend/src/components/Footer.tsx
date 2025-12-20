@@ -103,7 +103,7 @@ export default function Footer() {
               Contact
             </h4>
             <div className="space-y-3 text-sm text-slate-400">
-              <p>Sydney, Australia</p>
+              <p>Australia</p>
               <p>
                 <a href="mailto:hello@fseaccounting.com" className="hover:text-copper-400 transition-colors">
                   hello@fseaccounting.com
