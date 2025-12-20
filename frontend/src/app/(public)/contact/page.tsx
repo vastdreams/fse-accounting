@@ -21,7 +21,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 
 const ALLOWED_SERVICE_VALUES = new Set([
@@ -35,9 +34,6 @@ const ALLOWED_SERVICE_VALUES = new Set([
 ]);
 
 export default function ContactPage() {
-  const searchParams = useSearchParams();
-  const serviceFromUrl = searchParams.get('service');
-
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -50,6 +46,9 @@ export default function ContactPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
+    // NOTE: We intentionally read from `window.location.search` instead of using
+    // `useSearchParams()` to keep this page pre-renderable during `next build`.
+    const serviceFromUrl = new URLSearchParams(window.location.search).get('service');
     if (!serviceFromUrl) return;
     if (!ALLOWED_SERVICE_VALUES.has(serviceFromUrl)) return;
 
@@ -57,7 +56,7 @@ export default function ContactPage() {
       if (prev.service) return prev;
       return { ...prev, service: serviceFromUrl };
     });
-  }, [serviceFromUrl]);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
