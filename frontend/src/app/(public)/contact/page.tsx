@@ -1,6 +1,21 @@
 /**
- * PATH: src/app/(public)/contact/page.tsx
- * PURPOSE: Contact page with form
+ * PATH: frontend/src/app/(public)/contact/page.tsx
+ * PURPOSE:
+ *   - Public contact page with a basic enquiry form.
+ *
+ * ROLE IN ARCHITECTURE:
+ *   - Marketing / conversion layer (public web).
+ *
+ * MAIN EXPORTS:
+ *   - ContactPage(): React component.
+ *
+ * NON-RESPONSIBILITIES:
+ *   - This file does NOT handle:
+ *     - Persisting enquiries (currently simulated)
+ *     - Any tax-agent engagement terms (handled in engagement documentation)
+ *
+ * NOTES FOR FUTURE AI:
+ *   - If you wire this to the backend, add server-side validation + spam protection.
  */
 
 'use client';
@@ -154,6 +169,11 @@ export default function ContactPage() {
                       <option value="structuring">Corporate Structuring</option>
                       <option value="other">Other / Not Sure</option>
                     </select>
+
+                    <p className="mt-2 text-xs text-slate-500">
+                      Note: For tax/BAS lodgements, the tax agent service is performed by a partner
+                      Registered Tax/BAS Agent. We manage the workflow and portal.
+                    </p>
                   </div>
 
                   <div>

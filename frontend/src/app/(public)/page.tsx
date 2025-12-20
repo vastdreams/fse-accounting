@@ -34,7 +34,7 @@ const services = [
   {
     icon: '💰',
     title: 'Tax Filings',
-    description: 'Strategic tax planning and compliance for businesses of all sizes.',
+    description: 'Tax returns and BAS/GST lodgements delivered with a partner Registered Tax/BAS Agent.',
   },
   {
     icon: '📈',

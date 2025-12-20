@@ -44,6 +44,15 @@ export default function TermsPage() {
 
             <div>
               <h2 className="font-serif text-2xl text-cream-100 mb-3">No professional advice</h2>
+            </div>
+
+            <div>
+              <h2 className="font-serif text-2xl text-cream-100 mb-3">Third-party providers</h2>
+              <p>
+                Some services may be delivered by independent third-party professionals (including Registered
+                Tax/BAS Agents where required). Where this applies, the responsible provider and engagement
+                terms will be set out in your engagement documentation.
+              </p>
               <p>
                 Website content is general information only and may not be appropriate for your circumstances.
                 Contact us for tailored advice.

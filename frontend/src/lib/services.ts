@@ -97,7 +97,7 @@ export const SERVICES: ServiceDefinition[] = [
     slug: 'tax-filings',
     icon: '💰',
     title: 'Tax Filings',
-    description: 'Tax planning and compliance for businesses of all sizes and structures.',
+    description: 'Tax returns and BAS/GST lodgements delivered with a partner Registered Tax/BAS Agent.',
     features: [
       'Company tax returns',
       'BAS/GST lodgement',
