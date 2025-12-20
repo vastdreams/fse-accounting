@@ -36,17 +36,17 @@ export default function PrivacyPage() {
           <div className="max-w-3xl space-y-8 text-slate-400">
             <div>
               <h2 className="font-serif text-2xl text-cream-100 mb-3">Information we collect</h2>
-              <ul className="space-y-2">
-                <li>- Contact details you submit via forms (name, email, message).</li>
-                <li>- Basic technical data (IP address, browser type, pages visited) for security and analytics.</li>
+              <ul className="space-y-2 list-disc pl-5">
+                <li>Contact details you submit via forms (name, email, message).</li>
+                <li>Basic technical data (IP address, browser type, pages visited) for security and analytics.</li>
               </ul>
             </div>
 
             <div>
               <h2 className="font-serif text-2xl text-cream-100 mb-3">How we use it</h2>
-              <ul className="space-y-2">
-                <li>- To respond to enquiries and provide services you request.</li>
-                <li>- To operate, secure, and improve the website and client portal.</li>
+              <ul className="space-y-2 list-disc pl-5">
+                <li>To respond to enquiries and provide services you request.</li>
+                <li>To operate, secure, and improve the website and client portal.</li>
               </ul>
             </div>
 

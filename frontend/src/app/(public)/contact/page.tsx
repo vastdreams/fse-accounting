@@ -264,7 +264,7 @@ export default function ContactPage() {
                     <span className="text-copper-400">🕐</span>
                     <div>
                       <p className="font-medium text-cream-100">Business Hours</p>
-                      <p>Monday - Friday: 9:00 AM - 6:00 PM AEST</p>
+                      <p>Monday to Friday: 9:00 AM to 6:00 PM AEST</p>
                     </div>
                   </div>
                 </div>

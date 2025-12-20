@@ -258,7 +258,7 @@ export default function HomePage() {
                     <h4 className="font-medium text-cream-100 mb-1">Dedicated Client Portal</h4>
                     <p className="text-sm text-slate-400">
                       Upload documents, track projects, sign contracts—all in one 
-                      secure, AI-powered platform.
+                      secure client portal.
                     </p>
                   </div>
                 </div>
