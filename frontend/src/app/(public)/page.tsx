@@ -114,8 +114,8 @@ export default function HomePage() {
               transition={{ duration: 0.7, delay: 0.2 }}
               className="mt-6 text-lg md:text-xl text-slate-400 leading-relaxed max-w-2xl"
             >
-              Bookkeeping, tax and reporting — plus lending advisory and hands-on CFO support when you need it.
-              Clear scope, clean numbers, and a secure portal for documents and approvals.
+              We build lender-ready packs and covenant reporting, backed by clean books and CFO support.
+              One portal for documents, approvals, and updates.
             </motion.p>
 
             <motion.div
