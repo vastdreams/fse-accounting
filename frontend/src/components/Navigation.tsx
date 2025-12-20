@@ -72,7 +72,7 @@ export default function Navigation() {
               Client Login
             </Link>
             <Link href="/contact" className="btn btn-primary text-sm py-2.5 px-5">
-              Get Started
+              Book a Free Consultation
             </Link>
           </div>
 
@@ -136,7 +136,7 @@ export default function Navigation() {
                   Client Login
                 </Link>
                 <Link href="/contact" className="btn btn-primary w-full">
-                  Get Started
+                  Book a Free Consultation
                 </Link>
               </div>
             </div>
