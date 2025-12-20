@@ -68,9 +68,11 @@ const services = [
 
 
 const highlights = [
-  { value: 'Lending-ready', label: 'Application packs, lender Q&A, covenant reporting.' },
-  { value: 'Clean books', label: 'Reliable month-end closes and reporting.' },
-  { value: 'CFO support', label: 'Budgets, forecasts, and decision support.' },
+  { value: 'CFO Advisory', label: 'Strategic guidance and financial planning.' },
+  { value: 'Bookkeeping', label: 'Clean, real-time records and reporting.' },
+  { value: 'Lending Advisory', label: 'Lender-ready packs and facility support.' },
+  { value: 'Acquisitions and Exits', label: 'Due diligence and transaction support.' },
+  { value: 'Growth Control', label: 'Cost systems and operational efficiency.' },
 ];
 
 
@@ -124,11 +126,14 @@ export default function HomePage() {
               transition={{ duration: 0.7, delay: 0.3 }}
               className="mt-10 flex flex-col sm:flex-row gap-4"
             >
-              <Link href="/contact?service=lending" className="btn btn-primary text-center">
-                Discuss lending
+              <Link href="/contact" className="btn btn-primary text-center">
+                Get Consultation
               </Link>
-              <Link href="/services" className="btn btn-secondary text-center">
-                Explore Services
+              <Link href="/services/bookkeeping" className="btn btn-secondary text-center">
+                Bookkeeping
+              </Link>
+              <Link href="/services/lending" className="btn btn-secondary text-center">
+                Get Lending
               </Link>
             </motion.div>
 
@@ -137,14 +142,14 @@ export default function HomePage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.5 }}
-              className="mt-16 pt-8 border-t border-border-subtle grid grid-cols-3 gap-8"
+              className="mt-16 pt-8 border-t border-border-subtle grid grid-cols-2 md:grid-cols-5 gap-8"
             >
               {highlights.map((item) => (
                 <div key={item.value}>
-                  <div className="text-2xl md:text-3xl font-serif text-cream-100">
+                  <div className="text-xl md:text-2xl font-serif text-cream-100 leading-tight">
                     {item.value}
                   </div>
-                  <div className="text-sm text-slate-500 mt-1">{item.label}</div>
+                  <div className="text-xs text-slate-500 mt-2">{item.label}</div>
                 </div>
               ))}
             </motion.div>
