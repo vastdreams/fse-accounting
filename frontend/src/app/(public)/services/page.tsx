@@ -40,8 +40,8 @@ export default function ServicesPage() {
               Our Services
             </h1>
             <p className="text-lg text-slate-400 leading-relaxed">
-              Comprehensive accounting and advisory services designed for growing businesses. 
-              From daily bookkeeping to strategic CFO guidance, we&apos;re your complete financial partner.
+              Comprehensive accounting and advisory services designed for growing businesses.
+              From daily bookkeeping to lending advisory and strategic CFO guidance, we&apos;re your complete financial partner.
             </p>
           </motion.div>
         </div>
@@ -50,6 +50,24 @@ export default function ServicesPage() {
       {/* Services Grid */}
       <section className="section">
         <div className="container">
+          <div className="mb-10 rounded-2xl border border-copper-500/30 bg-copper-500/5 p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div>
+              <p className="text-xs uppercase tracking-wider text-copper-300">Featured</p>
+              <h2 className="mt-2 font-serif text-2xl text-cream-100">Lending Advisory</h2>
+              <p className="mt-2 text-sm text-slate-400 max-w-2xl">
+                We help you get bank-ready: lender-ready packs, facility structuring support, and covenant reporting.
+              </p>
+            </div>
+            <div className="flex gap-3">
+              <Link href="/services/lending" className="btn btn-secondary">
+                View lending
+              </Link>
+              <Link href="/contact?service=lending" className="btn btn-primary">
+                Discuss lending
+              </Link>
+            </div>
+          </div>
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {SERVICES.map((service, index) => (
               <motion.div
@@ -60,8 +78,19 @@ export default function ServicesPage() {
                 transition={{ delay: index * 0.05 }}
               >
                 <Link href={`/services/${service.slug}`}>
-                  <div className="card h-full group">
-                    <div className="text-4xl mb-4">{service.icon}</div>
+                  <div
+                    className={`card h-full group ${
+                      service.slug === 'lending' ? 'border-copper-500/40 bg-copper-500/5' : ''
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="text-4xl mb-4">{service.icon}</div>
+                      {service.slug === 'lending' && (
+                        <span className="mt-1 inline-flex items-center rounded-full border border-copper-500/30 bg-copper-500/10 px-2 py-0.5 text-[10px] uppercase tracking-wider text-copper-300">
+                          Featured
+                        </span>
+                      )}
+                    </div>
                     <h3 className="text-xl font-serif text-cream-100 mb-3 group-hover:text-copper-400 transition-colors">
                       {service.title}
                     </h3>

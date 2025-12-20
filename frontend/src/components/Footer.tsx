@@ -23,6 +23,7 @@ import Link from 'next/link';
 
 const footerLinks = {
   services: [
+    { href: '/services/lending', label: 'Lending Advisory' },
     { href: '/services/bookkeeping', label: 'Bookkeeping' },
     { href: '/services/tax-filings', label: 'Tax Filings' },
     { href: '/services/cfo-services', label: 'CFO Services' },

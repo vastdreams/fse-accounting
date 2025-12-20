@@ -27,42 +27,52 @@ import Link from 'next/link';
 
 const services = [
   {
+    slug: 'lending',
+    icon: '🏦',
+    title: 'Lending Advisory',
+    description:
+      'Bank-ready finance support: facility structuring, application packaging, and covenant reporting.',
+  },
+  {
+    slug: 'bookkeeping',
     icon: '📊',
     title: 'Bookkeeping',
     description: 'Accurate, real-time financial records that give you complete visibility.',
   },
   {
+    slug: 'cfo-services',
+    icon: '👔',
+    title: 'CFO Services',
+    description: 'Budgets, forecasts, and decision support when you need it.',
+  },
+  {
+    slug: 'tax-filings',
     icon: '💰',
     title: 'Tax Filings',
-    description: 'Tax returns and BAS/GST lodgements delivered with a partner Registered Tax/BAS Agent.',
+    description:
+      'Tax returns and BAS/GST lodgements delivered with a partner Registered Tax/BAS Agent.',
   },
   {
+    slug: 'financial-modelling',
     icon: '📈',
-    title: 'CFO Services',
-    description: 'Fractional CFO expertise without the full-time commitment.',
-  },
-  {
-    icon: '🏗️',
     title: 'Financial Modelling',
-    description: 'Sophisticated models for fundraising, planning, and decision-making.',
+    description: 'Models for fundraising, planning, and better decisions.',
   },
   {
-    icon: '🌏',
-    title: 'Global Structuring',
-    description: 'International tax planning and multi-jurisdictional compliance.',
-  },
-  {
-    icon: '🚀',
-    title: 'Exit Planning',
-    description: 'Maximize value and prepare your business for a successful exit.',
+    slug: 'corporate-growth',
+    icon: '🌱',
+    title: 'Corporate Structuring',
+    description: 'Entity and holding structures to support growth and asset protection.',
   },
 ];
 
+
 const highlights = [
+  { value: 'Lending-ready', label: 'Application packs, lender Q&A, covenant reporting.' },
   { value: 'Clean books', label: 'Reliable month-end closes and reporting.' },
-  { value: 'Tax + compliance', label: 'Practical support across filings and deadlines.' },
   { value: 'CFO support', label: 'Budgets, forecasts, and decision support.' },
 ];
+
 
 export default function HomePage() {
   return (
@@ -104,7 +114,7 @@ export default function HomePage() {
               transition={{ duration: 0.7, delay: 0.2 }}
               className="mt-6 text-lg md:text-xl text-slate-400 leading-relaxed max-w-2xl"
             >
-              Bookkeeping, tax and reporting — plus hands-on CFO support when you need it.
+              Bookkeeping, tax and reporting — plus lending advisory and hands-on CFO support when you need it.
               Clear scope, clean numbers, and a secure portal for documents and approvals.
             </motion.p>
 
@@ -114,8 +124,8 @@ export default function HomePage() {
               transition={{ duration: 0.7, delay: 0.3 }}
               className="mt-10 flex flex-col sm:flex-row gap-4"
             >
-              <Link href="/contact" className="btn btn-primary text-center">
-                Book a Consultation
+              <Link href="/contact?service=lending" className="btn btn-primary text-center">
+                Discuss lending
               </Link>
               <Link href="/services" className="btn btn-secondary text-center">
                 Explore Services
@@ -160,18 +170,37 @@ export default function HomePage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {services.map((service, index) => (
               <motion.div
-                key={service.title}
+                key={service.slug}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="card group cursor-pointer"
               >
-                <div className="text-3xl mb-4">{service.icon}</div>
-                <h3 className="text-lg font-medium text-cream-100 mb-2 group-hover:text-copper-400 transition-colors">
-                  {service.title}
-                </h3>
-                <p className="text-sm text-slate-400">{service.description}</p>
+                <Link href={`/services/${service.slug}`} className="block h-full">
+                  <div
+                    className={`card group h-full ${
+                      service.slug === 'lending' ? 'border-copper-500/40 bg-copper-500/5' : ''
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="text-3xl mb-4">{service.icon}</div>
+                      {service.slug === 'lending' && (
+                        <span className="mt-1 inline-flex items-center rounded-full border border-copper-500/30 bg-copper-500/10 px-2 py-0.5 text-[10px] uppercase tracking-wider text-copper-300">
+                          Core
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="text-lg font-medium text-cream-100 mb-2 group-hover:text-copper-400 transition-colors">
+                      {service.title}
+                    </h3>
+                    <p className="text-sm text-slate-400">{service.description}</p>
+                    <div className="mt-4 pt-4 border-t border-border-subtle">
+                      <span className="text-sm text-copper-400 group-hover:text-copper-300 transition-colors">
+                        Learn more →
+                      </span>
+                    </div>
+                  </div>
+                </Link>
               </motion.div>
             ))}
           </div>

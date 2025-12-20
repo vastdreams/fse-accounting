@@ -42,6 +42,8 @@ export default function ServiceDetailPage({
 
   const isTaxFilings = service.slug === 'tax-filings';
 
+  const isLending = service.slug === 'lending';
+
   return (
     <>
       {/* Hero */}
@@ -80,6 +82,21 @@ export default function ServiceDetailPage({
                 ))}
               </ul>
 
+              {isLending && (
+                <div className="mt-8 rounded-2xl border border-copper-500/30 bg-copper-500/5 p-6">
+                  <h3 className="font-serif text-xl text-cream-100 mb-2">How lending support works</h3>
+                  <p className="text-sm text-slate-400 leading-relaxed">
+                    We help you prepare lender-ready financials, package an application, coordinate lender Q&A, and
+                    set up covenant reporting post-settlement. We are not a lender.
+                  </p>
+                  <div className="mt-4">
+                    <Link href="/contact?service=lending" className="btn btn-primary">
+                      Discuss lending
+                    </Link>
+                  </div>
+                </div>
+              )}
+
               {isTaxFilings && (
                 <div className="mt-8 rounded-2xl border border-border-subtle bg-surface p-6">
                   <h3 className="font-serif text-xl text-cream-100 mb-2">How lodgement works</h3>
@@ -98,8 +115,11 @@ export default function ServiceDetailPage({
               <p className="text-sm text-slate-400 mb-5">
                 Tell us what you&apos;re trying to achieve and we&apos;ll recommend the right scope.
               </p>
-              <Link href="/contact" className="btn btn-primary w-full">
-                Book a consultation
+              <Link
+                href={isLending ? '/contact?service=lending' : '/contact'}
+                className="btn btn-primary w-full"
+              >
+                {isLending ? 'Discuss lending' : 'Book a consultation'}
               </Link>
               <p className="text-xs text-slate-500 mt-3 text-center">30-minute discovery call · No commitment</p>
             </aside>

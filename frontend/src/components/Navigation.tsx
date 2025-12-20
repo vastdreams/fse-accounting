@@ -1,6 +1,21 @@
 /**
- * PATH: src/components/Navigation.tsx
- * PURPOSE: Main navigation component
+ * PATH: frontend/src/components/Navigation.tsx
+ * PURPOSE:
+ *   - Primary navigation for the FSE Accounting frontend.
+ *
+ * ROLE IN ARCHITECTURE:
+ *   - UI shell component (navigation layer).
+ *
+ * MAIN EXPORTS:
+ *   - Navigation(): React component.
+ *
+ * NON-RESPONSIBILITIES:
+ *   - This file does NOT handle:
+ *     - Auth decisions (it only renders links)
+ *
+ * NOTES FOR FUTURE AI:
+ *   - Keep top-nav focused on revenue-driving routes.
+ *   - Avoid adding links to non-existent pages.
  */
 
 'use client';
@@ -11,6 +26,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const navLinks = [
   { href: '/', label: 'Home' },
+  { href: '/services/lending', label: 'Lending' },
   { href: '/services', label: 'Services' },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },

@@ -20,10 +20,24 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 
+const ALLOWED_SERVICE_VALUES = new Set([
+  'bookkeeping',
+  'lending',
+  'tax-filings',
+  'cfo-services',
+  'financial-modelling',
+  'corporate-growth',
+  'other',
+]);
+
 export default function ContactPage() {
+  const searchParams = useSearchParams();
+  const serviceFromUrl = searchParams.get('service');
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -34,6 +48,16 @@ export default function ContactPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (!serviceFromUrl) return;
+    if (!ALLOWED_SERVICE_VALUES.has(serviceFromUrl)) return;
+
+    setFormData((prev) => {
+      if (prev.service) return prev;
+      return { ...prev, service: serviceFromUrl };
+    });
+  }, [serviceFromUrl]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -162,18 +186,28 @@ export default function ContactPage() {
                       className="input"
                     >
                       <option value="">Select a service...</option>
+                      <option value="lending">Lending Advisory</option>
                       <option value="bookkeeping">Bookkeeping</option>
-                      <option value="tax">Tax Filings</option>
-                      <option value="cfo">CFO Services</option>
-                      <option value="modelling">Financial Modelling</option>
-                      <option value="structuring">Corporate Structuring</option>
+                      <option value="tax-filings">Tax Filings</option>
+                      <option value="cfo-services">CFO Services</option>
+                      <option value="financial-modelling">Financial Modelling</option>
+                      <option value="corporate-growth">Corporate Structuring</option>
                       <option value="other">Other / Not Sure</option>
                     </select>
 
-                    <p className="mt-2 text-xs text-slate-500">
-                      Note: For tax/BAS lodgements, the tax agent service is performed by a partner
-                      Registered Tax/BAS Agent. We manage the workflow and portal.
-                    </p>
+                    {formData.service === 'tax-filings' && (
+                      <p className="mt-2 text-xs text-slate-500">
+                        Note: For tax/BAS lodgements, the tax agent service is performed by a partner Registered
+                        Tax/BAS Agent. We manage the workflow and portal.
+                      </p>
+                    )}
+
+                    {formData.service === 'lending' && (
+                      <p className="mt-2 text-xs text-slate-500">
+                        Note: We are not a lender. We help you prepare lender-ready numbers and coordinate the
+                        process with your chosen lender.
+                      </p>
+                    )}
                   </div>
 
                   <div>

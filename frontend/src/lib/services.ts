@@ -32,6 +32,19 @@ export type ServiceDefinition = {
 
 export const SERVICES: ServiceDefinition[] = [
   {
+    slug: 'lending',
+    icon: '🏦',
+    title: 'Lending Advisory',
+    description:
+      'Bank-ready finance support: facility structuring, application packaging, and covenant reporting.',
+    features: [
+      'Lender-ready application pack',
+      'Facility structuring support',
+      'Lender coordination & Q&A',
+      'Covenant forecasting & reporting',
+    ],
+  },
+  {
     slug: 'bookkeeping',
     icon: '📊',
     title: 'Bookkeeping',
@@ -79,18 +92,6 @@ export const SERVICES: ServiceDefinition[] = [
       'Valuation models',
       'Scenario analysis',
       'Investor-ready outputs',
-    ],
-  },
-  {
-    slug: 'lending',
-    icon: '🏦',
-    title: 'Lending Advisory',
-    description: 'Guidance on financing options, applications, and covenant monitoring.',
-    features: [
-      'Loan structuring',
-      'Bank relationship management',
-      'Application preparation',
-      'Covenant monitoring',
     ],
   },
   {
