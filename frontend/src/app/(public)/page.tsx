@@ -223,7 +223,7 @@ export default function HomePage() {
               viewport={{ once: true }}
             >
               <h2 className="font-serif text-3xl md:text-4xl text-cream-100 mb-6">
-                Why businesses choose FSE
+                Why businesses choose FSEgrowth
               </h2>
               <div className="space-y-6">
                 <div className="flex gap-4">
@@ -302,7 +302,7 @@ export default function HomePage() {
               Let&apos;s build your financial future
             </h2>
             <p className="text-slate-400 mb-8">
-              Join businesses who trust FSE with their accounting and advisory needs.
+              Join businesses who trust FSEgrowth with their accounting and advisory needs.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact" className="btn btn-primary">

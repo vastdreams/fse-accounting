@@ -102,7 +102,7 @@ export default function ServiceDetailPage({
                   <h3 className="font-serif text-xl text-cream-100 mb-2">How lodgement works</h3>
                   <p className="text-sm text-slate-400 leading-relaxed">
                     For work that requires a Registered Tax/BAS Agent (including lodgement), the tax agent
-                    service is performed by a partner Registered Tax/BAS Agent. FSE manages the workflow,
+                    service is performed by a partner Registered Tax/BAS Agent. FSEgrowth manages the workflow,
                     communications, and client portal. The responsible agent will be identified in your
                     engagement documentation.
                   </p>
