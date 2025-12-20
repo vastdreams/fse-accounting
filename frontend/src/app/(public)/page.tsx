@@ -94,7 +94,7 @@ export default function HomePage() {
             >
               <span className="w-2 h-2 rounded-full bg-copper-400 animate-pulse" />
               <span className="text-xs text-slate-400 tracking-wide uppercase">
-                Australia · FSEgrowth Accounting &amp; Advisory
+                Australia · FSE Accounting &amp; Advisory
               </span>
             </motion.div>
 
@@ -223,7 +223,7 @@ export default function HomePage() {
               viewport={{ once: true }}
             >
               <h2 className="font-serif text-3xl md:text-4xl text-cream-100 mb-6">
-                Why businesses choose FSEgrowth
+                Why businesses choose FSE Accounting
               </h2>
               <div className="space-y-6">
                 <div className="flex gap-4">
@@ -302,7 +302,7 @@ export default function HomePage() {
               Let&apos;s build your financial future
             </h2>
             <p className="text-slate-400 mb-8">
-              Join businesses who trust FSEgrowth with their accounting and advisory needs.
+              Join businesses who trust FSE Accounting with their accounting and advisory needs.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact" className="btn btn-primary">

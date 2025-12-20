@@ -24,13 +24,13 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: {
-    default: 'FSEgrowth | Accounting and Advisory',
-    template: '%s | FSEgrowth Accounting',
+    default: 'FSE Accounting | Accounting and Advisory',
+    template: '%s | FSE Accounting',
   },
   description:
     'Business accounting, bookkeeping and tax support — plus CFO advisory, forecasting and financial modelling.',
   keywords: [
-    'FSEgrowth',
+    'FSE Accounting',
     'accounting',
     'advisory',
     'bookkeeping',
@@ -40,18 +40,18 @@ export const metadata: Metadata = {
     'corporate structuring',
     'Australia',
   ],
-  authors: [{ name: 'FSEgrowth' }],
+  authors: [{ name: 'FSE Accounting' }],
   openGraph: {
     type: 'website',
     locale: 'en_AU',
     url: 'https://fseaccounting.com',
-    siteName: 'FSEgrowth',
-    title: 'FSEgrowth | Accounting and Advisory',
+    siteName: 'FSE Accounting',
+    title: 'FSE Accounting | Accounting and Advisory',
     description: 'Business accounting, bookkeeping and tax support — plus CFO advisory and modelling.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'FSEgrowth | Accounting and Advisory',
+    title: 'FSE Accounting | Accounting and Advisory',
     description: 'Business accounting, bookkeeping and tax support — plus CFO advisory and modelling.',
   },
   robots: {
