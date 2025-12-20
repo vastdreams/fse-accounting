@@ -45,13 +45,13 @@ export default function Navigation() {
               <span className="text-xl font-serif font-bold text-background">F</span>
             </div>
             <div className="hidden sm:block">
-              <span className="text-lg font-medium text-cream-100">FSE Accounting</span>
-              <span className="text-xs text-slate-400 block -mt-1">Accounting &amp; Advisory</span>
+              <span className="text-lg font-medium text-cream-100 block leading-none">FSE Accounting</span>
+              <span className="text-[10px] text-slate-400 block mt-1 uppercase tracking-wider">Accounting &amp; Advisory</span>
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -64,7 +64,7 @@ export default function Navigation() {
           </div>
 
           {/* CTA Buttons */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-4">
             <Link
               href="/login"
               className="text-sm text-slate-400 hover:text-cream-100 transition-colors"
@@ -79,7 +79,7 @@ export default function Navigation() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 text-slate-400 hover:text-cream-100"
+            className="lg:hidden p-2 text-slate-400 hover:text-cream-100"
             aria-label="Toggle menu"
           >
             <svg
@@ -115,7 +115,7 @@ export default function Navigation() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-surface border-b border-border-subtle"
+            className="lg:hidden bg-surface border-b border-border-subtle"
           >
             <div className="container py-4 space-y-4">
               {navLinks.map((link) => (
