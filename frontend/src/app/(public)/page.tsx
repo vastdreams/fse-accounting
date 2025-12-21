@@ -138,10 +138,10 @@ export default function HomePage() {
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.1 }}
-                className="font-serif text-cream-100 text-5xl md:text-6xl lg:text-8xl leading-[1.05] tracking-tight"
+                className="font-serif text-cream-100 text-5xl md:text-6xl lg:text-8xl leading-[1.2] tracking-tight pb-2"
               >
                 Accounting and CFO advisory for{' '}
-                <span className="text-gradient italic">growing</span> businesses
+                <span className="text-gradient italic inline-block py-1">growing</span> businesses
               </motion.h1>
 
               <motion.p
