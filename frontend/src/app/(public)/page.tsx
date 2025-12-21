@@ -105,8 +105,16 @@ export default function HomePage() {
     <>
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center pt-32 pb-16 overflow-hidden">
-        {/* Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-950 to-background" />
+        {/* Background Image with Deep Overlay */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1554469384-e58fac16e23a?auto=format&fit=crop&q=80&w=2000" 
+            alt="Modern financial district" 
+            className="w-full h-full object-cover opacity-10 grayscale"
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-950/95 to-background" />
+        </div>
+        
         <div className="absolute top-20 right-0 w-[600px] h-[600px] bg-copper-500/5 rounded-full blur-[120px]" />
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-slate-800/20 rounded-full blur-[100px]" />
 
@@ -118,7 +126,7 @@ export default function HomePage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/50 border border-slate-700/50 mb-8"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/50 border border-slate-700/50 mb-8 backdrop-blur-md"
               >
                 <span className="w-2 h-2 rounded-full bg-copper-400 animate-pulse" />
                 <span className="text-xs text-slate-400 tracking-wide uppercase font-medium">
@@ -130,7 +138,7 @@ export default function HomePage() {
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.1 }}
-                className="font-serif text-cream-100 text-4xl md:text-5xl lg:text-7xl leading-[1.1] tracking-tight"
+                className="font-serif text-cream-100 text-5xl md:text-6xl lg:text-8xl leading-[1.05] tracking-tight"
               >
                 Accounting and CFO advisory for{' '}
                 <span className="text-gradient italic">growing</span> businesses
@@ -140,9 +148,9 @@ export default function HomePage() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.2 }}
-                className="mt-8 text-xl text-slate-400 leading-relaxed max-w-2xl font-light"
+                className="mt-10 text-xl md:text-2xl text-slate-400 leading-relaxed max-w-2xl font-light"
               >
-                Best-in-class advisory and services from experienced executors who know how to build businesses. 
+                Best-in-class advisory from experienced executors who know how to build businesses. 
                 Beyond accounting, we provide CFO-level support and specialized lending advisory.
               </motion.p>
 
@@ -150,12 +158,12 @@ export default function HomePage() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.3 }}
-                className="mt-12 flex flex-col sm:flex-row gap-4"
+                className="mt-12 flex flex-col sm:flex-row gap-5"
               >
-                <Link href="/contact" className="btn btn-primary px-8 py-4 text-center">
+                <Link href="/contact" className="btn btn-primary px-10 py-5 text-lg font-medium shadow-xl shadow-copper-500/10">
                   Book a Consultation
                 </Link>
-                <Link href="/services" className="btn btn-secondary px-8 py-4 text-center">
+                <Link href="/services" className="btn btn-secondary px-10 py-5 text-lg font-medium backdrop-blur-sm">
                   Explore Services
                 </Link>
               </motion.div>

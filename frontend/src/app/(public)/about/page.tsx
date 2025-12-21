@@ -68,7 +68,7 @@ export default function AboutPage() {
       </section>
 
       {/* Story */}
-      <section className="section bg-background">
+      <section className="section bg-background overflow-hidden">
         <div className="container">
           <div className="grid lg:grid-cols-12 gap-16 items-center">
             <motion.div
@@ -77,8 +77,22 @@ export default function AboutPage() {
               viewport={{ once: true }}
               className="lg:col-span-7"
             >
-              <h2 className="font-serif text-3xl md:text-4xl text-cream-100 mb-8">
-                Built by executors
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                className="relative rounded-[2.5rem] overflow-hidden border border-slate-700/50 mb-12 lg:hidden aspect-[16/9]"
+              >
+                <img 
+                  src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1000" 
+                  alt="Modern office collaboration" 
+                  className="w-full h-full object-cover grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent" />
+              </motion.div>
+
+              <h2 className="font-serif text-4xl md:text-5xl text-cream-100 mb-8 leading-tight">
+                Built by <span className="text-gradient italic">executors</span>
               </h2>
               <div className="space-y-6 text-lg text-slate-400 font-light leading-relaxed">
                 <p>
@@ -96,20 +110,40 @@ export default function AboutPage() {
                   clarity, speed, and precision.
                 </p>
               </div>
+
+              <div className="grid grid-cols-2 gap-8 mt-12 pt-12 border-t border-border-subtle">
+                {values.slice(0, 2).map((value) => (
+                  <div key={value.title}>
+                    <h4 className="text-xl font-serif text-cream-100 mb-3">{value.title}</h4>
+                    <p className="text-sm text-slate-500 leading-relaxed">{value.description}</p>
+                  </div>
+                ))}
+              </div>
             </motion.div>
 
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="lg:col-span-5 grid grid-cols-1 gap-4"
+              className="lg:col-span-5 relative hidden lg:block"
             >
-              {values.map((value, index) => (
-                <div key={value.title} className="card p-6 border-border-subtle bg-surface/30 hover:border-copper-500/20 transition-colors">
-                  <h4 className="text-lg font-serif text-cream-100 mb-2">{value.title}</h4>
-                  <p className="text-sm text-slate-500">{value.description}</p>
+              <div className="relative aspect-[4/5] rounded-[3rem] overflow-hidden border border-slate-700/50 shadow-2xl">
+                <img 
+                  src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1000" 
+                  alt="Modern financial architecture" 
+                  className="w-full h-full object-cover grayscale opacity-40 hover:grayscale-0 hover:opacity-80 transition-all duration-1000 scale-105 hover:scale-100"
+                />
+                {/* Overlay card */}
+                <div className="absolute bottom-10 left-10 right-10 p-8 rounded-3xl bg-slate-900/80 backdrop-blur-xl border border-slate-700/50">
+                  <p className="text-cream-100 font-serif text-lg leading-relaxed">
+                    &quot;We bridge the gap between tidy compliance and genuine strategic execution.&quot;
+                  </p>
                 </div>
-              ))}
+              </div>
+              
+              {/* Decorative elements */}
+              <div className="absolute -top-6 -right-6 w-32 h-32 bg-copper-500/10 rounded-full blur-3xl" />
+              <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-slate-500/10 rounded-full blur-3xl" />
             </motion.div>
           </div>
         </div>
