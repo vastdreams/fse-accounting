@@ -64,12 +64,12 @@ export default function Navigation() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden xl:flex items-center gap-6">
+          <div className="hidden xl:flex items-center justify-center flex-1 gap-8 mx-10">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm text-slate-400 hover:text-cream-100 transition-colors"
+                className="text-[15px] font-medium text-slate-400 hover:text-cream-100 transition-all duration-300 whitespace-nowrap"
               >
                 {link.label}
               </Link>
@@ -80,11 +80,11 @@ export default function Navigation() {
               <button
                 onClick={() => setIsServicesOpen(!isServicesOpen)}
                 onMouseEnter={() => setIsServicesOpen(true)}
-                className="flex items-center gap-1 text-sm text-slate-400 hover:text-cream-100 transition-colors"
+                className="flex items-center gap-1.5 text-[15px] font-medium text-slate-400 hover:text-cream-100 transition-all duration-300 whitespace-nowrap"
               >
                 Services
                 <svg 
-                  className={`w-4 h-4 transition-transform duration-200 ${isServicesOpen ? 'rotate-180' : ''}`} 
+                  className={`w-4 h-4 transition-transform duration-300 ${isServicesOpen ? 'rotate-180 text-copper-400' : ''}`} 
                   fill="none" 
                   viewBox="0 0 24 24" 
                   stroke="currentColor"
@@ -96,39 +96,41 @@ export default function Navigation() {
               <AnimatePresence>
                 {isServicesOpen && (
                   <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
+                    initial={{ opacity: 0, y: 15, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 15, scale: 0.98 }}
                     onMouseLeave={() => setIsServicesOpen(false)}
-                    className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[600px] bg-slate-900 border border-border-subtle rounded-2xl p-6 shadow-2xl backdrop-blur-xl"
+                    className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[640px] bg-slate-900/95 border border-slate-800 rounded-3xl p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-2xl z-[60]"
                   >
-                    <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+                    <div className="grid grid-cols-2 gap-x-10 gap-y-6">
                       {SERVICES.map((service) => (
                         <Link
                           key={service.slug}
                           href={`/services/${service.slug}`}
                           onClick={() => setIsServicesOpen(false)}
-                          className="group flex items-start gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors"
+                          className="group flex items-start gap-4 p-3 rounded-2xl hover:bg-white/5 transition-all duration-300"
                         >
-                          <span className="text-xl">{service.icon}</span>
-                          <div>
-                            <div className="text-sm font-medium text-cream-100 group-hover:text-copper-400 transition-colors">
+                          <div className="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center text-2xl shadow-inner group-hover:bg-copper-500/10 transition-colors shrink-0">
+                            {service.icon}
+                          </div>
+                          <div className="flex-1">
+                            <div className="text-[15px] font-semibold text-cream-100 group-hover:text-copper-400 transition-colors mb-1">
                               {service.title}
                             </div>
-                            <p className="text-xs text-slate-500 line-clamp-1 mt-0.5">
+                            <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
                               {service.description}
                             </p>
                           </div>
                         </Link>
                       ))}
                     </div>
-                    <div className="mt-6 pt-4 border-t border-border-subtle">
+                    <div className="mt-8 pt-6 border-t border-slate-800">
                       <Link 
                         href="/services" 
                         onClick={() => setIsServicesOpen(false)}
-                        className="text-xs text-copper-400 hover:text-copper-300 transition-colors font-medium uppercase tracking-wider"
+                        className="text-xs text-copper-400 hover:text-copper-300 transition-colors font-bold uppercase tracking-[0.2em] flex items-center justify-center gap-2"
                       >
-                        View all services →
+                        View all services <span>→</span>
                       </Link>
                     </div>
                   </motion.div>
@@ -136,23 +138,23 @@ export default function Navigation() {
               </AnimatePresence>
             </div>
 
-            <Link href="/about" className="text-sm text-slate-400 hover:text-cream-100 transition-colors">
+            <Link href="/about" className="text-[15px] font-medium text-slate-400 hover:text-cream-100 transition-all duration-300 whitespace-nowrap">
               About
             </Link>
-            <Link href="/contact" className="text-sm text-slate-400 hover:text-cream-100 transition-colors">
+            <Link href="/contact" className="text-[15px] font-medium text-slate-400 hover:text-cream-100 transition-all duration-300 whitespace-nowrap">
               Contact
             </Link>
           </div>
 
           {/* CTA Buttons */}
-          <div className="hidden xl:flex items-center gap-4">
+          <div className="hidden xl:flex items-center gap-6 shrink-0">
             <Link
               href="/login"
-              className="text-sm text-slate-400 hover:text-cream-100 transition-colors"
+              className="text-sm font-medium text-slate-400 hover:text-cream-100 transition-colors"
             >
               Client Login
             </Link>
-            <Link href="/contact" className="btn btn-primary text-sm py-2.5 px-5 whitespace-nowrap">
+            <Link href="/contact" className="btn btn-primary text-sm py-3 px-6 whitespace-nowrap shadow-lg shadow-copper-500/10 active:scale-95 transition-transform">
               Book a Free Consultation
             </Link>
           </div>
