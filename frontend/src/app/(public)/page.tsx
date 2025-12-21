@@ -273,26 +273,46 @@ export default function HomePage() {
       </section>
 
       {/* Final "Executive" CTA */}
-      <section className="py-32 bg-surface/40">
-        <div className="container text-center">
+      <section className="py-40 relative overflow-hidden">
+        {/* Background elements */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-copper-500/[0.02] blur-[120px] pointer-events-none" />
+        
+        <div className="container relative z-10 text-center">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="max-w-4xl mx-auto"
+            className="max-w-5xl mx-auto"
           >
-            <h2 className="font-serif text-6xl md:text-8xl text-cream-100 mb-10 tracking-tighter">
-              Build your <span className="text-gradient italic">foundation.</span>
+            <h2 className="font-serif text-7xl md:text-9xl text-cream-100 mb-12 tracking-tight leading-[0.9]">
+              Build your <br />
+              <span className="text-gradient italic inline-block py-2">foundation.</span>
             </h2>
-            <p className="text-2xl text-slate-400 font-light mb-16 max-w-2xl mx-auto">
-              Ready to professionalize your financial operations? Book a partner discovery call today.
+            
+            <p className="text-xl md:text-2xl text-slate-400 font-light mb-16 max-w-2xl mx-auto leading-relaxed">
+              Professionalize your financial operations with a partner built for high-growth execution.
             </p>
-            <div className="flex flex-col sm:flex-row gap-8 justify-center items-center">
-              <Link href="/contact" className="btn btn-primary px-16 py-8 text-xl font-bold rounded-full shadow-2xl hover:scale-105 transition-all">
-                Book Consultation
+
+            <div className="flex flex-col items-center gap-12">
+              <Link 
+                href="/contact" 
+                className="group relative inline-flex items-center justify-center"
+              >
+                {/* Button Glow Effect */}
+                <div className="absolute inset-0 bg-copper-500/20 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                
+                <span className="relative btn btn-primary px-20 py-8 text-xl font-bold rounded-full shadow-[0_0_50px_rgba(212,130,58,0.15)] hover:shadow-[0_0_70px_rgba(212,130,58,0.25)] hover:scale-[1.02] transition-all duration-500 active:scale-95">
+                  Book Partner Discovery
+                </span>
               </Link>
-              <Link href="/login" className="text-cream-200 hover:text-copper-400 transition-colors font-bold tracking-widest uppercase text-sm">
-                Client Access Portal →
+
+              <Link 
+                href="/login" 
+                className="group flex items-center gap-6 text-[10px] font-bold tracking-[0.4em] uppercase text-slate-500 hover:text-copper-400 transition-all duration-500"
+              >
+                <span className="w-12 h-px bg-slate-800 group-hover:bg-copper-500/30 transition-colors" />
+                Client Access Portal
+                <span className="w-12 h-px bg-slate-800 group-hover:bg-copper-500/30 transition-colors" />
               </Link>
             </div>
           </motion.div>
