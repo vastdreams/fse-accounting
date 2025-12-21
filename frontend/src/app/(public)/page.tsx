@@ -67,13 +67,6 @@ const partners = [
   "Xero Automation",
 ];
 
-const stats = [
-  { label: 'Asset Support', value: '$250M+' },
-  { label: 'Annual Revenue Managed', value: '$1B+' },
-  { label: 'Specialized Executors', value: '15+' },
-  { label: 'Hours Saved Monthly', value: '400+' },
-];
-
 export default function HomePage() {
   return (
     <div className="bg-background">
@@ -151,21 +144,6 @@ export default function HomePage() {
                 <Link href="/services" className="btn btn-secondary px-12 py-6 text-lg font-bold backdrop-blur-md border-white/10 hover:bg-white/5 transition-all">
                   Explore Services
                 </Link>
-              </motion.div>
-
-              {/* Stats/Social Proof Bar */}
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.8 }}
-                className="mt-20 pt-10 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-8"
-              >
-                {stats.slice(0, 4).map((stat) => (
-                  <div key={stat.label}>
-                    <div className="text-2xl font-serif text-cream-100 mb-1">{stat.value}</div>
-                    <div className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">{stat.label}</div>
-                  </div>
-                ))}
               </motion.div>
             </div>
 
