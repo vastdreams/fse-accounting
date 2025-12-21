@@ -64,7 +64,7 @@ export default function Navigation() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-8">
+          <div className="hidden xl:flex items-center gap-6">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -145,14 +145,14 @@ export default function Navigation() {
           </div>
 
           {/* CTA Buttons */}
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden xl:flex items-center gap-4">
             <Link
               href="/login"
               className="text-sm text-slate-400 hover:text-cream-100 transition-colors"
             >
               Client Login
             </Link>
-            <Link href="/contact" className="btn btn-primary text-sm py-2.5 px-5">
+            <Link href="/contact" className="btn btn-primary text-sm py-2.5 px-5 whitespace-nowrap">
               Book a Free Consultation
             </Link>
           </div>
@@ -160,7 +160,7 @@ export default function Navigation() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden p-2 text-slate-400 hover:text-cream-100"
+            className="xl:hidden p-2 text-slate-400 hover:text-cream-100"
             aria-label="Toggle menu"
           >
             <svg
@@ -196,7 +196,7 @@ export default function Navigation() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-surface border-b border-border-subtle overflow-y-auto max-h-[80vh]"
+            className="xl:hidden bg-surface border-b border-border-subtle overflow-y-auto max-h-[80vh]"
           >
             <div className="container py-6 space-y-6">
               <div className="space-y-4">
