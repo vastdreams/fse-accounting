@@ -47,50 +47,53 @@ export default function AboutPage() {
   return (
     <>
       {/* Hero */}
-      <section className="pt-32 pb-16 bg-gradient-to-br from-slate-900 via-slate-950 to-background">
-        <div className="container">
+      <section className="relative pt-32 pb-20 bg-gradient-to-br from-slate-900 via-slate-950 to-background overflow-hidden">
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-copper-500/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
+        
+        <div className="container relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="max-w-3xl"
           >
-            <h1 className="font-serif text-4xl md:text-5xl text-cream-100 mb-6">
+            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-cream-100 mb-6 tracking-tight">
               About FSE Accounting
             </h1>
-            <p className="text-lg text-slate-400 leading-relaxed">
-              We&apos;re a modern accounting and advisory firm built for founders and operators.
-              We combine tidy bookkeeping with practical CFO support so you can make decisions with confidence.
+            <p className="text-xl text-slate-400 leading-relaxed font-light">
+              We&apos;re a modern accounting and advisory firm built by founders, for founders. 
+              We bridge the gap between tidy compliance and genuine strategic execution.
             </p>
           </motion.div>
         </div>
       </section>
 
       {/* Story */}
-      <section className="section">
+      <section className="section bg-background">
         <div className="container">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="grid lg:grid-cols-12 gap-16 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
+              className="lg:col-span-7"
             >
-              <h2 className="font-serif text-3xl text-cream-100 mb-6">
-                Our Story
+              <h2 className="font-serif text-3xl md:text-4xl text-cream-100 mb-8">
+                Built by executors
               </h2>
-              <div className="space-y-4 text-slate-400">
+              <div className="space-y-6 text-lg text-slate-400 font-light leading-relaxed">
                 <p>
                   FSE Accounting was founded with a simple belief: businesses deserve 
-                  better from their accountants. Not just compliance and tax returns, 
-                  but genuine strategic partnership.
+                  better from their financial partners. Not just backward-looking tax returns, 
+                  but forward-looking strategic support that drives growth.
                 </p>
                 <p>
-                  We focus on the fundamentals first: clean books, a repeatable close process,
-                  and reporting that actually helps you run the business.
+                  We focus on the fundamentals first: clean books, a disciplined monthly close,
+                  and reporting that actually helps you run the business. Once the foundation is solid,
+                  we layer on capital advisory, modelling, and CFO support.
                 </p>
                 <p>
-                  We work with businesses across Australia and internationally, from early-stage teams
-                  to established operators. Expect clear scope, proactive communication, and secure
-                  document workflows via our client portal.
+                  Based in Australia but operating globally, we serve high-growth teams who value 
+                  clarity, speed, and precision.
                 </p>
               </div>
             </motion.div>
@@ -99,12 +102,12 @@ export default function AboutPage() {
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="grid grid-cols-2 gap-6"
+              className="lg:col-span-5 grid grid-cols-1 gap-4"
             >
               {values.map((value, index) => (
-                <div key={value.title} className="card">
-                  <h4 className="font-medium text-cream-100 mb-2">{value.title}</h4>
-                  <p className="text-sm text-slate-400">{value.description}</p>
+                <div key={value.title} className="card p-6 border-border-subtle bg-surface/30 hover:border-copper-500/20 transition-colors">
+                  <h4 className="text-lg font-serif text-cream-100 mb-2">{value.title}</h4>
+                  <p className="text-sm text-slate-500">{value.description}</p>
                 </div>
               ))}
             </motion.div>
@@ -112,45 +115,28 @@ export default function AboutPage() {
         </div>
       </section>
 
-            {/* How we work */}
-      <section className="section bg-surface">
-        <div className="container">
+      {/* How we work */}
+      <section className="section bg-surface/30">
+        <div className="container text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="max-w-3xl mx-auto text-center"
+            className="max-w-3xl mx-auto"
           >
-            <h2 className="font-serif text-3xl text-cream-100 mb-6">How we work</h2>
-            <p className="text-slate-400 mb-8">
-              We start by getting the foundations right (systems, accounts, reconciliations), then run a
-              disciplined monthly close. As you grow, we add forecasting, modelling and CFO-level support.
+            <h2 className="font-serif text-3xl md:text-4xl text-cream-100 mb-8">One platform, one partner</h2>
+            <p className="text-lg text-slate-400 mb-12 font-light">
+              We leverage a modern technology stack and our dedicated client portal to provide 
+              real-time visibility. No more waiting for quarter-end to know your numbers.
             </p>
-            <Link href="/services" className="btn btn-secondary">
-              Explore services →
-            </Link>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="section">
-        <div className="container">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center max-w-2xl mx-auto"
-          >
-            <h2 className="font-serif text-3xl text-cream-100 mb-4">
-              Ready to work with us?
-            </h2>
-            <p className="text-slate-400 mb-8">
-              Let&apos;s discuss how we can support your business growth.
-            </p>
-            <Link href="/contact" className="btn btn-primary">
-              Get in Touch
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/services" className="btn btn-secondary px-8 py-4">
+                Explore our services
+              </Link>
+              <Link href="/contact" className="btn btn-primary px-8 py-4">
+                Book a consultation
+              </Link>
+            </div>
           </motion.div>
         </div>
       </section>
