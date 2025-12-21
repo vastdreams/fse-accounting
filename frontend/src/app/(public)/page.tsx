@@ -187,10 +187,10 @@ export default function HomePage() {
                           </span>
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="text-lg font-serif text-cream-100 group-hover:text-copper-400 transition-colors">
+                          <h3 className="text-base font-semibold text-cream-100 tracking-tight group-hover:text-copper-400 transition-colors">
                             {service.title}
                           </h3>
-                          <p className="text-sm text-slate-500 mt-1 line-clamp-1 font-light tracking-wide">
+                          <p className="text-xs text-slate-400 mt-1.5 line-clamp-1 font-medium tracking-normal opacity-70 group-hover:opacity-100 transition-opacity">
                             {service.description}
                           </p>
                         </div>
