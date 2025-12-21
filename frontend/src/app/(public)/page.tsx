@@ -67,92 +67,136 @@ const services = [
 ];
 
 
-const highlights = [
-  { value: 'CFO Advisory', label: 'Strategic guidance and financial planning.' },
-  { value: 'Bookkeeping', label: 'Clean, real-time records and reporting.' },
-  { value: 'Lending Advisory', label: 'Lender-ready packs and facility support.' },
-  { value: 'Acquisitions and Exits', label: 'Due diligence and transaction support.' },
-  { value: 'Growth Control', label: 'Cost systems and operational efficiency.' },
+const heroServices = [
+  { 
+    slug: 'cfo-services', 
+    title: 'CFO Advisory', 
+    description: 'Strategic guidance and financial planning.',
+    icon: '👔'
+  },
+  { 
+    slug: 'bookkeeping', 
+    title: 'Bookkeeping', 
+    description: 'Clean, real-time records and reporting.',
+    icon: '📊'
+  },
+  { 
+    slug: 'lending', 
+    title: 'Lending Advisory', 
+    description: 'Lender-ready packs and facility support.',
+    icon: '🏦'
+  },
+  { 
+    slug: 'acquisitions', 
+    title: 'Acquisitions and Exits', 
+    description: 'Due diligence and transaction support.',
+    icon: '🤝'
+  },
+  { 
+    slug: 'corporate-growth', 
+    title: 'Growth Control', 
+    description: 'Cost systems and operational efficiency.',
+    icon: '🌱'
+  },
 ];
-
 
 export default function HomePage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center pt-24 pb-16 overflow-hidden">
+      <section className="relative min-h-[90vh] flex items-center pt-32 pb-16 overflow-hidden">
         {/* Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-950 to-background" />
-        <div className="absolute top-20 right-0 w-[600px] h-[600px] bg-copper-500/8 rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-slate-800/30 rounded-full blur-[100px]" />
+        <div className="absolute top-20 right-0 w-[600px] h-[600px] bg-copper-500/5 rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-slate-800/20 rounded-full blur-[100px]" />
 
         <div className="container relative z-10">
-          <div className="max-w-4xl">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/50 border border-slate-700/50 mb-8"
-            >
-              <span className="w-2 h-2 rounded-full bg-copper-400 animate-pulse" />
-              <span className="text-xs text-slate-400 tracking-wide uppercase">
-                Australia · FSE Accounting &amp; Advisory
-              </span>
-            </motion.div>
+          <div className="grid lg:grid-cols-12 gap-16 items-center">
+            {/* Left Content */}
+            <div className="lg:col-span-7">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/50 border border-slate-700/50 mb-8"
+              >
+                <span className="w-2 h-2 rounded-full bg-copper-400 animate-pulse" />
+                <span className="text-xs text-slate-400 tracking-wide uppercase font-medium">
+                  Australia · FSE Accounting &amp; Advisory
+                </span>
+              </motion.div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1 }}
-              className="font-serif text-cream-100 text-4xl md:text-5xl lg:text-6xl leading-[1.1] tracking-tight"
-            >
-              Accounting and CFO advisory for{' '}
-              <span className="text-gradient">growing</span> businesses
-            </motion.h1>
+              <motion.h1
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.1 }}
+                className="font-serif text-cream-100 text-4xl md:text-5xl lg:text-7xl leading-[1.1] tracking-tight"
+              >
+                Accounting and CFO advisory for{' '}
+                <span className="text-gradient italic">growing</span> businesses
+              </motion.h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-              className="mt-6 text-lg md:text-xl text-slate-400 leading-relaxed max-w-2xl"
-            >
-              Best-in-class advisory and services from experienced executors who know how to build businesses. 
-              Beyond accounting, we provide CFO-level support and specialized lending advisory.
-            </motion.p>
+              <motion.p
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.2 }}
+                className="mt-8 text-xl text-slate-400 leading-relaxed max-w-2xl font-light"
+              >
+                Best-in-class advisory and services from experienced executors who know how to build businesses. 
+                Beyond accounting, we provide CFO-level support and specialized lending advisory.
+              </motion.p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-              className="mt-10 flex flex-col sm:flex-row gap-4"
-            >
-              <Link href="/contact" className="btn btn-primary text-center">
-                Get Consultation
-              </Link>
-              <Link href="/services/bookkeeping" className="btn btn-secondary text-center">
-                Bookkeeping
-              </Link>
-              <Link href="/services/lending" className="btn btn-secondary text-center">
-                Get Lending
-              </Link>
-            </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.3 }}
+                className="mt-12 flex flex-col sm:flex-row gap-4"
+              >
+                <Link href="/contact" className="btn btn-primary px-8 py-4 text-center">
+                  Book a Consultation
+                </Link>
+                <Link href="/services" className="btn btn-secondary px-8 py-4 text-center">
+                  Explore Services
+                </Link>
+              </motion.div>
+            </div>
 
-            {/* Highlights */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              className="mt-16 pt-8 border-t border-border-subtle grid grid-cols-2 md:grid-cols-5 gap-8"
-            >
-              {highlights.map((item) => (
-                <div key={item.value}>
-                  <div className="text-xl md:text-2xl font-serif text-cream-100 leading-tight">
-                    {item.value}
-                  </div>
-                  <div className="text-xs text-slate-500 mt-2">{item.label}</div>
-                </div>
+            {/* Right Side - Clickable Sections */}
+            <div className="lg:col-span-5 space-y-4">
+              {heroServices.map((service, index) => (
+                <motion.div
+                  key={service.slug}
+                  initial={{ opacity: 0, x: 40 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
+                >
+                  <Link href={`/services/${service.slug}`} className="group block">
+                    <div className="relative p-6 rounded-2xl border border-slate-800 bg-slate-900/40 backdrop-blur-sm hover:bg-slate-800/60 hover:border-copper-500/30 transition-all duration-300">
+                      <div className="flex items-center justify-between gap-6">
+                        <div className="flex items-center gap-5">
+                          <div className="w-12 h-12 rounded-xl bg-copper-500/10 border border-copper-500/20 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                            {service.icon}
+                          </div>
+                          <div>
+                            <h3 className="text-lg font-serif text-cream-100 group-hover:text-copper-400 transition-colors">
+                              {service.title}
+                            </h3>
+                            <p className="text-sm text-slate-500 mt-1 line-clamp-1">
+                              {service.description}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="text-slate-600 group-hover:text-copper-400 transition-colors">
+                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </motion.div>
               ))}
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
