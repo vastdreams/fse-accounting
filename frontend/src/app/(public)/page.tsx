@@ -171,24 +171,24 @@ export default function HomePage() {
                   transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
                 >
                   <Link href={`/services/${service.slug}`} className="group block">
-                    <div className="relative p-6 rounded-2xl border border-slate-800 bg-slate-900/40 backdrop-blur-sm hover:bg-slate-800/60 hover:border-copper-500/30 transition-all duration-300">
-                      <div className="flex items-center justify-between gap-6">
-                        <div className="flex items-center gap-5">
-                          <div className="w-12 h-12 rounded-xl bg-copper-500/10 border border-copper-500/20 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                    <div className="relative p-5 rounded-2xl border border-slate-800/60 bg-slate-900/40 backdrop-blur-sm hover:bg-slate-800/40 hover:border-copper-500/30 transition-all duration-300">
+                      <div className="flex items-center gap-5">
+                        <div className="w-14 h-14 rounded-xl bg-slate-800/80 border border-slate-700/50 flex items-center justify-center text-2xl shadow-inner group-hover:border-copper-500/30 transition-colors">
+                          <span className="group-hover:scale-110 transition-transform duration-300">
                             {service.icon}
-                          </div>
-                          <div>
-                            <h3 className="text-lg font-serif text-cream-100 group-hover:text-copper-400 transition-colors">
-                              {service.title}
-                            </h3>
-                            <p className="text-sm text-slate-500 mt-1 line-clamp-1">
-                              {service.description}
-                            </p>
-                          </div>
+                          </span>
                         </div>
-                        <div className="text-slate-600 group-hover:text-copper-400 transition-colors">
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-lg font-serif text-cream-100 group-hover:text-copper-400 transition-colors">
+                            {service.title}
+                          </h3>
+                          <p className="text-sm text-slate-500 mt-1 line-clamp-1 font-light tracking-wide">
+                            {service.description}
+                          </p>
+                        </div>
+                        <div className="text-slate-700 group-hover:text-copper-400 transition-all duration-300 transform group-hover:translate-x-1">
                           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
                           </svg>
                         </div>
                       </div>
