@@ -129,7 +129,7 @@ export default function HomePage() {
                 transition={{ duration: 0.7, delay: 0.2 }}
                 className="text-xl md:text-2xl text-slate-400 leading-relaxed max-w-2xl font-light mb-12"
               >
-                We build the financial architecture for scale. From bank-ready lending packs to complex multi-entity CFO support, we bridge the gap between compliance and capital.
+                We build the financial infrastructure that drives business valuation. From strategic capital advisory to advanced cost accounting, we turn your numbers into a growth engine.
               </motion.p>
 
               <motion.div
@@ -221,14 +221,14 @@ export default function HomePage() {
                 <span className="text-gradient italic">backward-looking.</span>
               </h2>
               <p className="text-xl text-slate-400 font-light leading-relaxed mb-12 max-w-xl">
-                Most firms stop at the tax return. We start there. FSE Accounting is built to handle the heavy lifting of high-growth operations: lender coordination, multi-jurisdictional structuring, and complex CFO modelling.
+                Most firms stop at the tax return. We start there. FSE Accounting is built to handle the first principles of business growth: strategic capital, unit economics, and absolute cost control.
               </p>
               
               <div className="space-y-8">
                 {[
-                  { title: 'Lender-Ready Infrastructure', desc: 'We build your books to pass rigorous credit due diligence.' },
-                  { title: 'Operator-First Reporting', desc: 'Custom dashboards that track unit economics, not just tax lines.' },
-                  { title: 'Strategic Capital Advisory', desc: 'Structuring facilities and equity rounds from a finance perspective.' }
+                  { title: 'Strategic Capital Advisory', desc: 'Structuring debt facilities and equity rounds to fuel acquisition and growth.' },
+                  { title: 'Operator-First Reporting', desc: 'Real-time dashboards tracking margins, customer acquisition costs, and cash velocity.' },
+                  { title: 'Advanced Cost Accounting', desc: 'Granular cost systems that identify profit leaks and optimize operational efficiency.' }
                 ].map((item) => (
                   <div key={item.title} className="flex gap-6 group">
                     <div className="w-12 h-12 rounded-xl bg-copper-500/10 flex items-center justify-center flex-shrink-0 group-hover:bg-copper-500 transition-colors duration-500">
