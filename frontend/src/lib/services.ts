@@ -36,12 +36,12 @@ export const SERVICES: ServiceDefinition[] = [
     icon: '🏦',
     title: 'Lending Advisory',
     description:
-      'Bank-ready finance support: facility structuring, application packaging, and covenant reporting.',
+      'Lender-ready financial architecture. We structure facilities and manage the execution path for institutional capital.',
     features: [
-      'Lender-ready application pack',
-      'Facility structuring support',
+      'Credit-ready application packs',
+      'Debt facility structuring',
       'Lender coordination & Q&A',
-      'Covenant forecasting & reporting',
+      'Covenant-led reporting',
     ],
   },
   {
@@ -49,25 +49,25 @@ export const SERVICES: ServiceDefinition[] = [
     icon: '📊',
     title: 'Bookkeeping',
     description:
-      'Accurate, real-time financial records that give you complete visibility into your business performance.',
+      'High-integrity financial records built for scale. Reliable month-end closes that serve as the foundation for clear decisions.',
     features: [
-      'Daily transaction recording',
-      'Bank reconciliation',
-      'Accounts payable/receivable',
-      'Financial reporting',
+      'Daily transaction execution',
+      'Disciplined month-end close',
+      'Automated AP/AR workflows',
+      'Audit-ready financial hygiene',
     ],
   },
   {
     slug: 'cost-accounting',
     icon: '🎯',
-    title: 'Cost Accounting Systems',
+    title: 'Advanced Cost Accounting',
     description:
-      'Implementation of cost accounting systems for manufacturing and service businesses.',
+      'Granular cost systems that identify profit leaks and optimize absolute operational efficiency.',
     features: [
-      'Activity-based costing',
-      'Job costing systems',
-      'Variance analysis',
-      'Profitability analysis',
+      'Activity-based unit economics',
+      'Granular margin analysis',
+      'Operational variance tracking',
+      'Direct-to-operator insights',
     ],
   },
   {
@@ -170,13 +170,13 @@ export const SERVICES: ServiceDefinition[] = [
   {
     slug: 'cfo-services',
     icon: '👔',
-    title: 'CFO Services',
-    description: 'Fractional CFO expertise without the full-time commitment.',
+    title: 'CFO Advisory',
+    description: 'Executive-level financial leadership designed for high-growth operators. We bridge the gap between compliance and strategic capital.',
     features: [
-      'Strategic planning',
-      'Cash flow management',
-      'Board reporting',
-      'Investor relations',
+      'Strategic capital structuring',
+      'Advanced unit economics',
+      'Board & investor relations',
+      'Performance-led forecasting',
     ],
   },
 ];

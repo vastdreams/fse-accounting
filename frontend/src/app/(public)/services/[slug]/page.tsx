@@ -46,6 +46,7 @@ export default function ServiceDetailPage({
 
   const isTaxFilings = service.slug === 'tax-filings';
   const isLending = service.slug === 'lending';
+  const isCFO = service.slug === 'cfo-services';
 
   return (
     <div className="bg-background min-h-screen">
@@ -115,6 +116,33 @@ export default function ServiceDetailPage({
             {/* Left Content Column */}
             <div className="lg:col-span-8 space-y-24">
               
+              {isCFO && (
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="space-y-12"
+                >
+                  <h2 className="font-serif text-3xl md:text-4xl text-cream-100 flex items-center gap-6">
+                    <span className="w-12 h-px bg-copper-500/30" />
+                    The Pillars of Execution
+                  </h2>
+                  <div className="grid md:grid-cols-2 gap-8">
+                    {[
+                      { title: 'Strategic Capital', desc: 'We don\u0027t just model—we structure. We manage the entire lifecycle of debt and equity acquisition.' },
+                      { title: 'Absolute Cost Control', desc: 'Granular unit economics and activity-based costing to maximize absolute profitability.' },
+                      { title: 'Board-Level Visibility', desc: 'High-fidelity reporting that provides the clarity required for executive decisions.' },
+                      { title: 'Operator Alignment', desc: 'Financial infrastructure built to support the pace of high-growth teams.' }
+                    ].map((pillar) => (
+                      <div key={pillar.title} className="p-8 rounded-3xl bg-slate-900/40 border border-white/5 backdrop-blur-sm">
+                        <h4 className="text-xl font-bold text-copper-400 mb-3">{pillar.title}</h4>
+                        <p className="text-slate-400 font-light leading-relaxed">{pillar.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+
               {/* Features Grid */}
               <motion.div
                 initial={{ opacity: 0, y: 40 }}
