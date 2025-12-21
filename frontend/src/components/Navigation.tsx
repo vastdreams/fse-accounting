@@ -20,20 +20,33 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { SERVICES } from '@/lib/services';
 
 const navLinks = [
   { href: '/', label: 'Home' },
+  { href: '/services/cfo-services', label: 'CFO' },
+  { href: '/services/bookkeeping', label: 'Bookkeeping' },
   { href: '/services/lending', label: 'Lending' },
-  { href: '/services', label: 'Services' },
-  { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' },
 ];
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isServicesOpen, setIsServicesOpen] = useState(false);
+  const servicesRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (servicesRef.current && !servicesRef.current.contains(event.target as Node)) {
+        setIsServicesOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border-subtle">
@@ -61,6 +74,74 @@ export default function Navigation() {
                 {link.label}
               </Link>
             ))}
+            
+            {/* Services Dropdown */}
+            <div className="relative" ref={servicesRef}>
+              <button
+                onClick={() => setIsServicesOpen(!isServicesOpen)}
+                onMouseEnter={() => setIsServicesOpen(true)}
+                className="flex items-center gap-1 text-sm text-slate-400 hover:text-cream-100 transition-colors"
+              >
+                Services
+                <svg 
+                  className={`w-4 h-4 transition-transform duration-200 ${isServicesOpen ? 'rotate-180' : ''}`} 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              <AnimatePresence>
+                {isServicesOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    onMouseLeave={() => setIsServicesOpen(false)}
+                    className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[600px] bg-slate-900 border border-border-subtle rounded-2xl p-6 shadow-2xl backdrop-blur-xl"
+                  >
+                    <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+                      {SERVICES.map((service) => (
+                        <Link
+                          key={service.slug}
+                          href={`/services/${service.slug}`}
+                          onClick={() => setIsServicesOpen(false)}
+                          className="group flex items-start gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors"
+                        >
+                          <span className="text-xl">{service.icon}</span>
+                          <div>
+                            <div className="text-sm font-medium text-cream-100 group-hover:text-copper-400 transition-colors">
+                              {service.title}
+                            </div>
+                            <p className="text-xs text-slate-500 line-clamp-1 mt-0.5">
+                              {service.description}
+                            </p>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                    <div className="mt-6 pt-4 border-t border-border-subtle">
+                      <Link 
+                        href="/services" 
+                        onClick={() => setIsServicesOpen(false)}
+                        className="text-xs text-copper-400 hover:text-copper-300 transition-colors font-medium uppercase tracking-wider"
+                      >
+                        View all services →
+                      </Link>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            <Link href="/about" className="text-sm text-slate-400 hover:text-cream-100 transition-colors">
+              About
+            </Link>
+            <Link href="/contact" className="text-sm text-slate-400 hover:text-cream-100 transition-colors">
+              Contact
+            </Link>
           </div>
 
           {/* CTA Buttons */}
@@ -115,27 +196,64 @@ export default function Navigation() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-surface border-b border-border-subtle"
+            className="lg:hidden bg-surface border-b border-border-subtle overflow-y-auto max-h-[80vh]"
           >
-            <div className="container py-4 space-y-4">
-              {navLinks.map((link) => (
+            <div className="container py-6 space-y-6">
+              <div className="space-y-4">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className="block text-lg text-slate-400 hover:text-cream-100 transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+                
+                {/* Mobile Services */}
+                <div className="space-y-3 pt-2">
+                  <p className="text-xs uppercase tracking-widest text-slate-500 font-semibold">Services</p>
+                  <div className="grid grid-cols-1 gap-3">
+                    {SERVICES.map((service) => (
+                      <Link
+                        key={service.slug}
+                        href={`/services/${service.slug}`}
+                        onClick={() => setIsOpen(false)}
+                        className="flex items-center gap-3 text-slate-400 hover:text-cream-100 transition-colors"
+                      >
+                        <span className="text-lg">{service.icon}</span>
+                        <span className="text-sm">{service.title}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
                 <Link
-                  key={link.href}
-                  href={link.href}
+                  href="/about"
                   onClick={() => setIsOpen(false)}
-                  className="block text-slate-400 hover:text-cream-100 transition-colors"
+                  className="block text-lg text-slate-400 hover:text-cream-100 transition-colors pt-2"
                 >
-                  {link.label}
+                  About
                 </Link>
-              ))}
-              <div className="pt-4 border-t border-border-subtle space-y-3">
+                <Link
+                  href="/contact"
+                  onClick={() => setIsOpen(false)}
+                  className="block text-lg text-slate-400 hover:text-cream-100 transition-colors"
+                >
+                  Contact
+                </Link>
+              </div>
+
+              <div className="pt-6 border-t border-border-subtle space-y-4">
                 <Link
                   href="/login"
+                  onClick={() => setIsOpen(false)}
                   className="block text-slate-400 hover:text-cream-100 transition-colors"
                 >
                   Client Login
                 </Link>
-                <Link href="/contact" className="btn btn-primary w-full">
+                <Link href="/contact" onClick={() => setIsOpen(false)} className="btn btn-primary w-full">
                   Book a Free Consultation
                 </Link>
               </div>
