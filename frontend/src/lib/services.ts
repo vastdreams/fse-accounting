@@ -89,7 +89,7 @@ const CORE_OFFERS: ServiceDefinition[] = [
     title: 'Acquisitions & Exits',
     shortTitle: 'Deals',
     subtitle: 'Deals',
-    headline: 'Know what you're buying. Structure it right. Don't get surprised.',
+    headline: "Know what you're buying. Structure it right. Don't get surprised.",
     description:
       'Finance-led transaction support. From due diligence to deal structuring to integration—we ensure you make decisions with complete financial clarity.',
     features: [

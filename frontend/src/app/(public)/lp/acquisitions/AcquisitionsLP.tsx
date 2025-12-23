@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 
 const painPoints = [
-  'Can't trust the seller's numbers',
+  "Can't trust the seller's numbers",
   'Hidden liabilities in the financials',
   'No clarity on real earnings quality',
   'Deal structure that costs you later',

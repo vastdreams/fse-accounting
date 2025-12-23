@@ -9,7 +9,7 @@ import Link from 'next/link';
 
 const painPoints = [
   'Banks keep asking for more information',
-  'Model doesn't match what lenders need',
+  "Model doesn't match what lenders need",
   'No clear data room or pack',
   'Process taking months instead of weeks',
 ];

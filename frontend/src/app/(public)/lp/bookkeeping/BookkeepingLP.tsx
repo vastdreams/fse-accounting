@@ -10,7 +10,7 @@ import Link from 'next/link';
 const painPoints = [
   'Books are months behind',
   'No idea of real cash position',
-  'Can't get reports to lenders',
+  "Can't get reports to lenders",
   'Spending hours on reconciliations',
 ];
 

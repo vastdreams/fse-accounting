@@ -51,8 +51,8 @@ const coreOffers = [
     number: '03',
     title: 'Acquisition & Exit',
     subtitle: 'Deals',
-    headline: 'Know what you're buying.',
-    description: 'Due diligence, structure support, and finance-led decisioning so you don't get surprised.',
+    headline: "Know what you're buying.",
+    description: "Due diligence, structure support, and finance-led decisioning so you don't get surprised.",
     outcomes: [
       'Financial due diligence',
       'Deal structuring',
