@@ -1,21 +1,15 @@
 /**
  * PATH: src/app/globals.css
- * PURPOSE: Global styles for FSE Accounting (dark slate palette with copper accents)
+ * PURPOSE: FSE Accounting Design System - Ink & Gold
  * DESIGN NOTES:
- * - Instrument Serif for headings (literary feel)
- * - Satoshi for body text
- * - Deep slate palette with copper accents
+ * - Bricolage Grotesque for headings (geometric, sharp)
+ * - Geist for body text (clean, modern)
+ * - Deep ink palette with warm amber accents
+ * - High contrast, conversion-focused
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
-
-@font-face {
-  font-family: 'Satoshi';
-  src: url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap');
-  font-weight: 400 700;
-  font-style: normal;
-  font-display: swap;
-}
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -25,22 +19,45 @@
    CSS Custom Properties
    ======================================== */
 :root {
-  --color-background: #0a0c10;
-  --color-surface: #0f1419;
-  --color-surface-elevated: #141a22;
-  --color-border: #243040;
-  --color-border-subtle: #1a222d;
+  /* Ink palette - deep, professional, high contrast */
+  --color-ink-950: #0c0e12;
+  --color-ink-900: #12151b;
+  --color-ink-800: #1a1f28;
+  --color-ink-700: #252b37;
+  --color-ink-600: #3a4254;
+  --color-ink-500: #5a6478;
+  --color-ink-400: #8892a4;
+  --color-ink-300: #b4bcc8;
   
-  --color-text-primary: #faf8f5;
-  --color-text-secondary: #a8b3c4;
-  --color-text-tertiary: #6b7a8f;
+  /* Amber/Gold accent - warm, trustworthy */
+  --color-amber-300: #fcd381;
+  --color-amber-400: #f9bc4a;
+  --color-amber-500: #f5a524;
+  --color-amber-600: #d98b0f;
   
-  --color-accent: #d4823a;
-  --color-accent-hover: #e8bc8c;
-  --color-accent-muted: rgba(212, 130, 58, 0.15);
+  /* Semantic mappings */
+  --color-background: var(--color-ink-950);
+  --color-surface: var(--color-ink-900);
+  --color-surface-elevated: var(--color-ink-800);
+  --color-border: var(--color-ink-700);
+  --color-border-subtle: var(--color-ink-800);
   
-  --font-serif: 'Instrument Serif', Georgia, serif;
-  --font-sans: 'Satoshi', system-ui, -apple-system, sans-serif;
+  --color-text-primary: #f8f9fa;
+  --color-text-secondary: var(--color-ink-400);
+  --color-text-tertiary: var(--color-ink-500);
+  
+  --color-accent: var(--color-amber-500);
+  --color-accent-hover: var(--color-amber-400);
+  --color-accent-muted: rgba(245, 165, 36, 0.12);
+  
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-body: 'Geist', system-ui, -apple-system, sans-serif;
+  
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-2xl: 40px;
 }
 
 /* ========================================
@@ -59,32 +76,49 @@ html {
 }
 
 body {
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
   background-color: var(--color-background);
   color: var(--color-text-primary);
   line-height: 1.6;
   min-height: 100vh;
+  font-weight: 400;
+}
+
+::selection {
+  background-color: var(--color-accent);
+  color: var(--color-ink-950);
 }
 
 /* ========================================
    Typography
    ======================================== */
-h1, h2, h3, h4 {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
 }
 
-.font-serif {
-  font-family: var(--font-serif);
+.font-display {
+  font-family: var(--font-display);
+}
+
+.text-balance {
+  text-wrap: balance;
 }
 
 /* ========================================
    Gradient Text
    ======================================== */
 .text-gradient {
-  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+  background: linear-gradient(135deg, var(--color-amber-400) 0%, var(--color-amber-500) 50%, var(--color-amber-600) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-subtle {
+  background: linear-gradient(135deg, var(--color-ink-300) 0%, var(--color-text-primary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -96,36 +130,57 @@ h1, h2, h3, h4 {
 .container {
   max-width: 1280px;
   margin: 0 auto;
-  padding-left: clamp(1.5rem, 5vw, 3rem);
-  padding-right: clamp(1.5rem, 5vw, 3rem);
+  padding-left: clamp(1.25rem, 4vw, 2.5rem);
+  padding-right: clamp(1.25rem, 4vw, 2.5rem);
+}
+
+.container-tight {
+  max-width: 960px;
+  margin: 0 auto;
+  padding-left: clamp(1.25rem, 4vw, 2.5rem);
+  padding-right: clamp(1.25rem, 4vw, 2.5rem);
 }
 
 /* ========================================
-   Buttons
+   Buttons - High Conversion Focus
    ======================================== */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.875rem 1.75rem;
-  font-weight: 500;
+  padding: 0.875rem 1.5rem;
+  font-family: var(--font-display);
+  font-weight: 600;
   font-size: 0.9375rem;
-  border-radius: 8px;
-  transition: all 0.2s ease;
+  border-radius: var(--radius-md);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   text-decoration: none;
-}
-
-.btn-primary {
-  background-color: var(--color-accent);
-  color: #0a0c10;
+  letter-spacing: -0.01em;
   border: none;
 }
 
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-amber-500) 0%, var(--color-amber-600) 100%);
+  color: var(--color-ink-950);
+  box-shadow: 
+    0 1px 2px rgba(0,0,0,0.2),
+    0 4px 12px rgba(245, 165, 36, 0.25),
+    inset 0 1px 0 rgba(255,255,255,0.15);
+}
+
 .btn-primary:hover {
-  background-color: var(--color-accent-hover);
+  background: linear-gradient(135deg, var(--color-amber-400) 0%, var(--color-amber-500) 100%);
   transform: translateY(-1px);
+  box-shadow: 
+    0 2px 4px rgba(0,0,0,0.2),
+    0 8px 24px rgba(245, 165, 36, 0.35),
+    inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
 }
 
 .btn-secondary {
@@ -136,7 +191,30 @@ h1, h2, h3, h4 {
 
 .btn-secondary:hover {
   background-color: var(--color-surface);
-  border-color: var(--color-accent);
+  border-color: var(--color-ink-600);
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--color-text-secondary);
+}
+
+.btn-ghost:hover {
+  color: var(--color-text-primary);
+  background-color: var(--color-surface);
+}
+
+/* Large CTA variant */
+.btn-lg {
+  padding: 1.125rem 2rem;
+  font-size: 1rem;
+  border-radius: var(--radius-lg);
+}
+
+.btn-xl {
+  padding: 1.25rem 2.5rem;
+  font-size: 1.0625rem;
+  border-radius: var(--radius-lg);
 }
 
 /* ========================================
@@ -145,9 +223,9 @@ h1, h2, h3, h4 {
 .card {
   background-color: var(--color-surface);
   border: 1px solid var(--color-border-subtle);
-  border-radius: 12px;
+  border-radius: var(--radius-xl);
   padding: 1.5rem;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
 }
 
 .card:hover {
@@ -155,11 +233,18 @@ h1, h2, h3, h4 {
   background-color: var(--color-surface-elevated);
 }
 
+.card-elevated {
+  background-color: var(--color-surface-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+}
+
 /* ========================================
-   Section Styling
+   Sections
    ======================================== */
 .section {
-  padding: clamp(4rem, 10vw, 8rem) 0;
+  padding: clamp(4rem, 10vw, 7rem) 0;
 }
 
 .section-header {
@@ -179,17 +264,6 @@ h1, h2, h3, h4 {
 }
 
 /* ========================================
-   Background Effects
-   ======================================== */
-.bg-glow {
-  position: absolute;
-  pointer-events: none;
-  border-radius: 50%;
-  filter: blur(100px);
-  opacity: 0.5;
-}
-
-/* ========================================
    Form Styles
    ======================================== */
 .input {
@@ -197,8 +271,9 @@ h1, h2, h3, h4 {
   padding: 0.875rem 1rem;
   background-color: var(--color-surface);
   border: 1px solid var(--color-border-subtle);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   color: var(--color-text-primary);
+  font-family: var(--font-body);
   font-size: 0.9375rem;
   transition: all 0.2s ease;
 }
@@ -207,6 +282,7 @@ h1, h2, h3, h4 {
   outline: none;
   border-color: var(--color-accent);
   background-color: var(--color-surface-elevated);
+  box-shadow: 0 0 0 3px var(--color-accent-muted);
 }
 
 .input::placeholder {
@@ -219,6 +295,66 @@ h1, h2, h3, h4 {
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--color-text-secondary);
+}
+
+/* Radio/Option Cards */
+.option-card {
+  position: relative;
+  padding: 1.25rem 1.5rem;
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.option-card:hover {
+  border-color: var(--color-border);
+  background-color: var(--color-surface-elevated);
+}
+
+.option-card.selected {
+  border-color: var(--color-accent);
+  background-color: var(--color-accent-muted);
+}
+
+.option-card input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* ========================================
+   Badge / Tag
+   ======================================== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-radius: 100px;
+  background-color: var(--color-accent-muted);
+  color: var(--color-amber-400);
+  border: 1px solid rgba(245, 165, 36, 0.2);
+}
+
+.badge-neutral {
+  background-color: var(--color-ink-800);
+  color: var(--color-ink-400);
+  border-color: var(--color-ink-700);
+}
+
+/* ========================================
+   Divider
+   ======================================== */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-border), transparent);
 }
 
 /* ========================================
@@ -234,11 +370,57 @@ h1, h2, h3, h4 {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-border);
+  background: var(--color-ink-600);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-text-tertiary);
+  background: var(--color-ink-500);
 }
 
+/* ========================================
+   Animation Utilities
+   ======================================== */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { 
+    opacity: 0; 
+    transform: translateY(16px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(245, 165, 36, 0.3); 
+  }
+  50% { 
+    box-shadow: 0 0 40px rgba(245, 165, 36, 0.5); 
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.6s ease-out forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Staggered animations */
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }

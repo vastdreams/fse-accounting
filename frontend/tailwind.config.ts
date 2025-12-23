@@ -9,39 +9,71 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // FSE Accounting brand colors (matching Finsoeasy)
-        background: '#0a0c10',
-        surface: '#0f1419',
-        'surface-elevated': '#141a22',
-        border: '#243040',
-        'border-subtle': '#1a222d',
+        // Ink palette - deep, professional
+        ink: {
+          300: '#b4bcc8',
+          400: '#8892a4',
+          500: '#5a6478',
+          600: '#3a4254',
+          700: '#252b37',
+          800: '#1a1f28',
+          900: '#12151b',
+          950: '#0c0e12',
+        },
         
+        // Amber accent - warm, trustworthy
+        amber: {
+          300: '#fcd381',
+          400: '#f9bc4a',
+          500: '#f5a524',
+          600: '#d98b0f',
+        },
+        
+        // Semantic colors
+        background: '#0c0e12',
+        surface: '#12151b',
+        'surface-elevated': '#1a1f28',
+        border: '#252b37',
+        'border-subtle': '#1a1f28',
+        
+        // Legacy support (for gradual migration)
         cream: {
           50: '#fefdfb',
-          100: '#faf8f5',
-          200: '#f5f0e8',
+          100: '#f8f9fa',
+          200: '#e9ecef',
+        },
+        
+        copper: {
+          300: '#fcd381',
+          400: '#f9bc4a',
+          500: '#f5a524',
+          600: '#d98b0f',
         },
         
         slate: {
           750: '#293548',
-          850: '#1a222d',
-          950: '#0a0c10',
-        },
-        
-        copper: {
-          300: '#e8bc8c',
-          400: '#dfa76a',
-          500: '#d4823a',
-          600: '#b86d2e',
+          850: '#1a1f28',
+          950: '#0c0e12',
         },
       },
       fontFamily: {
-        serif: ['Instrument Serif', 'Georgia', 'serif'],
-        sans: ['Satoshi', 'system-ui', '-apple-system', 'sans-serif'],
+        display: ['Bricolage Grotesque', 'system-ui', 'sans-serif'],
+        sans: ['Geist', 'system-ui', '-apple-system', 'sans-serif'],
+        // Legacy
+        serif: ['Bricolage Grotesque', 'system-ui', 'sans-serif'],
+      },
+      borderRadius: {
+        'sm': '6px',
+        'md': '12px',
+        'lg': '20px',
+        'xl': '28px',
+        '2xl': '40px',
+        '3xl': '48px',
       },
       animation: {
-        'fade-in': 'fadeIn 0.5s ease-out',
-        'slide-up': 'slideUp 0.5s ease-out',
+        'fade-in': 'fadeIn 0.5s ease-out forwards',
+        'slide-up': 'slideUp 0.6s ease-out forwards',
+        'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
       },
       keyframes: {
         fadeIn: {
@@ -49,8 +81,12 @@ const config: Config = {
           '100%': { opacity: '1' },
         },
         slideUp: {
-          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '0%': { opacity: '0', transform: 'translateY(16px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        pulseGlow: {
+          '0%, 100%': { boxShadow: '0 0 20px rgba(245, 165, 36, 0.3)' },
+          '50%': { boxShadow: '0 0 40px rgba(245, 165, 36, 0.5)' },
         },
       },
     },
@@ -59,4 +95,3 @@ const config: Config = {
 }
 
 export default config
-

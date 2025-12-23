@@ -1,37 +1,26 @@
 /**
  * PATH: frontend/src/components/Footer.tsx
- * PURPOSE:
- *   - Global site footer for public, portal, and admin routes.
- *
- * ROLE IN ARCHITECTURE:
- *   - UI shell component (navigation/footer layer).
- *
- * MAIN EXPORTS:
- *   - Footer(): React component.
- *
- * NON-RESPONSIBILITIES:
- *   - This file does NOT handle:
- *     - Routing logic beyond rendering links
- *     - Auth / session checks
- *
- * NOTES FOR FUTURE AI:
- *   - Keep footer links aligned with real routes (avoid 404s).
- *   - Avoid unverifiable marketing claims.
+ * PURPOSE: Global site footer - updated for new design system
  */
 
 import Link from 'next/link';
 
 const footerLinks = {
-  services: [
-    { href: '/services/lending', label: 'Lending Advisory' },
+  coreServices: [
     { href: '/services/bookkeeping', label: 'Bookkeeping' },
-    { href: '/services/tax-filings', label: 'Tax Filings' },
-    { href: '/services/cfo-services', label: 'CFO Services' },
+    { href: '/services/lending', label: 'Lending Advisory' },
+    { href: '/services/acquisitions', label: 'Acquisitions & Exits' },
+  ],
+  moreServices: [
+    { href: '/services/cfo-services', label: 'CFO Advisory' },
     { href: '/services/financial-modelling', label: 'Financial Modelling' },
+    { href: '/services/tax-filings', label: 'Tax Filings' },
+    { href: '/services', label: 'All Services →' },
   ],
   company: [
     { href: '/about', label: 'About Us' },
-    { href: '/contact', label: 'Contact' },
+    { href: '/contact', label: 'Book a Triage Call' },
+    { href: '/login', label: 'Client Login' },
   ],
   legal: [
     { href: '/privacy', label: 'Privacy Policy' },
@@ -41,36 +30,64 @@ const footerLinks = {
 
 export default function Footer() {
   return (
-    <footer className="bg-surface border-t border-border-subtle">
+    <footer className="bg-ink-900 border-t border-ink-800/50">
       <div className="container py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Brand */}
-          <div>
-            <Link href="/" className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-lg bg-copper-500 flex items-center justify-center">
-                <span className="text-xl font-serif font-bold text-background">F</span>
+          <div className="lg:col-span-2">
+            <Link href="/" className="flex items-center gap-2.5 mb-5">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center">
+                <span className="text-sm font-display font-bold text-ink-950">F</span>
               </div>
-              <div>
-                <span className="text-lg font-medium text-cream-100">FSE Accounting</span>
-                <span className="text-xs text-slate-400 block -mt-1">Accounting &amp; Advisory</span>
-              </div>
+              <span className="text-base font-display font-semibold text-cream-100">
+                FSE Accounting
+              </span>
             </Link>
-            <p className="text-sm text-slate-400 leading-relaxed">
-              Accounting, tax and CFO advisory for growing businesses.
+            <p className="text-sm text-ink-400 leading-relaxed mb-6 max-w-xs">
+              Growth-stage accounting and advisory. Clean books, bankable numbers, 
+              deal-ready decisions.
             </p>
+            <Link 
+              href="/contact" 
+              className="inline-flex items-center gap-2 text-sm font-medium text-amber-500 hover:text-amber-400 transition-colors"
+            >
+              Book a Finance Triage
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
           </div>
 
-          {/* Services */}
+          {/* Core Services */}
           <div>
-            <h4 className="text-sm font-semibold text-cream-100 uppercase tracking-wider mb-4">
-              Services
+            <h4 className="text-xs font-semibold text-cream-100 uppercase tracking-[0.15em] mb-4">
+              Core Services
             </h4>
             <ul className="space-y-3">
-              {footerLinks.services.map((link) => (
+              {footerLinks.coreServices.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-slate-400 hover:text-copper-400 transition-colors"
+                    className="text-sm text-ink-400 hover:text-amber-400 transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* More Services */}
+          <div>
+            <h4 className="text-xs font-semibold text-cream-100 uppercase tracking-[0.15em] mb-4">
+              More Services
+            </h4>
+            <ul className="space-y-3">
+              {footerLinks.moreServices.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-ink-400 hover:text-amber-400 transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -81,7 +98,7 @@ export default function Footer() {
 
           {/* Company */}
           <div>
-            <h4 className="text-sm font-semibold text-cream-100 uppercase tracking-wider mb-4">
+            <h4 className="text-xs font-semibold text-cream-100 uppercase tracking-[0.15em] mb-4">
               Company
             </h4>
             <ul className="space-y-3">
@@ -89,34 +106,28 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-slate-400 hover:text-copper-400 transition-colors"
+                    className="text-sm text-ink-400 hover:text-amber-400 transition-colors"
                   >
                     {link.label}
                   </Link>
                 </li>
               ))}
             </ul>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <h4 className="text-sm font-semibold text-cream-100 uppercase tracking-wider mb-4">
-              Contact
-            </h4>
-            <div className="space-y-3 text-sm text-slate-400">
-              <p>Australia</p>
-              <p>
-                <a href="mailto:hello@fseaccounting.com" className="hover:text-copper-400 transition-colors">
-                  hello@fseaccounting.com
-                </a>
-              </p>
+            <div className="mt-6 pt-4 border-t border-ink-800/50">
+              <p className="text-xs text-ink-500 mb-1">Email</p>
+              <a 
+                href="mailto:hello@fseaccounting.com" 
+                className="text-sm text-ink-400 hover:text-amber-400 transition-colors"
+              >
+                hello@fseaccounting.com
+              </a>
             </div>
           </div>
         </div>
 
         {/* Bottom */}
-        <div className="mt-12 pt-8 border-t border-border-subtle flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-slate-500">
+        <div className="mt-12 pt-8 border-t border-ink-800/50 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-sm text-ink-500">
             © {new Date().getFullYear()} FSE Accounting and Advisory. All rights reserved.
           </p>
           <div className="flex gap-6">
@@ -124,7 +135,7 @@ export default function Footer() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm text-slate-500 hover:text-slate-400 transition-colors"
+                className="text-sm text-ink-500 hover:text-ink-400 transition-colors"
               >
                 {link.label}
               </Link>
@@ -135,4 +146,3 @@ export default function Footer() {
     </footer>
   );
 }
-

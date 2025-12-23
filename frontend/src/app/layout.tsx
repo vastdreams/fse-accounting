@@ -1,44 +1,30 @@
 /**
  * PATH: frontend/src/app/layout.tsx
- * PURPOSE:
- *   - Root Next.js App Router layout and SEO metadata for the FSE Accounting frontend.
- *
- * ROLE IN ARCHITECTURE:
- *   - UI shell + SEO layer (shared across all routes).
- *
- * MAIN EXPORTS:
- *   - metadata: Next.js Metadata config.
- *   - RootLayout(): React Server Component wrapper.
- *
- * NON-RESPONSIBILITIES:
- *   - This file does NOT handle:
- *     - Navigation/footer rendering (handled by route group layouts)
- *     - API client configuration
- *
- * NOTES FOR FUTURE AI:
- *   - Keep descriptions concrete and consistent with on-page copy.
+ * PURPOSE: Root Next.js App Router layout with SEO metadata and analytics
  */
 
 import type { Metadata } from 'next'
 import './globals.css'
+import Analytics from '@/components/Analytics'
 
 export const metadata: Metadata = {
   title: {
-    default: 'FSE Accounting | Accounting and Advisory',
+    default: 'FSE Accounting | Clean Books. Bankable Numbers. Deal-Ready.',
     template: '%s | FSE Accounting',
   },
   description:
-    'Business accounting, bookkeeping and tax support — plus CFO advisory, forecasting and financial modelling.',
+    'Growth-stage accounting and advisory. Bookkeeping foundations, lending-ready packs, and acquisition/exit support for Australian businesses.',
   keywords: [
     'FSE Accounting',
     'accounting',
-    'advisory',
     'bookkeeping',
-    'tax',
+    'lending advisory',
+    'acquisition due diligence',
     'CFO services',
     'financial modelling',
-    'corporate structuring',
     'Australia',
+    'growth stage',
+    'lender ready',
   ],
   authors: [{ name: 'FSE Accounting' }],
   openGraph: {
@@ -46,13 +32,13 @@ export const metadata: Metadata = {
     locale: 'en_AU',
     url: 'https://fseaccounting.com',
     siteName: 'FSE Accounting',
-    title: 'FSE Accounting | Accounting and Advisory',
-    description: 'Business accounting, bookkeeping and tax support — plus CFO advisory and modelling.',
+    title: 'FSE Accounting | Clean Books. Bankable Numbers. Deal-Ready.',
+    description: 'Growth-stage accounting and advisory. Bookkeeping, lending prep, and M&A support.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'FSE Accounting | Accounting and Advisory',
-    description: 'Business accounting, bookkeeping and tax support — plus CFO advisory and modelling.',
+    title: 'FSE Accounting | Clean Books. Bankable Numbers. Deal-Ready.',
+    description: 'Growth-stage accounting and advisory. Bookkeeping, lending prep, and M&A support.',
   },
   robots: {
     index: true,
@@ -73,8 +59,8 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased">
         {children}
+        <Analytics />
       </body>
     </html>
   )
 }
-

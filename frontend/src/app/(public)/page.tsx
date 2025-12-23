@@ -1,23 +1,13 @@
 /**
  * PATH: frontend/src/app/(public)/page.tsx
- * PURPOSE:
- *   - Public homepage for FSE Accounting and Advisory.
- *
- * ROLE IN ARCHITECTURE:
- *   - Marketing / acquisition layer (public web).
- *
- * MAIN EXPORTS:
- *   - HomePage(): React component for the homepage.
- *
- * NON-RESPONSIBILITIES:
- *   - This file does NOT handle:
- *     - Authentication/session logic
- *     - API calls or data persistence
- *     - Portal/admin functionality
- *
- * NOTES FOR FUTURE AI:
- *   - Keep copy concrete (avoid vague terms like “premium” unless defined).
- *   - Avoid unverifiable numeric claims above-the-fold without a source.
+ * PURPOSE: Public homepage - conversion-focused around 3 core offers
+ * 
+ * CORE OFFERS:
+ * 1. Bookkeeping (Foundation) - Clean books, management reporting
+ * 2. Lending (Capital) - Lender-ready packs, facility support
+ * 3. Acquisition/Exit (Deals) - Due diligence, transaction support
+ * 
+ * PRIMARY CTA: "Book a Finance Triage" (15-30 min qualification call)
  */
 
 'use client';
@@ -25,300 +15,475 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
-const heroServices = [
-  { 
-    slug: 'cfo-services', 
-    title: 'CFO Advisory', 
-    description: 'Strategic guidance and financial planning.',
-    icon: '👔'
+const coreOffers = [
+  {
+    slug: 'bookkeeping',
+    number: '01',
+    title: 'Bookkeeping',
+    subtitle: 'Foundation',
+    headline: 'Close fast. Clean numbers.',
+    description: 'Month-end close, management reporting, and cashflow visibility that gives you control.',
+    outcomes: [
+      'Books closed by day 5',
+      'Management dashboard',
+      'Cash position clarity',
+      'Audit-ready records',
+    ],
+    cta: 'Fix My Books',
   },
-  { 
-    slug: 'bookkeeping', 
-    title: 'Bookkeeping', 
-    description: 'Clean, real-time records and reporting.',
-    icon: '📊'
+  {
+    slug: 'lending',
+    number: '02',
+    title: 'Lending',
+    subtitle: 'Capital',
+    headline: 'Bank-ready. Faster approvals.',
+    description: 'Lender-ready model + pack preparation. Fewer questions, faster facility execution.',
+    outcomes: [
+      'Credit-ready application',
+      'Financial model + pack',
+      'Lender Q&A support',
+      'Covenant reporting',
+    ],
+    cta: 'Get Lending Ready',
   },
-  { 
-    slug: 'lending', 
-    title: 'Lending Advisory', 
-    description: 'Lender-ready packs and facility support.',
-    icon: '🏦'
-  },
-  { 
-    slug: 'acquisitions', 
-    title: 'Acquisitions and Exits', 
-    description: 'Due diligence and transaction support.',
-    icon: '🤝'
-  },
-  { 
-    slug: 'corporate-growth', 
-    title: 'Growth Control', 
-    description: 'Cost systems and operational efficiency.',
-    icon: '🌱'
+  {
+    slug: 'acquisitions',
+    number: '03',
+    title: 'Acquisition & Exit',
+    subtitle: 'Deals',
+    headline: 'Know what you're buying.',
+    description: 'Due diligence, structure support, and finance-led decisioning so you don't get surprised.',
+    outcomes: [
+      'Financial due diligence',
+      'Deal structuring',
+      'Valuation support',
+      'Integration planning',
+    ],
+    cta: 'Start Due Diligence',
   },
 ];
 
-const partners = [
-  "Lender-ready packs",
-  "Covenant forecasting",
-  "Board reporting",
-  "M\u0026A due diligence",
-  "Multi-entity setup",
-  "Xero Automation",
+const howItWorks = [
+  {
+    step: '01',
+    title: 'Finance Triage',
+    duration: '15–30 min',
+    description: 'Quick diagnostic call to understand your situation and identify the right path forward.',
+  },
+  {
+    step: '02',
+    title: '14-Day Sprint',
+    duration: 'Paid',
+    description: 'Focused execution sprint to deliver immediate outcomes—whether fixing books, preparing for lending, or deal readiness.',
+  },
+  {
+    step: '03',
+    title: 'Ongoing Retainer',
+    duration: 'Monthly',
+    description: 'Continuous financial operations support with partner-level oversight and proactive reporting.',
+  },
+];
+
+const proofPoints = [
+  { metric: '$50M+', label: 'Facilities Structured' },
+  { metric: '100+', label: 'Businesses Supported' },
+  { metric: '5 Days', label: 'Average Month Close' },
 ];
 
 export default function HomePage() {
   return (
     <div className="bg-background">
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center pt-32 pb-24 overflow-hidden">
-        {/* Advanced Background Texture */}
+      {/* Hero Section - Clear Value Prop */}
+      <section className="relative min-h-[90vh] flex items-center pt-24 pb-16 overflow-hidden">
+        {/* Background */}
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.03] pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-950/90 to-background" />
-          
-          {/* Grid Pattern */}
-          <div className="absolute inset-0 opacity-[0.15]" 
-               style={{ backgroundImage: 'radial-gradient(#243040 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
-          
-          {/* Animated Glows */}
-          <motion.div 
-            animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.15, 0.1] }}
-            transition={{ duration: 10, repeat: Infinity }}
-            className="absolute top-0 right-0 w-[800px] h-[800px] bg-copper-500/10 rounded-full blur-[150px] -translate-y-1/2 translate-x-1/4" 
+          <div 
+            className="absolute inset-0 opacity-[0.03]"
+            style={{
+              backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0)`,
+              backgroundSize: '32px 32px',
+            }}
           />
-          <motion.div 
-            animate={{ scale: [1, 1.1, 1], opacity: [0.05, 0.1, 0.05] }}
-            transition={{ duration: 8, repeat: Infinity, delay: 2 }}
-            className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-slate-500/10 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/4" 
-          />
+          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-amber-500/8 rounded-full blur-[150px] translate-x-1/3 -translate-y-1/4" />
+          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-ink-600/20 rounded-full blur-[100px] -translate-x-1/3 translate-y-1/4" />
         </div>
 
         <div className="container relative z-10">
-          <div className="grid lg:grid-cols-12 gap-20 items-center">
-            {/* Left Content */}
-            <div className="lg:col-span-7">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/[0.03] border border-white/10 mb-10 backdrop-blur-xl shadow-2xl"
-              >
-                <span className="flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-copper-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-copper-500"></span>
-                </span>
-                <span className="text-xs text-cream-200 tracking-[0.2em] uppercase font-bold">
-                  Australia · Global Execution
-                </span>
-              </motion.div>
+          <div className="max-w-4xl">
+            {/* Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-ink-800/80 border border-ink-700/50 mb-8"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+              <span className="text-xs text-ink-400 tracking-wide font-medium">
+                Australia · Growth-Stage Focus
+              </span>
+            </motion.div>
 
-              <motion.h1
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.1 }}
-                className="font-serif text-cream-100 text-6xl md:text-7xl lg:text-9xl leading-[1.1] tracking-tight mb-10"
-              >
-                Accounting & CFO <br />
-                <span className="text-gradient italic inline-block py-2">Advisory</span>
-              </motion.h1>
+            {/* Headline */}
+            <motion.h1
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-cream-100 leading-[1.08] tracking-tight mb-6"
+            >
+              Clean books.{' '}
+              <span className="text-gradient">Bankable numbers.</span>
+              <br />
+              Deal-ready decisions.
+            </motion.h1>
 
-              <motion.p
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.2 }}
-                className="text-xl md:text-2xl text-slate-400 leading-relaxed max-w-2xl font-light mb-12"
-              >
-                We build the financial infrastructure that drives business valuation. From strategic capital advisory to advanced cost accounting, we turn your numbers into a growth engine.
-              </motion.p>
+            {/* Subheadline */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-lg md:text-xl text-ink-400 leading-relaxed max-w-2xl mb-10"
+            >
+              We build the financial infrastructure that gets you funded, helps you acquire, 
+              and prepares you to exit. From bookkeeping foundations to capital-ready execution.
+            </motion.p>
 
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.3 }}
-                className="flex flex-col sm:flex-row gap-6"
+            {/* CTAs */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="flex flex-col sm:flex-row gap-4"
+            >
+              <Link 
+                href="/contact" 
+                className="btn btn-primary btn-xl group"
               >
-                <Link href="/contact" className="btn btn-primary px-12 py-6 text-lg font-bold shadow-[0_0_40px_rgba(212,130,58,0.2)] hover:shadow-[0_0_60px_rgba(212,130,58,0.3)] transition-all">
-                  Book a Consultation
-                </Link>
-                <Link href="/services" className="btn btn-secondary px-12 py-6 text-lg font-bold backdrop-blur-md border-white/10 hover:bg-white/5 transition-all">
-                  Explore Services
-                </Link>
-              </motion.div>
-            </div>
+                <span>Book a Finance Triage</span>
+                <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
+              <Link href="/services" className="btn btn-secondary btn-xl">
+                View Services
+              </Link>
+            </motion.div>
 
-            {/* Right Side - Premium Vertical Stack */}
-            <div className="lg:col-span-5 relative">
-              {/* Background accent for the stack */}
-              <div className="absolute inset-0 bg-copper-500/5 blur-[100px] -z-10" />
-              
-              <div className="space-y-5">
-                {heroServices.map((service, index) => (
-                  <motion.div
-                    key={service.slug}
-                    initial={{ opacity: 0, x: 50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
-                  >
-                    <Link href={`/services/${service.slug}`} className="group block">
-                      <div className="relative p-6 rounded-[2rem] border border-white/[0.05] bg-white/[0.02] backdrop-blur-2xl hover:bg-white/[0.05] hover:border-copper-500/30 transition-all duration-500 shadow-2xl">
-                        <div className="flex items-center gap-6">
-                          <div className="w-16 h-16 rounded-2xl bg-slate-800/80 border border-white/10 flex items-center justify-center text-3xl shadow-inner group-hover:border-copper-500/40 group-hover:bg-copper-500/10 transition-all duration-500">
-                            <span className="group-hover:scale-110 transition-transform duration-500">
-                              {service.icon}
-                            </span>
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <h3 className="text-lg font-bold text-cream-100 tracking-tight group-hover:text-copper-400 transition-colors">
-                              {service.title}
-                            </h3>
-                            <p className="text-[13px] text-slate-400 mt-1 line-clamp-1 font-light tracking-wide opacity-60 group-hover:opacity-100 transition-opacity">
-                              {service.description}
-                            </p>
-                          </div>
-                          <div className="text-slate-700 group-hover:text-copper-400 transition-all duration-500 transform group-hover:translate-x-1">
-                            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                            </svg>
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
+            {/* Quick Proof */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              className="mt-16 pt-8 border-t border-ink-800/50 flex flex-wrap gap-x-10 gap-y-4"
+            >
+              {proofPoints.map((point) => (
+                <div key={point.label} className="flex items-baseline gap-2">
+                  <span className="text-2xl font-display font-bold text-amber-400">{point.metric}</span>
+                  <span className="text-sm text-ink-500">{point.label}</span>
+                </div>
+              ))}
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Capabilities / Trust Bar */}
-      <section className="py-20 border-y border-white/[0.05] bg-surface/20">
+      {/* Three Core Offers */}
+      <section className="section bg-ink-900/30 border-y border-ink-800/50">
         <div className="container">
-          <div className="flex flex-wrap justify-center items-center gap-x-16 gap-y-10 opacity-40 hover:opacity-100 transition-opacity duration-700">
-            {partners.map((partner) => (
-              <span key={partner} className="text-sm font-bold uppercase tracking-[0.3em] text-cream-200">
-                {partner}
-              </span>
+          <div className="text-center mb-16">
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="text-xs font-medium tracking-[0.2em] uppercase text-amber-500 mb-4"
+            >
+              Three Ways We Help
+            </motion.p>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="font-display text-3xl md:text-4xl lg:text-5xl text-cream-100"
+            >
+              Choose your starting point
+            </motion.h2>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-6">
+            {coreOffers.map((offer, index) => (
+              <motion.div
+                key={offer.slug}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <Link href={`/services/${offer.slug}`} className="group block h-full">
+                  <div className="relative h-full p-8 lg:p-10 rounded-2xl border border-ink-700/50 bg-ink-900/50 hover:bg-ink-800/50 hover:border-amber-500/30 transition-all duration-300">
+                    {/* Number */}
+                    <div className="flex items-center justify-between mb-8">
+                      <span className="text-xs font-medium tracking-[0.15em] uppercase text-ink-500">
+                        {offer.subtitle}
+                      </span>
+                      <span className="text-4xl font-display font-bold text-ink-800 group-hover:text-amber-500/20 transition-colors">
+                        {offer.number}
+                      </span>
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="font-display text-2xl md:text-3xl text-cream-100 mb-3 group-hover:text-amber-400 transition-colors">
+                      {offer.title}
+                    </h3>
+                    
+                    {/* Headline */}
+                    <p className="text-lg text-ink-300 font-medium mb-4">
+                      {offer.headline}
+                    </p>
+                    
+                    {/* Description */}
+                    <p className="text-ink-400 mb-8 leading-relaxed">
+                      {offer.description}
+                    </p>
+
+                    {/* Outcomes */}
+                    <ul className="space-y-3 mb-10">
+                      {offer.outcomes.map((outcome) => (
+                        <li key={outcome} className="flex items-start gap-3 text-sm text-ink-400">
+                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-amber-500/50 group-hover:bg-amber-500 transition-colors flex-shrink-0" />
+                          {outcome}
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* CTA */}
+                    <div className="mt-auto pt-6 border-t border-ink-700/50 flex items-center justify-between">
+                      <span className="text-sm font-medium text-ink-500 group-hover:text-amber-400 transition-colors">
+                        {offer.cta}
+                      </span>
+                      <div className="w-8 h-8 rounded-full border border-ink-700 flex items-center justify-center group-hover:border-amber-500 group-hover:bg-amber-500 transition-all">
+                        <svg className="w-4 h-4 text-ink-500 group-hover:text-ink-950 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* The "Why" Section - High Visual Weight */}
-      <section className="py-32 relative overflow-hidden">
-        <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-copper-500/5 rounded-full blur-[120px] -translate-x-1/2" />
-        
-        <div className="container relative z-10">
-          <div className="grid lg:grid-cols-2 gap-24 items-center">
+      {/* How It Works - The Ladder */}
+      <section className="section">
+        <div className="container">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
             <motion.div
-              initial={{ opacity: 0, x: -40 }}
+              initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <h2 className="font-serif text-5xl md:text-6xl text-cream-100 mb-10 leading-tight">
-                Traditional accounting is <br />
-                <span className="text-gradient italic">backward-looking.</span>
-              </h2>
-              <p className="text-xl text-slate-400 font-light leading-relaxed mb-12 max-w-xl">
-                Most firms stop at the tax return. We start there. FSE Accounting is built to handle the first principles of business growth: strategic capital, unit economics, and absolute cost control.
+              <p className="text-xs font-medium tracking-[0.2em] uppercase text-amber-500 mb-4">
+                How It Works
               </p>
-              
-              <div className="space-y-8">
-                {[
-                  { title: 'Strategic Capital Advisory', desc: 'Structuring debt facilities and equity rounds to fuel acquisition and growth.' },
-                  { title: 'Operator-First Reporting', desc: 'Real-time dashboards tracking margins, customer acquisition costs, and cash velocity.' },
-                  { title: 'Advanced Cost Accounting', desc: 'Granular cost systems that identify profit leaks and optimize operational efficiency.' }
-                ].map((item) => (
-                  <div key={item.title} className="flex gap-6 group">
-                    <div className="w-12 h-12 rounded-xl bg-copper-500/10 flex items-center justify-center flex-shrink-0 group-hover:bg-copper-500 transition-colors duration-500">
-                      <span className="text-copper-400 group-hover:text-background font-bold text-xl">✓</span>
+              <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-cream-100 mb-6 leading-tight">
+                Start with a triage.
+                <br />
+                <span className="text-ink-400">Scale when ready.</span>
+              </h2>
+              <p className="text-lg text-ink-400 leading-relaxed mb-8 max-w-lg">
+                We don't lock you into long contracts. Start with a free diagnostic call, 
+                then move to a focused sprint. Only upgrade to ongoing support when you see results.
+              </p>
+              <Link href="/contact" className="btn btn-primary btn-lg">
+                Book Free Triage Call
+              </Link>
+            </motion.div>
+
+            <div className="space-y-6">
+              {howItWorks.map((step, index) => (
+                <motion.div
+                  key={step.step}
+                  initial={{ opacity: 0, x: 30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="relative p-6 rounded-xl border border-ink-700/50 bg-ink-900/30 hover:border-ink-600 transition-colors"
+                >
+                  <div className="flex items-start gap-5">
+                    <div className="w-12 h-12 rounded-xl bg-ink-800 border border-ink-700 flex items-center justify-center shrink-0">
+                      <span className="font-display font-bold text-amber-500">{step.step}</span>
                     </div>
-                    <div>
-                      <h4 className="text-xl font-bold text-cream-100 mb-2">{item.title}</h4>
-                      <p className="text-slate-400 font-light">{item.desc}</p>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <h3 className="font-display text-xl text-cream-100">{step.title}</h3>
+                        <span className="px-2 py-0.5 rounded text-xs font-medium bg-ink-800 text-ink-400 border border-ink-700">
+                          {step.duration}
+                        </span>
+                      </div>
+                      <p className="text-ink-400 leading-relaxed">{step.description}</p>
                     </div>
                   </div>
-                ))}
+                  
+                  {/* Connector line */}
+                  {index < howItWorks.length - 1 && (
+                    <div className="absolute left-[2.75rem] top-full w-px h-6 bg-gradient-to-b from-ink-700 to-transparent" />
+                  )}
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Trust Section */}
+      <section className="py-20 border-y border-ink-800/50 bg-ink-900/20">
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <p className="text-xs font-medium tracking-[0.2em] uppercase text-ink-500 mb-2">
+              What We Deliver
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {[
+              { icon: '📊', label: 'Lender-ready packs' },
+              { icon: '📈', label: 'Covenant forecasting' },
+              { icon: '👥', label: 'Board reporting' },
+              { icon: '🤝', label: 'M&A due diligence' },
+            ].map((item, index) => (
+              <motion.div
+                key={item.label}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                className="text-center"
+              >
+                <div className="text-3xl mb-3">{item.icon}</div>
+                <p className="text-sm font-medium text-ink-300">{item.label}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Differentiation Section */}
+      <section className="section">
+        <div className="container">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-ink-700/50"
+            >
+              <img 
+                src="https://images.unsplash.com/photo-1553484771-371a605b060b?auto=format&fit=crop&q=80&w=1200" 
+                alt="Modern workspace"
+                className="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 hover:opacity-80 transition-all duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/50 to-transparent" />
+              
+              {/* Overlay Card */}
+              <div className="absolute bottom-6 left-6 right-6 p-6 rounded-xl bg-ink-900/90 backdrop-blur border border-ink-700/50">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-2 h-2 rounded-full bg-amber-500" />
+                  <span className="text-[10px] uppercase tracking-[0.2em] text-amber-500 font-medium">
+                    FSE Difference
+                  </span>
+                </div>
+                <p className="text-lg font-display text-cream-100">
+                  We don't just file returns. We build bankable infrastructure.
+                </p>
               </div>
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="relative aspect-square rounded-[4rem] overflow-hidden border border-white/10 shadow-2xl"
             >
-              <img 
-                src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200" 
-                alt="High-end execution environment" 
-                className="w-full h-full object-cover grayscale opacity-40 hover:grayscale-0 hover:opacity-80 transition-all duration-1000"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent" />
+              <h2 className="font-display text-3xl md:text-4xl text-cream-100 mb-8 leading-tight">
+                Traditional accounting is{' '}
+                <span className="text-ink-500">backward-looking.</span>
+              </h2>
               
-              {/* Floating Feature Card */}
-              <div className="absolute bottom-12 left-12 right-12 p-8 rounded-[2rem] bg-slate-900/80 backdrop-blur-2xl border border-white/10 shadow-2xl">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-3 h-3 rounded-full bg-copper-500" />
-                  <span className="text-[10px] uppercase tracking-[0.3em] text-copper-400 font-bold">FSE Protocol</span>
-                </div>
-                <h4 className="text-2xl font-serif text-cream-100 mb-3">Clean books, clear decisions.</h4>
-                <p className="text-sm text-slate-400 font-light leading-relaxed">
-                  Every month, we deliver a partner-level review of your performance, cash position, and forward-looking risks.
-                </p>
+              <div className="space-y-6">
+                {[
+                  { 
+                    title: 'Strategic Capital Advisory', 
+                    desc: 'We structure debt facilities and manage the path to institutional capital.' 
+                  },
+                  { 
+                    title: 'Operator-First Reporting', 
+                    desc: 'Real-time dashboards tracking margins, CAC, and cash velocity—not just compliance.' 
+                  },
+                  { 
+                    title: 'Deal-Ready Operations', 
+                    desc: 'Financial infrastructure built to withstand investor scrutiny and due diligence.' 
+                  }
+                ].map((item) => (
+                  <div key={item.title} className="flex gap-4">
+                    <div className="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
+                      <span className="text-amber-500 font-bold text-sm">✓</span>
+                    </div>
+                    <div>
+                      <h4 className="font-display text-lg text-cream-100 mb-1">{item.title}</h4>
+                      <p className="text-ink-400 leading-relaxed">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Final "Executive" CTA */}
-      <section className="py-40 relative overflow-hidden">
-        {/* Background elements */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-copper-500/[0.02] blur-[120px] pointer-events-none" />
+      {/* Final CTA */}
+      <section className="py-24 lg:py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-ink-900 via-background to-ink-900" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-amber-500/5 rounded-full blur-[150px]" />
         
         <div className="container relative z-10 text-center">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="max-w-5xl mx-auto"
+            className="max-w-3xl mx-auto"
           >
-            <h2 className="font-serif text-7xl md:text-9xl text-cream-100 mb-12 tracking-tight leading-[0.9]">
-              Build your <br />
-              <span className="text-gradient italic inline-block py-2">foundation.</span>
+            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-cream-100 mb-6 leading-tight">
+              Ready to build your{' '}
+              <span className="text-gradient">financial foundation?</span>
             </h2>
             
-            <p className="text-xl md:text-2xl text-slate-400 font-light mb-16 max-w-2xl mx-auto leading-relaxed">
-              Professionalize your financial operations with a partner built for high-growth execution.
+            <p className="text-lg md:text-xl text-ink-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+              Book a free 15-minute Finance Triage. We'll identify your biggest opportunity 
+              and recommend the right next step—no commitment required.
             </p>
 
-            <div className="flex flex-col items-center gap-12">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link 
                 href="/contact" 
-                className="group relative inline-flex items-center justify-center"
+                className="btn btn-primary btn-xl group animate-pulse-glow"
               >
-                {/* Button Glow Effect */}
-                <div className="absolute inset-0 bg-copper-500/20 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                
-                <span className="relative btn btn-primary px-20 py-8 text-xl font-bold rounded-full shadow-[0_0_50px_rgba(212,130,58,0.15)] hover:shadow-[0_0_70px_rgba(212,130,58,0.25)] hover:scale-[1.02] transition-all duration-500 active:scale-95">
-                  Book Partner Discovery
-                </span>
-              </Link>
-
-              <Link 
-                href="/login" 
-                className="group flex items-center gap-6 text-[10px] font-bold tracking-[0.4em] uppercase text-slate-500 hover:text-copper-400 transition-all duration-500"
-              >
-                <span className="w-12 h-px bg-slate-800 group-hover:bg-copper-500/30 transition-colors" />
-                Client Access Portal
-                <span className="w-12 h-px bg-slate-800 group-hover:bg-copper-500/30 transition-colors" />
+                <span>Book Your Finance Triage</span>
+                <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
               </Link>
             </div>
+
+            <p className="mt-8 text-sm text-ink-500">
+              Free • 15 minutes • No commitment
+            </p>
           </motion.div>
         </div>
       </section>
     </div>
   );
 }
-
