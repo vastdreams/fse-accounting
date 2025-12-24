@@ -1,18 +1,10 @@
 /**
- * PATH: frontend/src/app/api/contact/route.ts
- * PURPOSE: Lead delivery API with validation and spam protection
- * 
- * FEATURES:
- * - Honeypot spam detection
- * - Server-side validation
- * - Rate limiting (simple in-memory)
- * - Email notification (placeholder)
- * - UTM tracking capture
+ * Contact form API with email notifications
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 
-// Simple in-memory rate limiting
+// Rate limiting
 const rateLimitMap = new Map<string, { count: number; firstRequest: number }>();
 const RATE_LIMIT_WINDOW = 60 * 60 * 1000; // 1 hour
 const MAX_REQUESTS_PER_WINDOW = 5;
@@ -26,95 +18,199 @@ function isRateLimited(ip: string): boolean {
     return false;
   }
 
-  // Reset if window expired
   if (now - record.firstRequest > RATE_LIMIT_WINDOW) {
     rateLimitMap.set(ip, { count: 1, firstRequest: now });
     return false;
   }
 
-  // Increment and check
   record.count++;
   return record.count > MAX_REQUESTS_PER_WINDOW;
 }
 
-// Email validation regex
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// Blocked domains (common spam/temp email providers)
-const BLOCKED_DOMAINS = [
-  'tempmail.com',
-  'throwaway.email',
-  'mailinator.com',
-  'guerrillamail.com',
-  'sharklasers.com',
-  'grr.la',
-  'temp-mail.org',
-];
-
-function isBlockedEmail(email: string): boolean {
-  const domain = email.split('@')[1]?.toLowerCase();
-  return BLOCKED_DOMAINS.some(blocked => domain?.includes(blocked));
-}
-
-// Types
 interface ContactFormData {
-  serviceIntent: string;
+  urgency: string;
+  challenge: string;
+  revenue: string;
   name: string;
   email: string;
-  company?: string;
   phone?: string;
-  revenueBand: string;
-  urgency: string;
-  goal?: string;
-  website?: string; // Honeypot
-  source?: string;
-  page?: string;
-  utm_source?: string;
-  utm_campaign?: string;
-  utm_medium?: string;
-  utm_term?: string;
+  company?: string;
+  details?: string;
+  honeypot?: string;
 }
 
-interface LeadRecord {
-  id: string;
-  timestamp: string;
-  data: ContactFormData;
-  ip: string;
-  userAgent: string;
-}
+async function sendEmailNotification(data: ContactFormData, ip: string): Promise<void> {
+  const notificationEmail = process.env.NOTIFICATION_EMAIL || 'hello@fseaccounting.com';
+  const slackWebhook = process.env.SLACK_WEBHOOK_URL;
 
-// In production, this would go to a database or CRM
-const leads: LeadRecord[] = [];
+  // Format the lead info
+  const urgencyLabels: Record<string, string> = {
+    'urgent': '🔥 Urgent (this week)',
+    'soon': '⏰ Soon (2-4 weeks)',
+    'planning': '📅 Planning ahead',
+  };
 
-async function sendNotificationEmail(lead: LeadRecord): Promise<void> {
-  // Placeholder for email sending
-  // In production, use Resend, SendGrid, or similar
-  console.log('📧 New lead notification would be sent:', {
-    to: 'hello@fseaccounting.com',
-    subject: `New Lead: ${lead.data.name} - ${lead.data.serviceIntent}`,
-    body: `
-      Name: ${lead.data.name}
-      Email: ${lead.data.email}
-      Company: ${lead.data.company || 'N/A'}
-      Phone: ${lead.data.phone || 'N/A'}
-      Service: ${lead.data.serviceIntent}
-      Revenue: ${lead.data.revenueBand}
-      Urgency: ${lead.data.urgency}
-      Goal: ${lead.data.goal || 'N/A'}
-      Source: ${lead.data.utm_source || 'direct'}
-      Campaign: ${lead.data.utm_campaign || 'N/A'}
-    `
-  });
+  const challengeLabels: Record<string, string> = {
+    'books-behind': 'Books are behind / messy',
+    'raising-capital': 'Raising debt or equity',
+    'buying-business': 'Buying a business',
+    'selling-business': 'Selling / exiting',
+    'other': 'Something else',
+  };
+
+  const revenueLabels: Record<string, string> = {
+    'under-1m': 'Under $1M',
+    '1m-5m': '$1M - $5M',
+    '5m-20m': '$5M - $20M',
+    'over-20m': 'Over $20M',
+  };
+
+  const leadSummary = `
+🚨 NEW LEAD - FSE Accounting
+
+📋 Contact Info:
+• Name: ${data.name}
+• Email: ${data.email}
+• Phone: ${data.phone || 'Not provided'}
+• Company: ${data.company || 'Not provided'}
+
+🎯 Qualification:
+• Urgency: ${urgencyLabels[data.urgency] || data.urgency}
+• Challenge: ${challengeLabels[data.challenge] || data.challenge}
+• Revenue: ${revenueLabels[data.revenue] || data.revenue}
+
+💬 Additional Details:
+${data.details || 'None provided'}
+
+---
+Submitted: ${new Date().toLocaleString('en-AU', { timeZone: 'Australia/Sydney' })}
+  `.trim();
+
+  // Send to Slack if webhook is configured
+  if (slackWebhook) {
+    try {
+      await fetch(slackWebhook, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text: leadSummary,
+          blocks: [
+            {
+              type: 'header',
+              text: { type: 'plain_text', text: '🚨 New Lead - FSE Accounting', emoji: true }
+            },
+            {
+              type: 'section',
+              fields: [
+                { type: 'mrkdwn', text: `*Name:*\n${data.name}` },
+                { type: 'mrkdwn', text: `*Email:*\n${data.email}` },
+                { type: 'mrkdwn', text: `*Phone:*\n${data.phone || 'N/A'}` },
+                { type: 'mrkdwn', text: `*Company:*\n${data.company || 'N/A'}` },
+              ]
+            },
+            {
+              type: 'section',
+              fields: [
+                { type: 'mrkdwn', text: `*Urgency:*\n${urgencyLabels[data.urgency] || data.urgency}` },
+                { type: 'mrkdwn', text: `*Challenge:*\n${challengeLabels[data.challenge] || data.challenge}` },
+                { type: 'mrkdwn', text: `*Revenue:*\n${revenueLabels[data.revenue] || data.revenue}` },
+              ]
+            },
+            ...(data.details ? [{
+              type: 'section',
+              text: { type: 'mrkdwn', text: `*Details:*\n${data.details}` }
+            }] : []),
+            {
+              type: 'actions',
+              elements: [
+                {
+                  type: 'button',
+                  text: { type: 'plain_text', text: '📧 Email Lead', emoji: true },
+                  url: `mailto:${data.email}?subject=Re: Your FSE Accounting Inquiry&body=Hi ${data.name.split(' ')[0]},%0A%0AThanks for reaching out...`
+                }
+              ]
+            }
+          ]
+        }),
+      });
+      console.log('✅ Slack notification sent');
+    } catch (err) {
+      console.error('Slack notification failed:', err);
+    }
+  }
+
+  // Send email via Resend API if configured
+  const resendApiKey = process.env.RESEND_API_KEY;
+  if (resendApiKey) {
+    try {
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${resendApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: 'FSE Accounting <leads@fseaccounting.com>',
+          to: [notificationEmail],
+          subject: `🚨 New Lead: ${data.name} - ${challengeLabels[data.challenge] || data.challenge}`,
+          text: leadSummary,
+          html: `
+            <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+              <h2 style="color: #1C1917;">🚨 New Lead - FSE Accounting</h2>
+              
+              <div style="background: #FDFBF7; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                <h3 style="margin-top: 0;">Contact Info</h3>
+                <p><strong>Name:</strong> ${data.name}</p>
+                <p><strong>Email:</strong> <a href="mailto:${data.email}">${data.email}</a></p>
+                <p><strong>Phone:</strong> ${data.phone || 'Not provided'}</p>
+                <p><strong>Company:</strong> ${data.company || 'Not provided'}</p>
+              </div>
+              
+              <div style="background: #F5F5F4; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                <h3 style="margin-top: 0;">Qualification</h3>
+                <p><strong>Urgency:</strong> ${urgencyLabels[data.urgency] || data.urgency}</p>
+                <p><strong>Challenge:</strong> ${challengeLabels[data.challenge] || data.challenge}</p>
+                <p><strong>Revenue:</strong> ${revenueLabels[data.revenue] || data.revenue}</p>
+              </div>
+              
+              ${data.details ? `
+              <div style="background: #FFF9F0; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                <h3 style="margin-top: 0;">Additional Details</h3>
+                <p>${data.details}</p>
+              </div>
+              ` : ''}
+              
+              <p style="color: #78716C; font-size: 14px;">
+                Submitted: ${new Date().toLocaleString('en-AU', { timeZone: 'Australia/Sydney' })}
+              </p>
+              
+              <a href="mailto:${data.email}?subject=Re: Your FSE Accounting Inquiry" 
+                 style="display: inline-block; background: #1C1917; color: white; padding: 12px 24px; 
+                        text-decoration: none; border-radius: 6px; margin-top: 20px;">
+                Reply to Lead →
+              </a>
+            </div>
+          `,
+        }),
+      });
+      console.log('✅ Email notification sent via Resend');
+    } catch (err) {
+      console.error('Email notification failed:', err);
+    }
+  }
+
+  // Always log to console as backup
+  console.log('📧 Lead received:', leadSummary);
 }
 
 export async function POST(request: NextRequest) {
   try {
-    // Get client IP for rate limiting
     const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 
                request.headers.get('x-real-ip') || 
                'unknown';
     
-    // Rate limit check
     if (isRateLimited(ip)) {
       return NextResponse.json(
         { success: false, message: 'Too many requests. Please try again later.' },
@@ -124,10 +220,8 @@ export async function POST(request: NextRequest) {
 
     const body: ContactFormData = await request.json();
 
-    // Honeypot check - if 'website' field is filled, it's a bot
-    if (body.website) {
-      // Silently reject but return success to confuse bots
-      console.log('🤖 Bot detected via honeypot:', ip);
+    // Honeypot check
+    if (body.honeypot) {
       return NextResponse.json({ success: true });
     }
 
@@ -142,20 +236,16 @@ export async function POST(request: NextRequest) {
       errors.push('Valid email is required');
     }
 
-    if (body.email && isBlockedEmail(body.email)) {
-      errors.push('Please use a business email address');
-    }
-
-    if (!body.serviceIntent) {
-      errors.push('Please select a service');
-    }
-
-    if (!body.revenueBand) {
-      errors.push('Please select your revenue band');
-    }
-
     if (!body.urgency) {
-      errors.push('Please select your timeline');
+      errors.push('Please select urgency');
+    }
+
+    if (!body.challenge) {
+      errors.push('Please select your challenge');
+    }
+
+    if (!body.revenue) {
+      errors.push('Please select revenue band');
     }
 
     if (errors.length > 0) {
@@ -165,41 +255,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create lead record
-    const lead: LeadRecord = {
-      id: `lead_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-      timestamp: new Date().toISOString(),
-      data: {
-        serviceIntent: body.serviceIntent,
-        name: body.name.trim(),
-        email: body.email.toLowerCase().trim(),
-        company: body.company?.trim(),
-        phone: body.phone?.trim(),
-        revenueBand: body.revenueBand,
-        urgency: body.urgency,
-        goal: body.goal?.trim(),
-        source: body.source,
-        page: body.page,
-        utm_source: body.utm_source,
-        utm_campaign: body.utm_campaign,
-        utm_medium: body.utm_medium,
-        utm_term: body.utm_term,
-      },
-      ip,
-      userAgent: request.headers.get('user-agent') || 'unknown',
-    };
-
-    // Store lead (in production, this goes to database/CRM)
-    leads.push(lead);
-    console.log('✅ New lead stored:', lead.id, lead.data.email);
-
-    // Send notification email
-    await sendNotificationEmail(lead);
+    // Send notifications
+    await sendEmailNotification(body, ip);
 
     return NextResponse.json({
       success: true,
       message: 'Thank you! We will be in touch within 24 hours.',
-      leadId: lead.id,
     });
 
   } catch (error) {
@@ -210,17 +271,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
-// For debugging - list leads (would be removed in production)
-export async function GET(request: NextRequest) {
-  // Only allow in development
-  if (process.env.NODE_ENV !== 'development') {
-    return NextResponse.json({ error: 'Not found' }, { status: 404 });
-  }
-
-  return NextResponse.json({
-    count: leads.length,
-    leads: leads.slice(-10), // Last 10 leads
-  });
-}
-

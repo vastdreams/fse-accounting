@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Script from 'next/script';
 
 type FormStep = 1 | 2 | 3;
 
@@ -14,6 +15,7 @@ interface FormData {
   phone: string;
   company: string;
   details: string;
+  honeypot: string;
 }
 
 const urgencyOptions = [
@@ -37,10 +39,14 @@ const revenueOptions = [
   { value: 'over-20m', label: 'Over $20M' },
 ];
 
+// Cal.com booking URL - replace with your actual Cal.com link
+const CALCOM_URL = process.env.NEXT_PUBLIC_CALCOM_URL || 'https://cal.com/fseaccounting/diagnostic';
+
 export default function ContactPage() {
   const [step, setStep] = useState<FormStep>(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     urgency: '',
     challenge: '',
@@ -50,6 +56,7 @@ export default function ContactPage() {
     phone: '',
     company: '',
     details: '',
+    honeypot: '',
   });
 
   const updateField = (field: keyof FormData, value: string) => {
@@ -59,6 +66,17 @@ export default function ContactPage() {
   const canProceedStep1 = formData.urgency && formData.challenge;
   const canProceedStep2 = formData.revenue;
   const canSubmit = formData.name && formData.email;
+
+  // Track form progress
+  useEffect(() => {
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'form_step', {
+        event_category: 'contact',
+        event_label: `step_${step}`,
+        value: step,
+      });
+    }
+  }, [step]);
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
@@ -72,6 +90,27 @@ export default function ContactPage() {
 
       if (response.ok) {
         setIsSubmitted(true);
+        
+        // Track conversion
+        if (typeof window !== 'undefined') {
+          if ((window as any).gtag) {
+            (window as any).gtag('event', 'conversion', {
+              send_to: process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_ID,
+              event_category: 'lead',
+              event_label: formData.challenge,
+              value: formData.revenue === 'over-20m' ? 100 : formData.revenue === '5m-20m' ? 75 : 50,
+            });
+            (window as any).gtag('event', 'generate_lead', {
+              currency: 'AUD',
+              value: 50,
+            });
+          }
+          
+          // LinkedIn conversion
+          if ((window as any).lintrk) {
+            (window as any).lintrk('track', { conversion_id: process.env.NEXT_PUBLIC_LINKEDIN_CONVERSION_ID });
+          }
+        }
       }
     } catch (error) {
       console.error('Form submission error:', error);
@@ -90,28 +129,68 @@ export default function ContactPage() {
             </svg>
           </div>
           <h1 className="font-serif text-3xl md:text-4xl text-charcoal mb-4">
-            You're on the list.
+            You're on the list, {formData.name.split(' ')[0]}!
           </h1>
           <p className="text-stone text-lg mb-8">
-            We'll be in touch within 24 hours (usually much sooner) to schedule your diagnostic call.
+            We'll review your situation and reach out within 24 hours.
           </p>
-          <div className="bg-white border border-border rounded-lg p-6 max-w-md mx-auto">
-            <p className="font-semibold text-charcoal mb-2">What happens next?</p>
-            <ol className="text-left text-stone space-y-2">
-              <li className="flex gap-2">
-                <span className="text-accent font-semibold">1.</span>
-                We review your situation
-              </li>
-              <li className="flex gap-2">
-                <span className="text-accent font-semibold">2.</span>
-                You get a calendar link to book your call
-              </li>
-              <li className="flex gap-2">
-                <span className="text-accent font-semibold">3.</span>
-                We diagnose what's broken and how to fix it
-              </li>
+
+          {/* Calendar Booking CTA */}
+          <div className="bg-white border-2 border-charcoal rounded-xl p-8 max-w-md mx-auto mb-8">
+            <p className="font-semibold text-charcoal text-lg mb-2">
+              Want to skip the wait?
+            </p>
+            <p className="text-stone mb-6">
+              Book your diagnostic call now and lock in a time that works for you.
+            </p>
+            
+            {!showCalendar ? (
+              <button
+                onClick={() => setShowCalendar(true)}
+                className="btn-primary w-full"
+              >
+                Book My Call Now
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </button>
+            ) : (
+              <div className="mt-4">
+                {/* Cal.com inline embed */}
+                <div 
+                  data-cal-link="fseaccounting/diagnostic"
+                  data-cal-config='{"layout":"month_view"}'
+                  style={{ width: '100%', height: '100%', overflow: 'scroll' }}
+                />
+                <Script
+                  id="cal-embed"
+                  strategy="lazyOnload"
+                  dangerouslySetInnerHTML={{
+                    __html: `
+                      (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; typeof namespace === "string" ? (cal.ns[namespace] = api) && p(api, ar) : p(cal, ar); return; } p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+                      Cal("init", {origin:"https://cal.com"});
+                      Cal("inline", {
+                        elementOrSelector: '[data-cal-link="fseaccounting/diagnostic"]',
+                        calLink: "fseaccounting/diagnostic",
+                        config: {"layout":"month_view"}
+                      });
+                      Cal("ui", {"styles":{"branding":{"brandColor":"#1C1917"}},"hideEventTypeDetails":false,"layout":"month_view"});
+                    `
+                  }}
+                />
+              </div>
+            )}
+          </div>
+
+          <div className="text-sm text-stone">
+            <p className="mb-2">What happens next?</p>
+            <ol className="space-y-1">
+              <li>1. We review your situation</li>
+              <li>2. 15-min diagnostic call (no pitch)</li>
+              <li>3. Clear next steps, even if we're not the right fit</li>
             </ol>
           </div>
+
           <Link href="/" className="inline-block mt-8 text-stone hover:text-charcoal transition-colors">
             ← Back to homepage
           </Link>
@@ -148,6 +227,17 @@ export default function ContactPage() {
 
         {/* Form */}
         <div className="bg-white border border-border rounded-xl p-6 md:p-8">
+          {/* Honeypot */}
+          <input
+            type="text"
+            name="honeypot"
+            value={formData.honeypot}
+            onChange={(e) => updateField('honeypot', e.target.value)}
+            style={{ display: 'none' }}
+            tabIndex={-1}
+            autoComplete="off"
+          />
+
           {/* Step 1: Urgency & Challenge */}
           {step === 1 && (
             <div className="space-y-8">
@@ -344,7 +434,7 @@ export default function ContactPage() {
               </div>
 
               <p className="text-center text-stone text-sm">
-                We'll email you within 24 hours with a link to book your call.
+                We'll email you within 24 hours with next steps.
               </p>
             </div>
           )}
@@ -356,7 +446,7 @@ export default function ContactPage() {
           <div className="flex flex-wrap justify-center gap-4 text-sm">
             {[
               'Honest assessment of your situation',
-              'Clear next steps (even if we\'re not the right fit)',
+              "Clear next steps (even if we're not the right fit)",
               'No sales pitch or pressure',
             ].map((item, i) => (
               <span key={i} className="flex items-center gap-2 text-charcoal">
