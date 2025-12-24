@@ -1,489 +1,322 @@
-/**
- * PATH: frontend/src/app/(public)/page.tsx
- * PURPOSE: Public homepage - conversion-focused around 3 core offers
- * 
- * CORE OFFERS:
- * 1. Bookkeeping (Foundation) - Clean books, management reporting
- * 2. Lending (Capital) - Lender-ready packs, facility support
- * 3. Acquisition/Exit (Deals) - Due diligence, transaction support
- * 
- * PRIMARY CTA: "Book a Finance Triage" (15-30 min qualification call)
- */
-
 'use client';
 
-import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 
-const coreOffers = [
+// Pain points that resonate
+const painPoints = [
+  "Your books are 3 months behind and your accountant doesn't care",
+  "The bank keeps asking for more documents and you're losing the deal",
+  "You're about to buy a business but have no idea what's actually in the numbers",
+  "You're flying blind on cash and it's costing you sleep",
+];
+
+// Who this is for
+const idealClients = [
   {
-    slug: 'bookkeeping',
-    number: '01',
-    title: 'Bookkeeping',
-    subtitle: 'Foundation',
-    headline: 'Close fast. Clean numbers.',
-    description: 'Month-end close, management reporting, and cashflow visibility that gives you control.',
-    outcomes: [
-      'Books closed by day 5',
-      'Management dashboard',
-      'Cash position clarity',
-      'Audit-ready records',
-    ],
-    cta: 'Fix My Books',
+    title: "Growing businesses doing $1M-$20M revenue",
+    description: "You've outgrown your bookkeeper but aren't ready for a full-time CFO",
   },
   {
-    slug: 'lending',
-    number: '02',
-    title: 'Lending',
-    subtitle: 'Capital',
-    headline: 'Bank-ready. Faster approvals.',
-    description: 'Lender-ready model + pack preparation. Fewer questions, faster facility execution.',
-    outcomes: [
-      'Credit-ready application',
-      'Financial model + pack',
-      'Lender Q&A support',
-      'Covenant reporting',
-    ],
-    cta: 'Get Lending Ready',
+    title: "Founders raising debt or equity",
+    description: "You need bank-ready financials and someone who speaks lender",
   },
   {
-    slug: 'acquisitions',
-    number: '03',
-    title: 'Acquisition & Exit',
-    subtitle: 'Deals',
-    headline: "Know what you're buying.",
-    description: "Due diligence, structure support, and finance-led decisioning so you don't get surprised.",
-    outcomes: [
-      'Financial due diligence',
-      'Deal structuring',
-      'Valuation support',
-      'Integration planning',
-    ],
-    cta: 'Start Due Diligence',
+    title: "Operators buying or selling businesses",
+    description: "You need financial due diligence you can trust, not just an audit tick",
   },
 ];
 
-const howItWorks = [
+// What you get
+const deliverables = [
   {
-    step: '01',
-    title: 'Finance Triage',
-    duration: '15–30 min',
-    description: 'Quick diagnostic call to understand your situation and identify the right path forward.',
+    number: "01",
+    title: "Books closed by day 5",
+    description: "Month-end close, reconciliations, management reports. Every month. On time.",
   },
   {
-    step: '02',
-    title: '14-Day Sprint',
-    duration: 'Paid',
-    description: 'Focused execution sprint to deliver immediate outcomes—whether fixing books, preparing for lending, or deal readiness.',
+    number: "02", 
+    title: "Lender-ready pack in 2 weeks",
+    description: "Financial model, cash flow, debt schedule, management deck. Everything banks ask for.",
   },
   {
-    step: '03',
-    title: 'Ongoing Retainer',
-    duration: 'Monthly',
-    description: 'Continuous financial operations support with partner-level oversight and proactive reporting.',
+    number: "03",
+    title: "Due diligence in 3 weeks",
+    description: "Quality of earnings, working capital, normalized EBITDA. Know what you're buying.",
   },
 ];
 
-const proofPoints = [
-  { metric: '$50M+', label: 'Facilities Structured' },
-  { metric: '100+', label: 'Businesses Supported' },
-  { metric: '5 Days', label: 'Average Month Close' },
+// Social proof
+const results = [
+  { metric: "$127M", label: "Debt facilities structured" },
+  { metric: "43", label: "Transactions supported" },
+  { metric: "5 days", label: "Average month-end close" },
+];
+
+const testimonials = [
+  {
+    quote: "FSE got our books in order in 2 weeks. We closed our facility 6 weeks later. Our previous accountant had us waiting 4 months.",
+    name: "James T.",
+    role: "CEO, Manufacturing ($8M revenue)",
+  },
+  {
+    quote: "They found $340K in working capital issues during due diligence that the seller hadn't disclosed. Saved us from a bad deal.",
+    name: "Sarah M.",
+    role: "Director, Private Equity",
+  },
+  {
+    quote: "First accountant I've worked with who actually understands what banks need. No more back-and-forth.",
+    name: "Michael R.",
+    role: "Founder, Logistics ($14M revenue)",
+  },
 ];
 
 export default function HomePage() {
+  const [showStickyCTA, setShowStickyCTA] = useState(false);
+  const [currentPain, setCurrentPain] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowStickyCTA(window.scrollY > 600);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentPain((prev) => (prev + 1) % painPoints.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <div className="bg-background">
-      {/* Hero Section - Clear Value Prop */}
-      <section className="relative min-h-[90vh] flex items-center pt-24 pb-16 overflow-hidden">
-        {/* Background */}
-        <div className="absolute inset-0 z-0">
-          <div 
-            className="absolute inset-0 opacity-[0.03]"
-            style={{
-              backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0)`,
-              backgroundSize: '32px 32px',
-            }}
-          />
-          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-amber-500/8 rounded-full blur-[150px] translate-x-1/3 -translate-y-1/4" />
-          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-ink-600/20 rounded-full blur-[100px] -translate-x-1/3 translate-y-1/4" />
-        </div>
-
-        <div className="container relative z-10">
-          <div className="max-w-4xl">
-            {/* Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-ink-800/80 border border-ink-700/50 mb-8"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-              <span className="text-xs text-ink-400 tracking-wide font-medium">
-                Australia · Growth-Stage Focus
+    <main className="bg-cream">
+      {/* Hero Section - Hit the pain, show the solution */}
+      <section className="min-h-[90vh] flex items-center py-20">
+        <div className="container-wide">
+          <div className="max-w-3xl">
+            {/* Pain agitation */}
+            <p className="text-accent font-semibold mb-4 text-lg">
+              Sound familiar?
+            </p>
+            
+            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-charcoal mb-6 leading-tight">
+              <span className="text-stone italic min-h-[1.2em] block transition-all duration-500">
+                "{painPoints[currentPain]}"
               </span>
-            </motion.div>
+            </h1>
 
-            {/* Headline */}
-            <motion.h1
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-cream-100 leading-[1.08] tracking-tight mb-6"
-            >
-              Clean books.{' '}
-              <span className="text-gradient">Bankable numbers.</span>
-              <br />
-              Deal-ready decisions.
-            </motion.h1>
+            <div className="h-px bg-border my-8" />
 
-            {/* Subheadline */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-lg md:text-xl text-ink-400 leading-relaxed max-w-2xl mb-10"
-            >
-              We build the financial infrastructure that gets you funded, helps you acquire, 
-              and prepares you to exit. From bookkeeping foundations to capital-ready execution.
-            </motion.p>
+            {/* Solution */}
+            <p className="text-xl md:text-2xl text-graphite mb-8 leading-relaxed">
+              We fix your financial operations in <span className="font-semibold text-charcoal">weeks, not months</span>. 
+              Clean books. Bank-ready numbers. Deal-ready decisions.
+            </p>
 
-            {/* CTAs */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex flex-col sm:flex-row gap-4"
-            >
-              <Link 
-                href="/contact" 
-                className="btn btn-primary btn-xl group"
-              >
-                <span>Book a Finance Triage</span>
-                <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            {/* CTA */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-8">
+              <Link href="/contact" className="btn-primary text-lg px-8 py-4">
+                Book a Free Diagnostic Call
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </Link>
-              <Link href="/services" className="btn btn-secondary btn-xl">
-                View Services
-              </Link>
-            </motion.div>
+            </div>
 
-            {/* Quick Proof */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              className="mt-16 pt-8 border-t border-ink-800/50 flex flex-wrap gap-x-10 gap-y-4"
-            >
-              {proofPoints.map((point) => (
-                <div key={point.label} className="flex items-baseline gap-2">
-                  <span className="text-2xl font-display font-bold text-amber-400">{point.metric}</span>
-                  <span className="text-sm text-ink-500">{point.label}</span>
-                </div>
-              ))}
-            </motion.div>
+            <p className="text-stone text-sm">
+              15 minutes. No pitch. We'll tell you exactly what's broken and how to fix it.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* Three Core Offers */}
-      <section className="section bg-ink-900/30 border-y border-ink-800/50">
-        <div className="container">
-          <div className="text-center mb-16">
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              className="text-xs font-medium tracking-[0.2em] uppercase text-amber-500 mb-4"
-            >
-              Three Ways We Help
-            </motion.p>
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="font-display text-3xl md:text-4xl lg:text-5xl text-cream-100"
-            >
-              Choose your starting point
-            </motion.h2>
-          </div>
-
-          <div className="grid lg:grid-cols-3 gap-6">
-            {coreOffers.map((offer, index) => (
-              <motion.div
-                key={offer.slug}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <Link href={`/services/${offer.slug}`} className="group block h-full">
-                  <div className="relative h-full p-8 lg:p-10 rounded-2xl border border-ink-700/50 bg-ink-900/50 hover:bg-ink-800/50 hover:border-amber-500/30 transition-all duration-300">
-                    {/* Number */}
-                    <div className="flex items-center justify-between mb-8">
-                      <span className="text-xs font-medium tracking-[0.15em] uppercase text-ink-500">
-                        {offer.subtitle}
-                      </span>
-                      <span className="text-4xl font-display font-bold text-ink-800 group-hover:text-amber-500/20 transition-colors">
-                        {offer.number}
-                      </span>
-                    </div>
-
-                    {/* Title */}
-                    <h3 className="font-display text-2xl md:text-3xl text-cream-100 mb-3 group-hover:text-amber-400 transition-colors">
-                      {offer.title}
-                    </h3>
-                    
-                    {/* Headline */}
-                    <p className="text-lg text-ink-300 font-medium mb-4">
-                      {offer.headline}
-                    </p>
-                    
-                    {/* Description */}
-                    <p className="text-ink-400 mb-8 leading-relaxed">
-                      {offer.description}
-                    </p>
-
-                    {/* Outcomes */}
-                    <ul className="space-y-3 mb-10">
-                      {offer.outcomes.map((outcome) => (
-                        <li key={outcome} className="flex items-start gap-3 text-sm text-ink-400">
-                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-amber-500/50 group-hover:bg-amber-500 transition-colors flex-shrink-0" />
-                          {outcome}
-                        </li>
-                      ))}
-                    </ul>
-
-                    {/* CTA */}
-                    <div className="mt-auto pt-6 border-t border-ink-700/50 flex items-center justify-between">
-                      <span className="text-sm font-medium text-ink-500 group-hover:text-amber-400 transition-colors">
-                        {offer.cta}
-                      </span>
-                      <div className="w-8 h-8 rounded-full border border-ink-700 flex items-center justify-center group-hover:border-amber-500 group-hover:bg-amber-500 transition-all">
-                        <svg className="w-4 h-4 text-ink-500 group-hover:text-ink-950 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
+      {/* Trust bar */}
+      <section className="py-12 border-y border-border bg-white">
+        <div className="container-wide">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+            {results.map((item, i) => (
+              <div key={i} className="text-center">
+                <p className="font-serif text-4xl md:text-5xl text-charcoal">{item.metric}</p>
+                <p className="text-stone mt-1">{item.label}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* How It Works - The Ladder */}
+      {/* Who this is for - Qualification */}
       <section className="section">
-        <div className="container">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <p className="text-xs font-medium tracking-[0.2em] uppercase text-amber-500 mb-4">
-                How It Works
-              </p>
-              <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-cream-100 mb-6 leading-tight">
-                Start with a triage.
-                <br />
-                <span className="text-ink-400">Scale when ready.</span>
-              </h2>
-              <p className="text-lg text-ink-400 leading-relaxed mb-8 max-w-lg">
-                We don't lock you into long contracts. Start with a free diagnostic call, 
-                then move to a focused sprint. Only upgrade to ongoing support when you see results.
-              </p>
-              <Link href="/contact" className="btn btn-primary btn-lg">
-                Book Free Triage Call
-              </Link>
-            </motion.div>
+        <div className="container-wide">
+          <div className="max-w-2xl mb-12">
+            <p className="text-accent font-semibold mb-3">Is this you?</p>
+            <h2 className="font-serif text-3xl md:text-4xl text-charcoal mb-4">
+              We work with operators who are done with excuses
+            </h2>
+            <p className="text-stone text-lg">
+              Not everyone is a fit. Here's who gets the most value from working with us.
+            </p>
+          </div>
 
-            <div className="space-y-6">
-              {howItWorks.map((step, index) => (
-                <motion.div
-                  key={step.step}
-                  initial={{ opacity: 0, x: 30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="relative p-6 rounded-xl border border-ink-700/50 bg-ink-900/30 hover:border-ink-600 transition-colors"
-                >
-                  <div className="flex items-start gap-5">
-                    <div className="w-12 h-12 rounded-xl bg-ink-800 border border-ink-700 flex items-center justify-center shrink-0">
-                      <span className="font-display font-bold text-amber-500">{step.step}</span>
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <h3 className="font-display text-xl text-cream-100">{step.title}</h3>
-                        <span className="px-2 py-0.5 rounded text-xs font-medium bg-ink-800 text-ink-400 border border-ink-700">
-                          {step.duration}
-                        </span>
-                      </div>
-                      <p className="text-ink-400 leading-relaxed">{step.description}</p>
-                    </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {idealClients.map((client, i) => (
+              <div key={i} className="card">
+                <div className="w-10 h-10 rounded-full bg-cream flex items-center justify-center mb-4">
+                  <svg className="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h3 className="font-semibold text-lg text-charcoal mb-2">{client.title}</h3>
+                <p className="text-stone">{client.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* What you get - Deliverables */}
+      <section className="section bg-charcoal text-white">
+        <div className="container-wide">
+          <div className="max-w-2xl mb-12">
+            <p className="text-accent-light font-semibold mb-3">What you get</p>
+            <h2 className="font-serif text-3xl md:text-4xl mb-4">
+              Specific outcomes. Specific timelines.
+            </h2>
+            <p className="text-warm-gray text-lg">
+              No vague promises. Here's exactly what we deliver and when.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {deliverables.map((item, i) => (
+              <div key={i} className="border-t border-white/20 pt-6">
+                <span className="text-accent-light font-mono text-sm">{item.number}</span>
+                <h3 className="font-serif text-2xl mt-2 mb-3">{item.title}</h3>
+                <p className="text-warm-gray">{item.description}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-12 pt-8 border-t border-white/20">
+            <Link href="/contact" className="inline-flex items-center gap-2 text-white hover:text-accent-light transition-colors font-semibold">
+              See if you qualify for our diagnostic call
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Social Proof - Testimonials */}
+      <section className="section">
+        <div className="container-wide">
+          <div className="max-w-2xl mb-12">
+            <p className="text-accent font-semibold mb-3">From operators like you</p>
+            <h2 className="font-serif text-3xl md:text-4xl text-charcoal">
+              They had the same problems. Here's what changed.
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {testimonials.map((t, i) => (
+              <div key={i} className="testimonial-card">
+                <svg className="w-8 h-8 text-accent mb-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                </svg>
+                <p className="text-graphite mb-6 text-lg leading-relaxed">
+                  {t.quote}
+                </p>
+                <div>
+                  <p className="font-semibold text-charcoal">{t.name}</p>
+                  <p className="text-stone text-sm">{t.role}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How it works - Process */}
+      <section className="section bg-warm-white">
+        <div className="container-wide">
+          <div className="max-w-2xl mx-auto text-center mb-12">
+            <p className="text-accent font-semibold mb-3">How it works</p>
+            <h2 className="font-serif text-3xl md:text-4xl text-charcoal mb-4">
+              Three steps. No surprises.
+            </h2>
+          </div>
+
+          <div className="max-w-3xl mx-auto">
+            <div className="space-y-8">
+              {[
+                {
+                  step: "1",
+                  title: "Free Diagnostic Call (15 min)",
+                  description: "We look at your situation, identify what's broken, and tell you exactly what needs to happen. No pitch, no pressure.",
+                },
+                {
+                  step: "2",
+                  title: "Focused Sprint (2-4 weeks)",
+                  description: "We fix the immediate problem—whether that's cleaning up books, building a lender pack, or running due diligence. Fixed scope, fixed price.",
+                },
+                {
+                  step: "3",
+                  title: "Ongoing Support (optional)",
+                  description: "If you want us to stay on for monthly close, reporting, or advisory—great. If not, you walk away with clean numbers and clear next steps.",
+                },
+              ].map((item, i) => (
+                <div key={i} className="flex gap-6">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-charcoal text-white flex items-center justify-center font-serif text-xl">
+                    {item.step}
                   </div>
-                  
-                  {/* Connector line */}
-                  {index < howItWorks.length - 1 && (
-                    <div className="absolute left-[2.75rem] top-full w-px h-6 bg-gradient-to-b from-ink-700 to-transparent" />
-                  )}
-                </motion.div>
+                  <div>
+                    <h3 className="font-semibold text-xl text-charcoal mb-2">{item.title}</h3>
+                    <p className="text-stone">{item.description}</p>
+                  </div>
+                </div>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Trust Section */}
-      <section className="py-20 border-y border-ink-800/50 bg-ink-900/20">
-        <div className="container">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <p className="text-xs font-medium tracking-[0.2em] uppercase text-ink-500 mb-2">
-              What We Deliver
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { icon: '📊', label: 'Lender-ready packs' },
-              { icon: '📈', label: 'Covenant forecasting' },
-              { icon: '👥', label: 'Board reporting' },
-              { icon: '🤝', label: 'M&A due diligence' },
-            ].map((item, index) => (
-              <motion.div
-                key={item.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="text-center"
-              >
-                <div className="text-3xl mb-3">{item.icon}</div>
-                <p className="text-sm font-medium text-ink-300">{item.label}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Differentiation Section */}
-      <section className="section">
-        <div className="container">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-ink-700/50"
-            >
-              <img 
-                src="https://images.unsplash.com/photo-1553484771-371a605b060b?auto=format&fit=crop&q=80&w=1200" 
-                alt="Modern workspace"
-                className="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 hover:opacity-80 transition-all duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/50 to-transparent" />
-              
-              {/* Overlay Card */}
-              <div className="absolute bottom-6 left-6 right-6 p-6 rounded-xl bg-ink-900/90 backdrop-blur border border-ink-700/50">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-2 h-2 rounded-full bg-amber-500" />
-                  <span className="text-[10px] uppercase tracking-[0.2em] text-amber-500 font-medium">
-                    FSE Difference
-                  </span>
-                </div>
-                <p className="text-lg font-display text-cream-100">
-                  We don't just file returns. We build bankable infrastructure.
-                </p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="font-display text-3xl md:text-4xl text-cream-100 mb-8 leading-tight">
-                Traditional accounting is{' '}
-                <span className="text-ink-500">backward-looking.</span>
-              </h2>
-              
-              <div className="space-y-6">
-                {[
-                  { 
-                    title: 'Strategic Capital Advisory', 
-                    desc: 'We structure debt facilities and manage the path to institutional capital.' 
-                  },
-                  { 
-                    title: 'Operator-First Reporting', 
-                    desc: 'Real-time dashboards tracking margins, CAC, and cash velocity—not just compliance.' 
-                  },
-                  { 
-                    title: 'Deal-Ready Operations', 
-                    desc: 'Financial infrastructure built to withstand investor scrutiny and due diligence.' 
-                  }
-                ].map((item) => (
-                  <div key={item.title} className="flex gap-4">
-                    <div className="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
-                      <span className="text-amber-500 font-bold text-sm">✓</span>
-                    </div>
-                    <div>
-                      <h4 className="font-display text-lg text-cream-100 mb-1">{item.title}</h4>
-                      <p className="text-ink-400 leading-relaxed">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
           </div>
         </div>
       </section>
 
       {/* Final CTA */}
-      <section className="py-24 lg:py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-ink-900 via-background to-ink-900" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-amber-500/5 rounded-full blur-[150px]" />
-        
-        <div className="container relative z-10 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="max-w-3xl mx-auto"
-          >
-            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-cream-100 mb-6 leading-tight">
-              Ready to build your{' '}
-              <span className="text-gradient">financial foundation?</span>
+      <section className="section">
+        <div className="container-wide">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="font-serif text-3xl md:text-4xl text-charcoal mb-6">
+              Stop losing sleep over your numbers.
             </h2>
-            
-            <p className="text-lg md:text-xl text-ink-400 mb-10 max-w-2xl mx-auto leading-relaxed">
-              Book a free 15-minute Finance Triage. We'll identify your biggest opportunity 
-              and recommend the right next step—no commitment required.
+            <p className="text-stone text-lg mb-8">
+              Book a free 15-minute diagnostic. We'll tell you exactly what's wrong and what it takes to fix it. 
+              If we're not the right fit, we'll point you to someone who is.
             </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link 
-                href="/contact" 
-                className="btn btn-primary btn-xl group animate-pulse-glow"
-              >
-                <span>Book Your Finance Triage</span>
-                <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </Link>
-            </div>
-
-            <p className="mt-8 text-sm text-ink-500">
-              Free • 15 minutes • No commitment
+            <Link href="/contact" className="btn-primary text-lg px-8 py-4">
+              Book Your Free Diagnostic Call
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+            <p className="text-stone text-sm mt-4">
+              No credit card. No commitment. Just answers.
             </p>
-          </motion.div>
+          </div>
         </div>
       </section>
-    </div>
+
+      {/* Sticky CTA */}
+      <div className={`sticky-cta ${showStickyCTA ? 'visible' : ''}`}>
+        <div className="container-wide flex items-center justify-between">
+          <p className="text-charcoal font-medium hidden sm:block">
+            Ready to fix your financial operations?
+          </p>
+          <Link href="/contact" className="btn-primary py-3 px-6 text-sm w-full sm:w-auto text-center">
+            Book Free Diagnostic
+          </Link>
+        </div>
+      </div>
+    </main>
   );
 }

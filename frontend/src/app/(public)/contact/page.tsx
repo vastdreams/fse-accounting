@@ -1,547 +1,374 @@
-/**
- * PATH: frontend/src/app/(public)/contact/page.tsx
- * PURPOSE: Pre-qualification contact funnel
- * 
- * FLOW:
- * 1. Select service intent (Bookkeeping / Lending / Acquisition-Exit / Not Sure)
- * 2. Add qualification info (revenue band, urgency, goal)
- * 3. Submit → Show calendar embed for booking
- * 
- * TRACKING:
- * - form_submit event on submission
- * - calendar_booked event when meeting scheduled
- */
-
 'use client';
 
-import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
 import Link from 'next/link';
 
-type ServiceIntent = 'bookkeeping' | 'lending' | 'acquisition-exit' | 'not-sure' | '';
-type RevenueBand = '' | 'pre-revenue' | '0-500k' | '500k-2m' | '2m-10m' | '10m+';
-type Urgency = '' | 'urgent' | 'soon' | 'exploring';
+type FormStep = 1 | 2 | 3;
 
-const serviceOptions = [
-  {
-    value: 'bookkeeping' as ServiceIntent,
-    icon: '📊',
-    title: 'Bookkeeping',
-    subtitle: 'Clean books, reporting, month-end close',
-  },
-  {
-    value: 'lending' as ServiceIntent,
-    icon: '🏦',
-    title: 'Lending',
-    subtitle: 'Lender-ready packs, facility support',
-  },
-  {
-    value: 'acquisition-exit' as ServiceIntent,
-    icon: '🤝',
-    title: 'Acquisition / Exit',
-    subtitle: 'Due diligence, deal structuring',
-  },
-  {
-    value: 'not-sure' as ServiceIntent,
-    icon: '💬',
-    title: 'Not Sure',
-    subtitle: 'Let\'s discuss your situation',
-  },
+interface FormData {
+  urgency: string;
+  challenge: string;
+  revenue: string;
+  name: string;
+  email: string;
+  phone: string;
+  company: string;
+  details: string;
+}
+
+const urgencyOptions = [
+  { value: 'urgent', label: 'Urgent (need help this week)', icon: '🔥' },
+  { value: 'soon', label: 'Soon (next 2-4 weeks)', icon: '⏰' },
+  { value: 'planning', label: 'Planning ahead', icon: '📅' },
+];
+
+const challengeOptions = [
+  { value: 'books-behind', label: 'Books are behind / messy', description: 'Need to get financials in order' },
+  { value: 'raising-capital', label: 'Raising debt or equity', description: 'Need lender-ready financials' },
+  { value: 'buying-business', label: 'Buying a business', description: 'Need due diligence support' },
+  { value: 'selling-business', label: 'Selling / exiting', description: 'Need to prepare for sale' },
+  { value: 'other', label: 'Something else', description: "Let's discuss" },
 ];
 
 const revenueOptions = [
-  { value: 'pre-revenue', label: 'Pre-revenue / Early stage' },
-  { value: '0-500k', label: '$0 - $500K' },
-  { value: '500k-2m', label: '$500K - $2M' },
-  { value: '2m-10m', label: '$2M - $10M' },
-  { value: '10m+', label: '$10M+' },
-];
-
-const urgencyOptions = [
-  { value: 'urgent', label: '0-30 days — Urgent', sublabel: 'Need help now' },
-  { value: 'soon', label: '30-90 days — Soon', sublabel: 'Planning ahead' },
-  { value: 'exploring', label: '90+ days — Exploring', sublabel: 'Just researching' },
+  { value: 'under-1m', label: 'Under $1M' },
+  { value: '1m-5m', label: '$1M - $5M' },
+  { value: '5m-20m', label: '$5M - $20M' },
+  { value: 'over-20m', label: 'Over $20M' },
 ];
 
 export default function ContactPage() {
-  const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({
-    serviceIntent: '' as ServiceIntent,
-    name: '',
-    email: '',
-    company: '',
-    phone: '',
-    revenueBand: '' as RevenueBand,
-    urgency: '' as Urgency,
-    goal: '',
-    // Honeypot
-    website: '',
-  });
+  const [step, setStep] = useState<FormStep>(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [error, setError] = useState('');
+  const [formData, setFormData] = useState<FormData>({
+    urgency: '',
+    challenge: '',
+    revenue: '',
+    name: '',
+    email: '',
+    phone: '',
+    company: '',
+    details: '',
+  });
 
-  // Read service from URL on mount
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const serviceFromUrl = params.get('service');
-    
-    if (serviceFromUrl) {
-      // Map URL param to our intent values
-      const intentMap: Record<string, ServiceIntent> = {
-        'bookkeeping': 'bookkeeping',
-        'lending': 'lending',
-        'acquisitions': 'acquisition-exit',
-        'exit-planning': 'acquisition-exit',
-      };
-      
-      const mappedIntent = intentMap[serviceFromUrl];
-      if (mappedIntent) {
-        setFormData(prev => ({ ...prev, serviceIntent: mappedIntent }));
-      }
-    }
-  }, []);
-
-  const handleServiceSelect = (value: ServiceIntent) => {
-    setFormData(prev => ({ ...prev, serviceIntent: value }));
-    // Auto advance to step 2 after short delay
-    setTimeout(() => setStep(2), 300);
+  const updateField = (field: keyof FormData, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
+  const canProceedStep1 = formData.urgency && formData.challenge;
+  const canProceedStep2 = formData.revenue;
+  const canSubmit = formData.name && formData.email;
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    
-    // Honeypot check
-    if (formData.website) {
-      console.log('Bot detected');
-      return;
-    }
-
+  const handleSubmit = async () => {
     setIsSubmitting(true);
     
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...formData,
-          source: 'website',
-          page: '/contact',
-          utm_source: new URLSearchParams(window.location.search).get('utm_source') || '',
-          utm_campaign: new URLSearchParams(window.location.search).get('utm_campaign') || '',
-        }),
+        body: JSON.stringify(formData),
       });
 
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.message || 'Something went wrong');
+      if (response.ok) {
+        setIsSubmitted(true);
       }
-
-      // Track conversion
-      if (typeof window !== 'undefined' && (window as any).gtag) {
-        (window as any).gtag('event', 'form_submit', {
-          event_category: 'contact',
-          event_label: formData.serviceIntent,
-        });
-      }
-
-      setIsSubmitted(true);
-    } catch (err: any) {
-      setError(err.message || 'Failed to submit. Please try again.');
+    } catch (error) {
+      console.error('Form submission error:', error);
     } finally {
-    setIsSubmitting(false);
+      setIsSubmitting(false);
     }
   };
 
-  const canProceedToStep2 = formData.serviceIntent !== '';
-  const canSubmit = formData.name && formData.email && formData.revenueBand && formData.urgency;
+  if (isSubmitted) {
+    return (
+      <main className="bg-cream min-h-screen flex items-center justify-center py-20">
+        <div className="container-narrow text-center">
+          <div className="w-16 h-16 bg-success/10 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg className="w-8 h-8 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <h1 className="font-serif text-3xl md:text-4xl text-charcoal mb-4">
+            You're on the list.
+          </h1>
+          <p className="text-stone text-lg mb-8">
+            We'll be in touch within 24 hours (usually much sooner) to schedule your diagnostic call.
+          </p>
+          <div className="bg-white border border-border rounded-lg p-6 max-w-md mx-auto">
+            <p className="font-semibold text-charcoal mb-2">What happens next?</p>
+            <ol className="text-left text-stone space-y-2">
+              <li className="flex gap-2">
+                <span className="text-accent font-semibold">1.</span>
+                We review your situation
+              </li>
+              <li className="flex gap-2">
+                <span className="text-accent font-semibold">2.</span>
+                You get a calendar link to book your call
+              </li>
+              <li className="flex gap-2">
+                <span className="text-accent font-semibold">3.</span>
+                We diagnose what's broken and how to fix it
+              </li>
+            </ol>
+          </div>
+          <Link href="/" className="inline-block mt-8 text-stone hover:text-charcoal transition-colors">
+            ← Back to homepage
+          </Link>
+        </div>
+      </main>
+    );
+  }
 
   return (
-    <div className="bg-background min-h-screen">
-      {/* Hero */}
-      <section className="pt-28 pb-12">
-        <div className="container">
-          <div className="max-w-2xl mx-auto text-center">
-          <motion.div
-              initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-ink-800/80 border border-ink-700/50 mb-6"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-              <span className="text-xs text-ink-400 tracking-wide font-medium">
-                Free 15-30 Minute Call
-              </span>
-          </motion.div>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="font-display text-3xl md:text-4xl lg:text-5xl text-cream-100 mb-4"
-            >
-              Book Your{' '}
-              <span className="text-gradient">Finance Triage</span>
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-lg text-ink-400"
-            >
-              Quick diagnostic call to identify your biggest opportunity and the right next step.
-            </motion.p>
-          </div>
+    <main className="bg-cream min-h-screen py-12 md:py-20">
+      <div className="container-narrow">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <p className="text-accent font-semibold mb-3">Free Diagnostic Call</p>
+          <h1 className="font-serif text-3xl md:text-4xl text-charcoal mb-4">
+            Let's figure out what's broken.
+          </h1>
+          <p className="text-stone text-lg">
+            15 minutes. No pitch. Just honest answers about your financial situation.
+          </p>
         </div>
-      </section>
 
-      {/* Form Section */}
-      <section className="pb-24">
-        <div className="container max-w-3xl">
-          <AnimatePresence mode="wait">
-            {isSubmitted ? (
-              /* Success State */
-            <motion.div
-                key="success"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="p-12 rounded-2xl border border-amber-500/20 bg-ink-900/50 text-center"
-              >
-                <div className="w-16 h-16 rounded-full bg-amber-500 flex items-center justify-center mx-auto mb-6">
-                  <svg className="w-8 h-8 text-ink-950" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                  </svg>
+        {/* Progress indicator */}
+        <div className="flex items-center justify-center gap-2 mb-12">
+          {[1, 2, 3].map((s) => (
+            <div
+              key={s}
+              className={`w-3 h-3 rounded-full transition-colors ${
+                s === step ? 'bg-charcoal' : s < step ? 'bg-accent' : 'bg-border'
+              }`}
+            />
+          ))}
+        </div>
+
+        {/* Form */}
+        <div className="bg-white border border-border rounded-xl p-6 md:p-8">
+          {/* Step 1: Urgency & Challenge */}
+          {step === 1 && (
+            <div className="space-y-8">
+              <div>
+                <label className="text-lg font-semibold text-charcoal mb-4 block">
+                  How urgent is this?
+                </label>
+                <div className="grid gap-3">
+                  {urgencyOptions.map((option) => (
+                    <button
+                      key={option.value}
+                      type="button"
+                      onClick={() => updateField('urgency', option.value)}
+                      className={`flex items-center gap-3 p-4 rounded-lg border-2 text-left transition-all ${
+                        formData.urgency === option.value
+                          ? 'border-charcoal bg-cream'
+                          : 'border-border hover:border-stone'
+                      }`}
+                    >
+                      <span className="text-2xl">{option.icon}</span>
+                      <span className="font-medium text-charcoal">{option.label}</span>
+                    </button>
+                  ))}
                 </div>
-                
-                <h2 className="font-display text-2xl md:text-3xl text-cream-100 mb-4">
-                  Thanks! We've received your request.
-                </h2>
-                
-                <p className="text-ink-400 mb-8 max-w-md mx-auto">
-                  We'll be in touch within 24 hours to schedule your Finance Triage call. 
-                  Or you can book directly using the calendar below.
-                </p>
-
-                {/* Calendar Embed Placeholder */}
-                <div className="p-8 rounded-xl border border-ink-700/50 bg-ink-800/30 mb-8">
-                  <p className="text-ink-500 text-sm mb-4">
-                    📅 Schedule your call now (Calendly integration)
-                  </p>
-                  <a 
-                    href="https://calendly.com/fse-accounting/finance-triage"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn btn-primary"
-                  >
-                    Open Scheduling Page
-                  </a>
-                </div>
-
-                <Link href="/" className="text-sm text-ink-500 hover:text-amber-500 transition-colors">
-                  ← Return to homepage
-                </Link>
-              </motion.div>
-            ) : (
-              /* Form Steps */
-              <motion.div
-                key="form"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="space-y-8"
-              >
-                {/* Progress Indicator */}
-                <div className="flex items-center justify-center gap-3 mb-8">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors ${step >= 1 ? 'bg-amber-500 text-ink-950' : 'bg-ink-800 text-ink-500'}`}>
-                    1
-                  </div>
-                  <div className={`w-16 h-0.5 transition-colors ${step >= 2 ? 'bg-amber-500' : 'bg-ink-800'}`} />
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors ${step >= 2 ? 'bg-amber-500 text-ink-950' : 'bg-ink-800 text-ink-500'}`}>
-                    2
-                  </div>
-                </div>
-
-                <form onSubmit={handleSubmit}>
-                  {/* Step 1: Service Intent */}
-                  <AnimatePresence mode="wait">
-                    {step === 1 && (
-                      <motion.div
-                        key="step1"
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
-                        className="space-y-6"
-                      >
-                        <div className="text-center mb-8">
-                          <h2 className="font-display text-xl text-cream-100 mb-2">
-                            What do you need help with?
-                          </h2>
-                          <p className="text-ink-500 text-sm">
-                            Select the service that best matches your current priority
-                          </p>
-                        </div>
-
-                        <div className="grid sm:grid-cols-2 gap-4">
-                          {serviceOptions.map((option) => (
-                            <button
-                              key={option.value}
-                              type="button"
-                              onClick={() => handleServiceSelect(option.value)}
-                              className={`text-left p-5 rounded-xl border-2 transition-all ${
-                                formData.serviceIntent === option.value
-                                  ? 'border-amber-500 bg-amber-500/10'
-                                  : 'border-ink-700/50 bg-ink-900/30 hover:border-ink-600 hover:bg-ink-800/50'
-                              }`}
-                            >
-                              <div className="flex items-start gap-4">
-                                <span className="text-2xl">{option.icon}</span>
-                                <div>
-                                  <div className="font-display font-medium text-cream-100 mb-1">
-                                    {option.title}
-                                  </div>
-                                  <div className="text-sm text-ink-400">
-                                    {option.subtitle}
-                                  </div>
-                                </div>
-                              </div>
-                            </button>
-                          ))}
-                        </div>
-
-                        {canProceedToStep2 && (
-                          <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className="flex justify-center pt-4"
-                          >
-                            <button
-                              type="button"
-                              onClick={() => setStep(2)}
-                              className="btn btn-primary"
-                            >
-                              Continue
-                            </button>
-                          </motion.div>
-                        )}
-                      </motion.div>
-                    )}
-
-                    {step === 2 && (
-                      <motion.div
-                        key="step2"
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 20 }}
-                        className="space-y-6"
-                      >
-                        <div className="text-center mb-8">
-                          <button
-                            type="button"
-                            onClick={() => setStep(1)}
-                            className="text-sm text-ink-500 hover:text-amber-500 transition-colors mb-4 inline-flex items-center gap-1"
-                          >
-                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                            </svg>
-                            Change selection
-                          </button>
-                          <h2 className="font-display text-xl text-cream-100 mb-2">
-                            Tell us about your business
-                          </h2>
-                          <p className="text-ink-500 text-sm">
-                            A few quick details to help us prepare for your call
-                          </p>
-                        </div>
-
-                        {/* Contact Info */}
-                        <div className="grid sm:grid-cols-2 gap-4">
-                    <div>
-                      <label htmlFor="name" className="label">Full Name *</label>
-                      <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                        className="input"
-                        placeholder="John Smith"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="email" className="label">Email *</label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        className="input"
-                        placeholder="john@company.com"
-                      />
-                    </div>
-                  </div>
-
-                        <div className="grid sm:grid-cols-2 gap-4">
-                    <div>
-                      <label htmlFor="company" className="label">Company</label>
-                      <input
-                        type="text"
-                        id="company"
-                        name="company"
-                        value={formData.company}
-                        onChange={handleChange}
-                        className="input"
-                        placeholder="Your Company Pty Ltd"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="phone" className="label">Phone</label>
-                      <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        className="input"
-                        placeholder="+61 4XX XXX XXX"
-                      />
-                    </div>
-                  </div>
-
-                        {/* Qualification Fields */}
-                  <div>
-                          <label className="label">Annual Revenue *</label>
-                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                            {revenueOptions.map((option) => (
-                              <button
-                                key={option.value}
-                                type="button"
-                                onClick={() => setFormData(prev => ({ ...prev, revenueBand: option.value as RevenueBand }))}
-                                className={`p-3 rounded-lg border text-sm font-medium transition-all ${
-                                  formData.revenueBand === option.value
-                                    ? 'border-amber-500 bg-amber-500/10 text-amber-400'
-                                    : 'border-ink-700/50 bg-ink-900/30 text-ink-400 hover:border-ink-600'
-                                }`}
-                              >
-                                {option.label}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-
-                        <div>
-                          <label className="label">How soon do you need help? *</label>
-                          <div className="space-y-2">
-                            {urgencyOptions.map((option) => (
-                              <button
-                                key={option.value}
-                                type="button"
-                                onClick={() => setFormData(prev => ({ ...prev, urgency: option.value as Urgency }))}
-                                className={`w-full text-left p-4 rounded-lg border transition-all ${
-                                  formData.urgency === option.value
-                                    ? 'border-amber-500 bg-amber-500/10'
-                                    : 'border-ink-700/50 bg-ink-900/30 hover:border-ink-600'
-                                }`}
-                              >
-                                <div className="flex items-center justify-between">
-                                  <span className="font-medium text-cream-100">{option.label}</span>
-                                  <span className="text-sm text-ink-500">{option.sublabel}</span>
-                                </div>
-                              </button>
-                            ))}
-                          </div>
-                  </div>
-
-                  <div>
-                          <label htmlFor="goal" className="label">What's your main goal? (Optional)</label>
-                    <textarea
-                            id="goal"
-                            name="goal"
-                            value={formData.goal}
-                      onChange={handleChange}
-                            rows={3}
-                      className="input resize-none"
-                            placeholder="e.g., Get my books ready for a bank loan, clean up messy financials, prepare for an acquisition..."
-                    />
-                  </div>
-
-                        {/* Honeypot - hidden from real users */}
-                        <input
-                          type="text"
-                          name="website"
-                          value={formData.website}
-                          onChange={handleChange}
-                          className="absolute -left-[9999px]"
-                          tabIndex={-1}
-                          autoComplete="off"
-                        />
-
-                        {/* Error Message */}
-                        {error && (
-                          <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
-                            {error}
-                          </div>
-                        )}
-
-                        {/* Submit */}
-                  <button
-                    type="submit"
-                          disabled={!canSubmit || isSubmitting}
-                          className="btn btn-primary btn-lg w-full justify-center disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          {isSubmitting ? (
-                            <>
-                              <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
-                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                              </svg>
-                              Submitting...
-                            </>
-                          ) : (
-                            'Book My Finance Triage'
-                          )}
-                  </button>
-
-                        <p className="text-center text-xs text-ink-500">
-                          Free • No commitment • We'll respond within 24 hours
-                        </p>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </form>
-              </motion.div>
-            )}
-          </AnimatePresence>
-                    </div>
-      </section>
-
-      {/* Trust Elements */}
-      {!isSubmitted && (
-        <section className="py-16 border-t border-ink-800/50">
-          <div className="container max-w-3xl">
-            <div className="grid sm:grid-cols-3 gap-8 text-center">
-              {[
-                { icon: '⏱️', title: '15-30 minutes', desc: 'Quick, focused diagnostic' },
-                { icon: '🎯', title: 'Clear next steps', desc: 'Actionable recommendations' },
-                { icon: '✓', title: 'No commitment', desc: 'No pressure, just advice' },
-              ].map((item) => (
-                <div key={item.title}>
-                  <div className="text-2xl mb-2">{item.icon}</div>
-                  <div className="font-display font-medium text-cream-100 mb-1">{item.title}</div>
-                  <div className="text-sm text-ink-500">{item.desc}</div>
-                </div>
-              ))}
               </div>
-          </div>
-        </section>
-      )}
+
+              <div>
+                <label className="text-lg font-semibold text-charcoal mb-4 block">
+                  What's your main challenge?
+                </label>
+                <div className="grid gap-3">
+                  {challengeOptions.map((option) => (
+                    <button
+                      key={option.value}
+                      type="button"
+                      onClick={() => updateField('challenge', option.value)}
+                      className={`p-4 rounded-lg border-2 text-left transition-all ${
+                        formData.challenge === option.value
+                          ? 'border-charcoal bg-cream'
+                          : 'border-border hover:border-stone'
+                      }`}
+                    >
+                      <span className="font-medium text-charcoal block">{option.label}</span>
+                      <span className="text-stone text-sm">{option.description}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <button
+                onClick={() => setStep(2)}
+                disabled={!canProceedStep1}
+                className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Continue
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </button>
+            </div>
+          )}
+
+          {/* Step 2: Revenue */}
+          {step === 2 && (
+            <div className="space-y-8">
+              <div>
+                <label className="text-lg font-semibold text-charcoal mb-4 block">
+                  What's your approximate annual revenue?
+                </label>
+                <p className="text-stone mb-4 text-sm">
+                  This helps us understand your situation and prepare for the call.
+                </p>
+                <div className="grid grid-cols-2 gap-3">
+                  {revenueOptions.map((option) => (
+                    <button
+                      key={option.value}
+                      type="button"
+                      onClick={() => updateField('revenue', option.value)}
+                      className={`p-4 rounded-lg border-2 text-center transition-all ${
+                        formData.revenue === option.value
+                          ? 'border-charcoal bg-cream'
+                          : 'border-border hover:border-stone'
+                      }`}
+                    >
+                      <span className="font-medium text-charcoal">{option.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setStep(1)}
+                  className="btn-secondary flex-1"
+                >
+                  Back
+                </button>
+                <button
+                  onClick={() => setStep(3)}
+                  disabled={!canProceedStep2}
+                  className="btn-primary flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Continue
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Step 3: Contact details */}
+          {step === 3 && (
+            <div className="space-y-6">
+              <div>
+                <label className="text-lg font-semibold text-charcoal mb-4 block">
+                  Last step — how do we reach you?
+                </label>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="name">Your name *</label>
+                  <input
+                    id="name"
+                    type="text"
+                    value={formData.name}
+                    onChange={(e) => updateField('name', e.target.value)}
+                    placeholder="John Smith"
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="company">Company</label>
+                  <input
+                    id="company"
+                    type="text"
+                    value={formData.company}
+                    onChange={(e) => updateField('company', e.target.value)}
+                    placeholder="Acme Corp"
+                  />
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="email">Email *</label>
+                  <input
+                    id="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => updateField('email', e.target.value)}
+                    placeholder="john@company.com"
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="phone">Phone (optional)</label>
+                  <input
+                    id="phone"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => updateField('phone', e.target.value)}
+                    placeholder="+61 4XX XXX XXX"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="details">Anything else we should know? (optional)</label>
+                <textarea
+                  id="details"
+                  value={formData.details}
+                  onChange={(e) => updateField('details', e.target.value)}
+                  placeholder="Tell us more about your situation..."
+                  rows={3}
+                />
+              </div>
+
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setStep(2)}
+                  className="btn-secondary flex-1"
+                >
+                  Back
+                </button>
+                <button
+                  onClick={handleSubmit}
+                  disabled={!canSubmit || isSubmitting}
+                  className="btn-primary flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? 'Submitting...' : 'Book My Diagnostic Call'}
+                </button>
+              </div>
+
+              <p className="text-center text-stone text-sm">
+                We'll email you within 24 hours with a link to book your call.
+              </p>
+            </div>
+          )}
         </div>
+
+        {/* Trust elements */}
+        <div className="mt-8 text-center">
+          <p className="text-stone text-sm mb-4">What you'll get on the call:</p>
+          <div className="flex flex-wrap justify-center gap-4 text-sm">
+            {[
+              'Honest assessment of your situation',
+              'Clear next steps (even if we\'re not the right fit)',
+              'No sales pitch or pressure',
+            ].map((item, i) => (
+              <span key={i} className="flex items-center gap-2 text-charcoal">
+                <svg className="w-4 h-4 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </main>
   );
 }
