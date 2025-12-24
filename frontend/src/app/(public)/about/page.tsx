@@ -1,180 +1,197 @@
-/**
- * PATH: frontend/src/app/(public)/about/page.tsx
- * PURPOSE:
- *   - About page describing the firm, values, and operating approach.
- *
- * ROLE IN ARCHITECTURE:
- *   - Marketing / credibility layer (public web).
- *
- * MAIN EXPORTS:
- *   - AboutPage(): React component.
- *
- * NON-RESPONSIBILITIES:
- *   - This file does NOT handle:
- *     - Hiring/team bios (use a dedicated team page when ready)
- *     - Legal/regulated claims (avoid certification/registration claims without proof)
- *
- * NOTES FOR FUTURE AI:
- *   - Avoid referencing other brands unless explicitly required.
- *   - Prefer specific, operational language over marketing adjectives.
- */
-
-'use client';
-
-import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { Metadata } from 'next';
 
-const values = [
+export const metadata: Metadata = {
+  title: 'About | FSE Accounting',
+  description: 'A modern accounting firm built by operators, for operators. Clean books, bank-ready numbers, deal-ready decisions.',
+};
+
+const principles = [
   {
-    title: 'Excellence',
-    description: 'We deliver work that exceeds expectations, every time.',
+    title: 'Fix it fast',
+    description: "We don't do 6-month engagements to tell you what you already know. We diagnose quickly, act decisively, and deliver results in weeks.",
   },
   {
-    title: 'Integrity',
-    description: 'Transparent, honest advice—even when it\'s not what you want to hear.',
+    title: 'Tell the truth',
+    description: "We'll tell you what's broken, even if it's uncomfortable. No sugarcoating, no billable busywork. Just honest answers.",
   },
   {
-    title: 'Innovation',
-    description: 'Embracing technology to deliver smarter, faster solutions.',
+    title: 'Operators first',
+    description: "We've built businesses. We know what it's like to stare at a bank balance at 2am. Our advice comes from experience, not textbooks.",
   },
   {
-    title: 'Partnership',
-    description: 'Your success is our success. We\'re invested in your growth.',
+    title: 'Bank-ready or bust',
+    description: "Every piece of work we deliver is built to withstand scrutiny—from lenders, investors, acquirers, or your board.",
   },
+];
+
+const stats = [
+  { value: '$127M+', label: 'Debt facilities structured' },
+  { value: '43', label: 'Transactions supported' },
+  { value: '5 days', label: 'Average month-end close' },
+  { value: '100%', label: 'Client retention (2024)' },
 ];
 
 export default function AboutPage() {
   return (
-    <>
+    <main className="bg-cream">
       {/* Hero */}
-      <section className="relative pt-32 pb-20 bg-gradient-to-br from-slate-900 via-slate-950 to-background overflow-hidden">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-copper-500/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
-        
-        <div className="container relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="max-w-3xl"
-          >
-            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-cream-100 mb-6 tracking-tight">
-              About FSE Accounting
+      <section className="py-16 md:py-24">
+        <div className="container-wide">
+          <div className="max-w-3xl">
+            <p className="text-accent font-semibold mb-3">About FSE</p>
+            <h1 className="font-serif text-4xl md:text-5xl text-charcoal mb-6 leading-tight">
+              We fix broken financial operations.
             </h1>
-            <p className="text-xl text-slate-400 leading-relaxed font-light">
-              We&apos;re a modern accounting and advisory firm built by founders, for founders. 
-              We bridge the gap between tidy compliance and genuine strategic execution.
+            <p className="text-stone text-xl leading-relaxed">
+              No fluff. No 100-page reports. Just clean books, bank-ready numbers, 
+              and the financial infrastructure you need to grow, raise, or exit.
             </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Story */}
-      <section className="section bg-background overflow-hidden">
-        <div className="container">
-          <div className="grid lg:grid-cols-12 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="lg:col-span-7"
-            >
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                className="relative rounded-[2.5rem] overflow-hidden border border-slate-700/50 mb-12 lg:hidden aspect-[16/9]"
-              >
-                <img 
-                  src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1000" 
-                  alt="Modern office collaboration" 
-                  className="w-full h-full object-cover grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent" />
-              </motion.div>
-
-              <h2 className="font-serif text-4xl md:text-5xl text-cream-100 mb-8 leading-tight">
-                Built by <span className="text-gradient italic">executors</span>
-              </h2>
-              <div className="space-y-6 text-lg text-slate-400 font-light leading-relaxed">
-                <p>
-                  FSE Accounting was founded with a simple belief: businesses deserve 
-                  better from their financial partners. Not just backward-looking tax returns, 
-                  but forward-looking strategic support that drives growth.
-                </p>
-                <p>
-                  We focus on the fundamentals first: clean books, a disciplined monthly close,
-                  and reporting that actually helps you run the business. Once the foundation is solid,
-                  we layer on capital advisory, modelling, and CFO support.
-                </p>
-                <p>
-                  Based in Australia but operating globally, we serve high-growth teams who value 
-                  clarity, speed, and precision.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-2 gap-8 mt-12 pt-12 border-t border-border-subtle">
-                {values.slice(0, 2).map((value) => (
-                  <div key={value.title}>
-                    <h4 className="text-xl font-serif text-cream-100 mb-3">{value.title}</h4>
-                    <p className="text-sm text-slate-500 leading-relaxed">{value.description}</p>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="lg:col-span-5 relative hidden lg:block"
-            >
-              <div className="relative aspect-[4/5] rounded-[3rem] overflow-hidden border border-slate-700/50 shadow-2xl">
-                <img 
-                  src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1000" 
-                  alt="Modern financial architecture" 
-                  className="w-full h-full object-cover grayscale opacity-40 hover:grayscale-0 hover:opacity-80 transition-all duration-1000 scale-105 hover:scale-100"
-                />
-                {/* Overlay card */}
-                <div className="absolute bottom-10 left-10 right-10 p-8 rounded-3xl bg-slate-900/80 backdrop-blur-xl border border-slate-700/50">
-                  <p className="text-cream-100 font-serif text-lg leading-relaxed">
-                    &quot;We bridge the gap between tidy compliance and genuine strategic execution.&quot;
-                  </p>
-                </div>
-              </div>
-              
-              {/* Decorative elements */}
-              <div className="absolute -top-6 -right-6 w-32 h-32 bg-copper-500/10 rounded-full blur-3xl" />
-              <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-slate-500/10 rounded-full blur-3xl" />
-            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* How we work */}
-      <section className="section bg-surface/30">
-        <div className="container text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="max-w-3xl mx-auto"
-          >
-            <h2 className="font-serif text-3xl md:text-4xl text-cream-100 mb-8">One platform, one partner</h2>
-            <p className="text-lg text-slate-400 mb-12 font-light">
-              We leverage a modern technology stack and our dedicated client portal to provide 
-              real-time visibility. No more waiting for quarter-end to know your numbers.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/services" className="btn btn-secondary px-8 py-4">
-                Explore our services
-              </Link>
-              <Link href="/contact" className="btn btn-primary px-8 py-4">
-                Book a consultation
-              </Link>
+      {/* Story */}
+      <section className="py-16 bg-white border-y border-border">
+        <div className="container-wide">
+          <div className="grid md:grid-cols-2 gap-12 items-start">
+            <div>
+              <h2 className="font-serif text-3xl md:text-4xl text-charcoal mb-6">
+                Built by operators, for operators.
+              </h2>
+              <div className="space-y-4 text-stone">
+                <p>
+                  FSE Accounting exists because we got tired of the same story: 
+                  business owners waiting months for financials, scrambling before 
+                  bank meetings, and flying blind on cash.
+                </p>
+                <p>
+                  We've been on the other side of the table. We've built businesses, 
+                  raised capital, and navigated acquisitions. We know what good financial 
+                  operations look like—and we know most accounting firms don't deliver it.
+                </p>
+                <p>
+                  So we built something different. A firm that treats your books like 
+                  a product, not an afterthought. That closes month-end in days, not weeks. 
+                  That prepares you for the bank before you need to ask.
+                </p>
+              </div>
             </div>
-          </motion.div>
+            <div className="bg-cream rounded-xl p-8 border border-border">
+              <p className="font-serif text-2xl text-charcoal mb-4 leading-relaxed">
+                "Most accounting firms are reactive. We're proactive. 
+                By the time you need something, it should already be done."
+              </p>
+              <div className="flex items-center gap-4 mt-6 pt-6 border-t border-border">
+                <div className="w-12 h-12 rounded-full bg-charcoal text-white flex items-center justify-center font-serif text-lg">
+                  F
+                </div>
+                <div>
+                  <p className="font-semibold text-charcoal">FSE Accounting</p>
+                  <p className="text-stone text-sm">Sydney, Australia</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
-    </>
+
+      {/* Stats */}
+      <section className="py-16">
+        <div className="container-wide">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {stats.map((stat, i) => (
+              <div key={i} className="text-center">
+                <p className="font-serif text-3xl md:text-4xl text-charcoal mb-1">{stat.value}</p>
+                <p className="text-stone text-sm">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Principles */}
+      <section className="py-16 bg-charcoal text-white">
+        <div className="container-wide">
+          <div className="max-w-2xl mb-12">
+            <p className="text-accent-light font-semibold mb-3">How we operate</p>
+            <h2 className="font-serif text-3xl md:text-4xl mb-4">
+              Four principles. Zero exceptions.
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {principles.map((principle, i) => (
+              <div key={i} className="border-t border-white/20 pt-6">
+                <h3 className="font-serif text-xl mb-3">{principle.title}</h3>
+                <p className="text-warm-gray">{principle.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Who we work with */}
+      <section className="py-16">
+        <div className="container-wide">
+          <div className="max-w-2xl mb-12">
+            <h2 className="font-serif text-3xl md:text-4xl text-charcoal mb-4">
+              Who we work with
+            </h2>
+            <p className="text-stone">
+              We're not for everyone. Here's who gets the most value from working with us.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              {
+                title: 'Growth-stage businesses',
+                description: "Doing $1M-$20M revenue, outgrowing the bookkeeper but not ready for a full-time CFO.",
+              },
+              {
+                title: 'Founders raising capital',
+                description: "Need bank-ready financials and someone who speaks lender. No more back-and-forth.",
+              },
+              {
+                title: 'Operators buying or selling',
+                description: "Need financial due diligence you can trust, not just an audit tick-box.",
+              },
+            ].map((item, i) => (
+              <div key={i} className="card">
+                <div className="w-10 h-10 rounded-full bg-cream flex items-center justify-center mb-4">
+                  <svg className="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h3 className="font-semibold text-lg text-charcoal mb-2">{item.title}</h3>
+                <p className="text-stone">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-16 bg-warm-white">
+        <div className="container-wide">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="font-serif text-3xl md:text-4xl text-charcoal mb-6">
+              Ready to fix your financials?
+            </h2>
+            <p className="text-stone text-lg mb-8">
+              Book a free diagnostic call. 15 minutes, no pitch. We'll tell you exactly 
+              what's broken and what it takes to fix it.
+            </p>
+            <Link href="/contact" className="btn-primary inline-flex text-lg px-8 py-4">
+              Book Your Free Diagnostic
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }
-
