@@ -2,8 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Import fonts */
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap');
+/* Fonts are now self-hosted via next/font in layout.tsx */
 
 :root {
   /* Warm, trustworthy palette */
@@ -17,6 +16,10 @@
   --color-accent-light: #D97706;
   --color-success: #059669;
   --color-border: #E7E5E4;
+  
+  /* Font variables */
+  --font-sans: var(--font-geist), -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: var(--font-bricolage), Georgia, serif;
 }
 
 * {
@@ -30,7 +33,7 @@ html {
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-sans);
   background-color: var(--color-cream);
   color: var(--color-charcoal);
   line-height: 1.6;
@@ -39,9 +42,13 @@ body {
 }
 
 h1, h2, h3, h4 {
-  font-family: 'DM Serif Display', Georgia, serif;
+  font-family: var(--font-serif);
   font-weight: 400;
   line-height: 1.1;
+}
+
+.font-serif {
+  font-family: var(--font-serif);
 }
 
 /* Utility classes */

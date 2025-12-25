@@ -1,39 +1,43 @@
-/**
- * PATH: frontend/src/app/(public)/services/[slug]/page.tsx
- * PURPOSE: Service detail page - conversion-focused with clear outcomes
- * 
- * KEY ELEMENTS:
- * - Clear "What you get in the first 14 days"
- * - When to use this vs other services
- * - Specific outcomes
- * - Finance Triage CTA
- */
-
-'use client';
-
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getServiceBySlug, CORE_SERVICES } from '@/lib/services';
+import { Metadata } from 'next';
+import { getServiceBySlug, SERVICES } from '@/lib/services';
+
+export async function generateStaticParams() {
+  return SERVICES.map((service) => ({
+    slug: service.slug,
+  }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const service = getServiceBySlug(params.slug);
+  if (!service) return { title: 'Service Not Found' };
+  
+  return {
+    title: `${service.title} | FSE Accounting`,
+    description: service.description,
+  };
+}
 
 const processSteps = [
   { 
-    step: '01', 
-    title: 'Finance Triage', 
-    desc: 'Free 15-30 min call to assess your situation and confirm the right approach.',
-    duration: 'Day 0'
+    step: '1', 
+    title: 'Free Diagnostic', 
+    description: '15-minute call to assess your situation and confirm the right approach.',
   },
   { 
-    step: '02', 
-    title: '14-Day Sprint', 
-    desc: 'Focused execution to deliver immediate, tangible outcomes.',
-    duration: 'Days 1-14'
+    step: '2', 
+    title: 'Focused Sprint', 
+    description: '2-4 weeks of focused execution to deliver tangible outcomes.',
   },
   { 
-    step: '03', 
+    step: '3', 
     title: 'Ongoing Support', 
-    desc: 'Monthly retainer for continuous financial operations and reporting.',
-    duration: 'Ongoing'
+    description: 'Monthly retainer for continuous operations—only if you need it.',
   },
 ];
 
@@ -48,309 +52,211 @@ export default function ServiceDetailPage({
     notFound();
   }
 
-  const isCoreOffer = service.isCoreOffer;
-  const isTaxFilings = service.slug === 'tax-filings';
-  const isLending = service.slug === 'lending';
-
-  // Determine related core services to show
-  const relatedCoreServices = CORE_SERVICES.filter(s => s.slug !== service.slug);
+  const relatedServices = SERVICES.filter(
+    (s) => s.slug !== service.slug && s.isCoreOffer
+  ).slice(0, 2);
 
   return (
-    <div className="bg-background min-h-screen">
-      {/* Hero Section */}
-      <section className="relative pt-28 pb-16 overflow-hidden">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-amber-500/5 rounded-full blur-[120px] translate-x-1/4 -translate-y-1/4" />
-        
-        <div className="container relative z-10">
-          {/* Back Link */}
-          <motion.div
-            initial={{ opacity: 0, x: -12 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4 }}
-          >
+    <main className="bg-cream">
+      {/* Hero */}
+      <section className="py-16 md:py-20">
+        <div className="container-wide">
+          {/* Breadcrumb */}
             <Link
               href="/services"
-              className="inline-flex items-center text-sm font-medium text-ink-500 hover:text-amber-500 transition-colors mb-10 group"
-            >
-              <svg className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-              All Services
+            className="inline-flex items-center text-sm text-stone hover:text-charcoal transition-colors mb-8"
+          >
+            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            All Services
             </Link>
-          </motion.div>
 
-          <div className="max-w-4xl">
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="flex items-start gap-6 mb-8"
-            >
-              <div className="w-16 h-16 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-4xl shrink-0">
-                {service.icon}
-              </div>
-              <div>
-                {isCoreOffer && (
-                  <span className="badge mb-3">
-                    Core Service • {service.subtitle}
-                  </span>
-                )}
-                <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-cream-100 leading-[1.1] tracking-tight">
-                  {service.title}
-                </h1>
-              </div>
-            </motion.div>
-            
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-xl md:text-2xl text-ink-300 font-medium mb-4"
-            >
-              {service.headline || service.description}
-            </motion.p>
-
-            {service.headline && (
-              <motion.p
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="text-lg text-ink-400 leading-relaxed max-w-3xl"
-              >
-                {service.description}
-              </motion.p>
-            )}
+          <div className="grid lg:grid-cols-12 gap-12">
+            {/* Main Content */}
+            <div className="lg:col-span-8">
+              <div className="flex items-start gap-4 mb-6">
+                <span className="text-4xl">{service.icon}</span>
+                <div>
+                  {service.isCoreOffer && (
+                    <span className="inline-block px-3 py-1 bg-accent/10 text-accent text-xs font-semibold rounded-full mb-2">
+                      Core Service
+              </span>
+                  )}
+                  <h1 className="font-serif text-3xl md:text-4xl text-charcoal">
+                    {service.title}
+            </h1>
           </div>
         </div>
-      </section>
 
-      {/* Main Content */}
-      <section className="pb-24">
-        <div className="container">
-          <div className="grid lg:grid-cols-12 gap-12">
-            {/* Left Content */}
-            <div className="lg:col-span-8 space-y-16">
-              
+              {service.headline && (
+                <p className="text-xl text-graphite font-medium mb-4">
+                  {service.headline}
+                </p>
+              )}
+
+              <p className="text-stone text-lg leading-relaxed mb-8">
+                {service.description}
+              </p>
+
               {/* What's Included */}
-              <motion.div
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-              >
-                <h2 className="font-display text-2xl md:text-3xl text-cream-100 mb-8 flex items-center gap-4">
-                  <span className="w-8 h-px bg-amber-500/50" />
-                  What's Included
-                </h2>
+              <div className="mb-12">
+                <h2 className="font-serif text-2xl text-charcoal mb-6">What&apos;s included</h2>
                 <div className="grid md:grid-cols-2 gap-4">
-                  {service.features.map((feature, index) => (
+                  {service.features.map((feature) => (
                     <div 
                       key={feature} 
-                      className="group p-5 rounded-xl border border-ink-700/50 bg-ink-900/30 hover:bg-ink-800/40 hover:border-amber-500/20 transition-all"
+                      className="flex items-start gap-3 p-4 bg-white rounded-lg border border-border"
                     >
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-ink-800 border border-ink-700 flex items-center justify-center group-hover:bg-amber-500/10 group-hover:border-amber-500/30 transition-all">
-                          <span className="text-amber-500 font-bold text-sm">✓</span>
-                        </div>
-                        <span className="text-cream-100 font-medium">{feature}</span>
-                      </div>
+                      <svg className="w-5 h-5 text-success flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-graphite">{feature}</span>
                     </div>
                   ))}
                 </div>
-              </motion.div>
-
-              {/* Outcomes - For Core Offers */}
-              {service.outcomes && (
-                <motion.div
-                  initial={{ opacity: 0, y: 24 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                >
-                  <h2 className="font-display text-2xl md:text-3xl text-cream-100 mb-8 flex items-center gap-4">
-                    <span className="w-8 h-px bg-amber-500/50" />
-                    What You'll Achieve
-                  </h2>
-                  <div className="p-8 rounded-2xl border border-amber-500/20 bg-amber-500/5">
+                  </div>
+                  
+              {/* Outcomes */}
+              {service.outcomes && service.outcomes.length > 0 && (
+                <div className="mb-12">
+                  <h2 className="font-serif text-2xl text-charcoal mb-6">What you&apos;ll achieve</h2>
+                  <div className="bg-warm-white rounded-xl p-6 border border-border">
                     <ul className="space-y-4">
                       {service.outcomes.map((outcome) => (
-                        <li key={outcome} className="flex items-start gap-4">
-                          <div className="w-6 h-6 rounded-full bg-amber-500 flex items-center justify-center shrink-0 mt-0.5">
-                            <svg className="w-3.5 h-3.5 text-ink-950" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        <li key={outcome} className="flex items-start gap-3">
+                          <div className="w-6 h-6 rounded-full bg-accent flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                             </svg>
                           </div>
-                          <span className="text-lg text-cream-100">{outcome}</span>
+                          <span className="text-graphite">{outcome}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
-                </motion.div>
+                </div>
               )}
 
-              {/* Sprint Info - For Core Offers */}
-              {service.sprintName && (
-                <motion.div
-                  initial={{ opacity: 0, y: 24 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  className="p-8 rounded-2xl border border-ink-700/50 bg-ink-900/40"
-                >
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-xs font-semibold tracking-wider uppercase text-amber-400">
-                      14-Day Sprint
-                    </span>
-                  </div>
-                  <h3 className="font-display text-2xl text-cream-100 mb-3">
-                    {service.sprintName}
-                  </h3>
-                  <p className="text-ink-400 leading-relaxed mb-6">
-                    Get tangible results in 14 days. We'll focus intensively on delivering 
-                    immediate outcomes, then discuss ongoing support based on what you actually need.
-                  </p>
-                  <Link href="/contact" className="btn btn-primary">
-                    Start with a Sprint
-                  </Link>
-                </motion.div>
-              )}
-
-              {/* Disclosures */}
-              {(isLending || isTaxFilings) && (
-                <motion.div 
-                  initial={{ opacity: 0, y: 24 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  className="p-6 rounded-xl border border-ink-700/50 bg-ink-900/30"
-                >
-                  <p className="text-sm text-ink-400 leading-relaxed">
-                    {isLending ? (
-                      <>
-                        <strong className="text-ink-300">Important:</strong> FSE Accounting provides 
-                        lender-ready financial pack preparation and coordination services. We are not 
-                        a licensed credit provider or mortgage broker. We help you prepare numbers 
-                        and manage lender Q&A—your chosen lender/broker handles the actual facility.
-                      </>
-                    ) : (
-                      <>
-                        <strong className="text-ink-300">Note:</strong> Tax agent and BAS agent 
-                        services are provided by a partner Registered Tax/BAS Agent. FSE Accounting 
-                        manages the workflow and client portal.
-                      </>
-                    )}
-                  </p>
-                </motion.div>
-              )}
-
-              {/* The Process */}
-              <motion.div
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-              >
-                <h2 className="font-display text-2xl md:text-3xl text-cream-100 mb-8 flex items-center gap-4">
-                  <span className="w-8 h-px bg-amber-500/50" />
-                  How It Works
-                </h2>
+              {/* Process */}
+              <div className="mb-12">
+                <h2 className="font-serif text-2xl text-charcoal mb-6">How it works</h2>
                 <div className="space-y-4">
-                  {processSteps.map((step, index) => (
-                    <div 
-                      key={step.step} 
-                      className="relative p-6 rounded-xl border border-ink-700/50 bg-ink-900/30 hover:border-ink-600 transition-colors"
+                  {processSteps.map((step) => (
+                    <div
+                      key={step.step}
+                      className="flex gap-4 p-5 bg-white rounded-lg border border-border"
                     >
-                      <div className="flex items-start gap-5">
-                        <div className="w-12 h-12 rounded-xl bg-ink-800 border border-ink-700 flex items-center justify-center shrink-0">
-                          <span className="font-display font-bold text-amber-500">{step.step}</span>
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-center gap-3 mb-2">
-                            <h3 className="font-display text-lg text-cream-100">{step.title}</h3>
-                            <span className="px-2 py-0.5 rounded text-xs font-medium bg-ink-800 text-ink-400 border border-ink-700">
-                              {step.duration}
-                            </span>
-                          </div>
-                          <p className="text-ink-400">{step.desc}</p>
-                        </div>
+                      <div className="w-10 h-10 rounded-full bg-charcoal text-white flex items-center justify-center font-serif flex-shrink-0">
+                        {step.step}
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-charcoal mb-1">{step.title}</h3>
+                        <p className="text-stone text-sm">{step.description}</p>
                       </div>
                     </div>
                   ))}
                 </div>
-              </motion.div>
+              </div>
+
+              {/* Disclosures */}
+              {(service.slug === 'lending' || service.slug === 'tax-filings') && (
+                <div className="p-4 bg-warm-white rounded-lg border border-border">
+                  <p className="text-sm text-stone">
+                    {service.slug === 'lending' ? (
+                      <>
+                        <strong className="text-graphite">Note:</strong> FSE Accounting provides 
+                        lender-ready financial pack preparation and coordination services. We are not 
+                        a licensed credit provider or mortgage broker.
+                      </>
+                    ) : (
+                      <>
+                        <strong className="text-graphite">Note:</strong> Tax agent and BAS agent 
+                        services are provided by a partner Registered Tax/BAS Agent.
+                      </>
+                    )}
+                  </p>
+                </div>
+              )}
             </div>
 
-            {/* Right Sidebar - Sticky CTA */}
+            {/* Sidebar */}
             <aside className="lg:col-span-4">
               <div className="sticky top-24 space-y-6">
-                {/* Main CTA Card */}
-                <motion.div 
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.3 }}
-                  className="p-8 rounded-2xl border border-ink-700/50 bg-ink-900/50 backdrop-blur"
-                >
-                  <h3 className="font-display text-xl text-cream-100 mb-4">
+                {/* CTA Card */}
+                <div className="bg-white rounded-xl border border-border p-6">
+                  <h3 className="font-serif text-xl text-charcoal mb-3">
                     Ready to get started?
                   </h3>
-                  <p className="text-ink-400 mb-6 leading-relaxed">
-                    Book a free Finance Triage call. We'll assess your needs and recommend 
+                  <p className="text-stone text-sm mb-6">
+                    Book a free diagnostic call. We&apos;ll assess your needs and recommend 
                     the right approach—no commitment required.
                   </p>
-                  
                   <Link
                     href={`/contact?service=${service.slug}`}
-                    className="btn btn-primary w-full justify-center mb-4"
+                    className="btn-primary w-full justify-center mb-4"
                   >
-                    Book Free Triage Call
-                  </Link>
-                  
-                  <div className="space-y-3 pt-4 border-t border-ink-700/50">
-                    {[
-                      '15-30 minute call',
-                      'No commitment',
-                      'Clear next steps',
-                    ].map((item) => (
-                      <div key={item} className="flex items-center gap-2 text-xs text-ink-500">
-                        <span className="w-1 h-1 rounded-full bg-amber-500/50" />
+                    Book Free Diagnostic
+              </Link>
+                  <ul className="space-y-2">
+                    {['15-minute call', 'No commitment', 'Clear next steps'].map((item) => (
+                      <li key={item} className="flex items-center gap-2 text-xs text-stone">
+                        <span className="w-1 h-1 rounded-full bg-accent" />
                         {item}
-                      </div>
+                      </li>
                     ))}
-                  </div>
-                </motion.div>
+                  </ul>
+                </div>
 
-                {/* Related Core Services */}
-                {relatedCoreServices.length > 0 && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.4 }}
-                    className="p-6 rounded-xl border border-ink-800/50 bg-ink-900/30"
-                  >
-                    <p className="text-xs font-medium tracking-wide uppercase text-ink-500 mb-4">
+                {/* Related Services */}
+                {relatedServices.length > 0 && (
+                  <div className="bg-cream rounded-xl border border-border p-6">
+                    <p className="text-xs font-semibold text-stone uppercase tracking-wide mb-4">
                       Related Services
                     </p>
                     <div className="space-y-3">
-                      {relatedCoreServices.slice(0, 2).map((related) => (
+                      {relatedServices.map((related) => (
                         <Link
                           key={related.slug}
                           href={`/services/${related.slug}`}
-                          className="flex items-center gap-3 p-3 rounded-lg hover:bg-ink-800/50 transition-colors group"
+                          className="flex items-center gap-3 p-3 rounded-lg hover:bg-white transition-colors"
                         >
                           <span className="text-xl">{related.icon}</span>
-                          <div className="flex-1 min-w-0">
-                            <div className="text-sm font-medium text-cream-100 group-hover:text-amber-400 transition-colors">
-                              {related.title}
-                            </div>
-                            <div className="text-xs text-ink-500 truncate">
-                              {related.subtitle}
-                            </div>
+                          <div>
+                            <p className="text-sm font-medium text-charcoal">{related.title}</p>
+                            <p className="text-xs text-stone">{related.subtitle}</p>
                           </div>
                         </Link>
                       ))}
                     </div>
-                  </motion.div>
+                  </div>
                 )}
-              </div>
+                </div>
             </aside>
           </div>
         </div>
       </section>
-    </div>
+
+      {/* Final CTA */}
+      <section className="py-16 bg-charcoal text-white">
+        <div className="container-wide">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="font-serif text-3xl mb-4">
+              Not sure if this is right for you?
+            </h2>
+            <p className="text-warm-gray mb-8">
+              Book a free diagnostic. We&apos;ll look at your situation and tell you exactly 
+              what you need—even if it&apos;s not us.
+            </p>
+            <Link href="/contact" className="btn-primary inline-flex bg-white text-charcoal hover:bg-cream">
+              Book Your Free Diagnostic
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }

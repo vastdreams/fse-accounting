@@ -1,206 +1,312 @@
-/**
- * Lending Landing Page - Conversion-focused for paid traffic
- */
-
 'use client';
 
-import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 
 const painPoints = [
-  'Banks keep asking for more information',
-  "Model doesn't match what lenders need",
-  'No clear data room or pack',
+  'Banks keep asking for more documents',
+  'Your model doesn\'t match what lenders need',
+  'No clear data room or information pack',
   'Process taking months instead of weeks',
 ];
 
-const outcomes = [
-  { metric: '14 Days', label: 'To lender-ready' },
-  { metric: '50%', label: 'Fewer bank questions' },
-  { metric: 'Complete', label: 'Credit pack + model' },
+const deliverables = [
+  { title: '3-statement financial model', description: 'P&L, balance sheet, cash flow—built to lender specs' },
+  { title: 'Debt schedule & covenants', description: 'Clear visibility on facility terms and compliance' },
+  { title: 'Management presentation', description: 'The deck that answers questions before they\'re asked' },
+  { title: 'Lender Q&A support', description: 'We handle the back-and-forth so you can focus on the business' },
 ];
 
-const features = [
+const process = [
+  { step: '1', title: 'Diagnostic call', description: 'We review your situation, identify gaps, and scope the work.' },
+  { step: '2', title: '14-day sprint', description: 'We build your model, pack, and data room. Fixed scope, fixed price.' },
+  { step: '3', title: 'Lender ready', description: 'You submit with confidence. We support Q&A until close.' },
+];
+
+const faqs = [
   {
-    title: 'Credit-Ready Application Pack',
-    description: 'Everything lenders need in one professional package—financials, projections, and supporting docs.',
+    q: 'How long does this actually take?',
+    a: '14 days for the core pack. Complex facilities or multiple lenders may take longer—we\'ll tell you upfront.',
   },
   {
-    title: 'Financial Model + Projections',
-    description: 'Detailed 3-way model with scenarios that banks trust and understand.',
+    q: 'What if my books are messy?',
+    a: 'We can clean them up first. Many clients start with a bookkeeping sprint, then move to lending.',
   },
   {
-    title: 'Data Room Preparation',
-    description: 'Organized, indexed documentation ready for due diligence.',
+    q: 'Do you work with my existing accountant?',
+    a: 'Yes. We complement (not replace) your accountant. We focus on lender-ready outputs they may not do.',
   },
   {
-    title: 'Lender Q&A Support',
-    description: 'We handle the back-and-forth so you can focus on your business.',
+    q: 'What does it cost?',
+    a: 'Fixed-price sprints typically $8–15k depending on complexity. No hourly surprises.',
   },
 ];
 
-export default function LendingLandingPage() {
+const proofMetrics = [
+  { value: '$127M+', label: 'Facilities structured' },
+  { value: '14 days', label: 'Average pack delivery' },
+  { value: '92%', label: 'First-submission approval' },
+];
+
+export default function LendingLP() {
+  const [showStickyCTA, setShowStickyCTA] = useState(false);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowStickyCTA(window.scrollY > 500);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <div className="bg-background min-h-screen">
+    <main className="bg-cream">
       {/* Hero */}
-      <section className="relative pt-24 pb-16 overflow-hidden">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-amber-500/5 rounded-full blur-[120px] translate-x-1/4 -translate-y-1/4" />
-        
-        <div className="container relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 mb-6"
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-                <span className="text-xs text-amber-400 font-medium">
-                  14-Day Lending Readiness Sprint
-                </span>
-              </motion.div>
-
-              <motion.h1
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="font-display text-4xl md:text-5xl text-cream-100 mb-6 leading-[1.1]"
-              >
-                Bank-ready pack.
-                <br />
-                <span className="text-gradient">Faster facility approval.</span>
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="text-lg text-ink-400 mb-8 leading-relaxed"
-              >
-                Stop the endless back-and-forth with lenders. We build complete, 
-                credit-ready application packs with models that banks actually trust.
-                Get funded faster.
-              </motion.p>
-
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-              >
-                <Link 
-                  href="/contact?service=lending" 
-                  className="btn btn-primary btn-xl group"
-                >
-                  <span>Get Lender-Ready</span>
-                  <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </Link>
-                <p className="mt-3 text-sm text-ink-500">Free triage call • 15 min • No commitment</p>
-              </motion.div>
+      <section className="py-16 md:py-24">
+        <div className="container-wide">
+          <div className="max-w-3xl">
+            <p className="text-accent font-semibold mb-4">Capital Readiness Sprint</p>
+            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-charcoal mb-6 leading-tight">
+              Bank-ready pack.<br />
+              <span className="text-stone">In 14 days.</span>
+            </h1>
+            <p className="text-xl text-stone mb-8 leading-relaxed">
+              Stop chasing documents. We build the lender-ready financial model, 
+              debt schedules, and management pack that gets your facility approved faster.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
+              <Link href="/contact" className="btn-primary text-lg px-8 py-4">
+                Book a Free Diagnostic
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
             </div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 }}
-              className="p-8 rounded-2xl border border-ink-700/50 bg-ink-900/50"
-            >
-              <p className="text-xs font-medium tracking-[0.15em] uppercase text-ink-500 mb-6">
-                What You Get
-              </p>
-              <div className="grid grid-cols-3 gap-6 mb-8">
-                {outcomes.map((outcome) => (
-                  <div key={outcome.label} className="text-center">
-                    <div className="text-2xl font-display font-bold text-amber-400 mb-1">
-                      {outcome.metric}
-                    </div>
-                    <div className="text-xs text-ink-500">{outcome.label}</div>
-                  </div>
-                ))}
-              </div>
-              
-              <div className="h-px bg-ink-700/50 mb-6" />
-              
-              <p className="text-xs font-medium tracking-[0.15em] uppercase text-ink-500 mb-4">
-                Sound Familiar?
-              </p>
-              <ul className="space-y-3">
-                {painPoints.map((point) => (
-                  <li key={point} className="flex items-center gap-3 text-sm text-ink-400">
-                    <span className="w-4 h-4 rounded bg-red-500/10 flex items-center justify-center text-red-400 text-xs">✗</span>
-                    {point}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Disclaimer */}
-      <section className="py-6 border-t border-ink-800/50">
-        <div className="container">
-          <p className="text-xs text-ink-500 text-center max-w-2xl mx-auto">
-            FSE Accounting provides lender-ready pack preparation and coordination services. 
-            We are not a licensed credit provider or mortgage broker. Your chosen lender handles 
-            the actual facility.
-          </p>
-        </div>
-      </section>
-
-      {/* Features */}
-      <section className="py-20 border-t border-ink-800/50">
-        <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="font-display text-3xl text-cream-100 mb-4">
-              What's In Your Pack
-            </h2>
-            <p className="text-ink-400">
-              Everything lenders need to say yes, faster
+            <p className="text-stone text-sm">
+              15 minutes. No pitch. We'll tell you exactly what's missing.
             </p>
           </div>
+        </div>
+      </section>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            {features.map((feature, index) => (
-              <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="p-6 rounded-xl border border-ink-700/50 bg-ink-900/30"
-              >
-                <div className="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mb-4">
-                  <span className="text-amber-500 font-bold">✓</span>
-                </div>
-                <h3 className="font-display text-lg text-cream-100 mb-2">{feature.title}</h3>
-                <p className="text-sm text-ink-400">{feature.description}</p>
-              </motion.div>
+      {/* Trust bar */}
+      <section className="py-12 bg-white border-y border-border">
+        <div className="container-wide">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+            {proofMetrics.map((item, i) => (
+              <div key={i} className="text-center">
+                <p className="font-serif text-4xl text-charcoal">{item.value}</p>
+                <p className="text-stone mt-1">{item.label}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="py-20 border-t border-ink-800/50">
-        <div className="container max-w-2xl text-center">
-          <h2 className="font-display text-3xl text-cream-100 mb-4">
-            Ready to get funded faster?
-          </h2>
-          <p className="text-ink-400 mb-8">
-            Book a free Finance Triage call. We'll assess your lending readiness and 
-            outline exactly what you need to get bank-ready in 14 days.
-          </p>
-          <Link 
-            href="/contact?service=lending" 
-            className="btn btn-primary btn-xl"
-          >
-            Book Free Triage Call
-          </Link>
+      {/* Problem */}
+      <section className="py-16">
+        <div className="container-wide">
+          <div className="max-w-2xl mb-12">
+            <p className="text-accent font-semibold mb-3">Sound familiar?</p>
+            <h2 className="font-serif text-3xl md:text-4xl text-charcoal">
+              The lending process is broken.
+            </h2>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6">
+            {painPoints.map((pain, i) => (
+              <div key={i} className="flex items-start gap-4 p-6 bg-white rounded-xl border border-border">
+                <div className="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center flex-shrink-0">
+                  <svg className="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </div>
+                <p className="text-graphite font-medium">{pain}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
-    </div>
+
+      {/* Solution */}
+      <section className="py-16 bg-charcoal text-white">
+        <div className="container-wide">
+          <div className="max-w-2xl mb-12">
+            <p className="text-accent-light font-semibold mb-3">What you get</p>
+            <h2 className="font-serif text-3xl md:text-4xl mb-4">
+              Everything lenders need. Nothing they don't.
+            </h2>
+            <p className="text-warm-gray">
+              We've structured $127M+ in facilities. We know exactly what banks ask for—and we build it before they ask.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6">
+            {deliverables.map((item, i) => (
+              <div key={i} className="border-t border-white/20 pt-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-4 h-4 text-accent-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg mb-1">{item.title}</h3>
+                    <p className="text-warm-gray">{item.description}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-12 pt-8 border-t border-white/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+            <div>
+              <p className="text-white font-semibold">Timeline: 14 days</p>
+              <p className="text-warm-gray text-sm">Fixed scope. Fixed price. No surprises.</p>
+            </div>
+            <Link href="/contact" className="inline-flex items-center gap-2 text-white hover:text-accent-light transition-colors font-semibold">
+              Start your sprint
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Case study snippet */}
+      <section className="py-16 bg-warm-white">
+        <div className="container-wide">
+          <div className="max-w-3xl mx-auto">
+            <div className="bg-white rounded-xl border border-border p-8">
+              <p className="text-accent font-semibold text-sm mb-4">CASE STUDY</p>
+              <h3 className="font-serif text-2xl text-charcoal mb-4">
+                Manufacturing company closes $4.2M facility in 6 weeks
+              </h3>
+              <p className="text-stone mb-6">
+                A $12M revenue manufacturing business had been chasing their bank for 4 months with no progress. 
+                We rebuilt their model, prepared a complete lender pack, and they closed 6 weeks later.
+              </p>
+              <div className="grid grid-cols-3 gap-4 mb-6 pb-6 border-b border-border">
+                <div>
+                  <p className="font-serif text-2xl text-charcoal">$4.2M</p>
+                  <p className="text-stone text-sm">Facility secured</p>
+                </div>
+                <div>
+                  <p className="font-serif text-2xl text-charcoal">6 weeks</p>
+                  <p className="text-stone text-sm">To close</p>
+                </div>
+                <div>
+                  <p className="font-serif text-2xl text-charcoal">0</p>
+                  <p className="text-stone text-sm">Follow-up questions</p>
+                </div>
+              </div>
+              <blockquote className="italic text-graphite">
+                "FSE got our books in order in 2 weeks. We closed our facility 6 weeks later. 
+                Our previous accountant had us waiting 4 months."
+              </blockquote>
+              <p className="text-stone text-sm mt-2">— CFO, Manufacturing ($12M revenue)</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Process */}
+      <section className="py-16">
+        <div className="container-wide">
+          <div className="max-w-2xl mx-auto text-center mb-12">
+            <p className="text-accent font-semibold mb-3">How it works</p>
+            <h2 className="font-serif text-3xl md:text-4xl text-charcoal">
+              Three steps. Two weeks. Done.
+            </h2>
+          </div>
+          <div className="max-w-3xl mx-auto">
+            <div className="space-y-8">
+              {process.map((item, i) => (
+                <div key={i} className="flex gap-6">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-charcoal text-white flex items-center justify-center font-serif text-xl">
+                    {item.step}
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-xl text-charcoal mb-2">{item.title}</h3>
+                    <p className="text-stone">{item.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="py-16 bg-white border-y border-border">
+        <div className="container-wide">
+          <div className="max-w-2xl mx-auto">
+            <h2 className="font-serif text-3xl text-charcoal mb-8 text-center">
+              Common questions
+            </h2>
+            <div className="space-y-4">
+              {faqs.map((faq, i) => (
+                <div key={i} className="border border-border rounded-lg">
+                  <button
+                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                    className="w-full px-6 py-4 text-left flex items-center justify-between"
+                  >
+                    <span className="font-medium text-charcoal">{faq.q}</span>
+                    <svg
+                      className={`w-5 h-5 text-stone transition-transform ${openFaq === i ? 'rotate-180' : ''}`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  {openFaq === i && (
+                    <div className="px-6 pb-4">
+                      <p className="text-stone">{faq.a}</p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="py-16">
+        <div className="container-wide">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="font-serif text-3xl md:text-4xl text-charcoal mb-6">
+              Stop waiting on your bank.
+            </h2>
+            <p className="text-stone text-lg mb-8">
+              Book a free diagnostic call. We'll review your situation and tell you exactly 
+              what's needed to get your facility approved—fast.
+            </p>
+            <Link href="/contact" className="btn-primary inline-flex text-lg px-8 py-4">
+              Book Your Free Diagnostic
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+            <p className="text-stone text-sm mt-4">
+              15 minutes. No commitment. Just answers.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Sticky CTA */}
+      <div className={`sticky-cta ${showStickyCTA ? 'visible' : ''}`}>
+        <div className="container-wide flex items-center justify-between">
+          <p className="text-charcoal font-medium hidden sm:block">
+            Get your bank-ready pack in 14 days
+          </p>
+          <Link href="/contact" className="btn-primary py-3 px-6 text-sm w-full sm:w-auto text-center">
+            Book Free Diagnostic
+          </Link>
+        </div>
+      </div>
+    </main>
   );
 }
-

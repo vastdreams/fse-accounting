@@ -1,18 +1,11 @@
-/**
- * PATH: frontend/src/app/(public)/lp/acquisitions/page.tsx
- * PURPOSE: Paid traffic landing page - Acquisition/Exit Advisory
- */
-
 import { Metadata } from 'next';
-import AcquisitionsLandingPage from './AcquisitionsLP';
+import AcquisitionsLP from './AcquisitionsLP';
 
 export const metadata: Metadata = {
-  title: 'Acquisition Due Diligence That Protects You | FSE Accounting',
-  description: 'Financial due diligence, deal structuring, and exit preparation for SME acquisitions and exits.',
-  robots: 'noindex, nofollow',
+  title: 'Know What You\'re Buying | FSE Accounting',
+  description: 'Financial due diligence that catches what audits miss. Quality of earnings, working capital analysis, and deal structuring support.',
 };
 
-export default function Page() {
-  return <AcquisitionsLandingPage />;
+export default function AcquisitionsLandingPage() {
+  return <AcquisitionsLP />;
 }
-

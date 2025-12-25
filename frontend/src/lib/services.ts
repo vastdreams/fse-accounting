@@ -116,6 +116,30 @@ const CORE_OFFERS: ServiceDefinition[] = [
 // ============================================
 const SUPPORTING_SERVICES: ServiceDefinition[] = [
   {
+    slug: 'rdti-compliance',
+    icon: '🔬',
+    title: 'RDTI Compliance',
+    shortTitle: 'RDTI',
+    subtitle: 'R&D Tax',
+    headline: 'RDTI documentation & compliance — managed.',
+    description:
+      'We prepare and maintain RDTI-ready research documentation as a managed service, so your team can focus on research. Evidence packs, cost allocation, timesheets, and audit-ready governance.',
+    features: [
+      'Evidence pack templates & governance',
+      'Ongoing documentation cadence',
+      'Audit-ready cost allocation',
+      'Timesheet & activity tracking',
+      'Compliance check-ins',
+      'ATO liaison support',
+    ],
+    outcomes: [
+      'Audit-ready RDTI documentation',
+      'Reduced compliance burden',
+      'Maximized eligible claims',
+      'Peace of mind at lodgement',
+    ],
+  },
+  {
     slug: 'cfo-services',
     icon: '👔',
     title: 'CFO Advisory',

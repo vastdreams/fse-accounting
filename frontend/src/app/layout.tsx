@@ -4,10 +4,25 @@
  */
 
 import type { Metadata } from 'next'
+import { Bricolage_Grotesque, Geist } from 'next/font/google'
 import './globals.css'
 import Analytics from '@/components/Analytics'
 
+// Self-hosted fonts for performance
+const bricolage = Bricolage_Grotesque({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-bricolage',
+})
+
+const geist = Geist({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-geist',
+})
+
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://fseaccounting.com'),
   title: {
     default: 'FSE Accounting | Clean Books. Bankable Numbers. Deal-Ready.',
     template: '%s | FSE Accounting',
@@ -56,7 +71,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${bricolage.variable} ${geist.variable}`}>
       <body className="antialiased">
         {children}
         <Analytics />

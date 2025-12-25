@@ -1,18 +1,11 @@
-/**
- * PATH: frontend/src/app/(public)/lp/lending/page.tsx
- * PURPOSE: Paid traffic landing page - Lending Advisory
- */
-
 import { Metadata } from 'next';
-import LendingLandingPage from './LendingLP';
+import LendingLP from './LendingLP';
 
 export const metadata: Metadata = {
-  title: 'Get Lender-Ready in 14 Days | FSE Accounting',
-  description: 'Lender-ready financial packs, models, and data rooms. Fewer bank questions, faster facility approvals.',
-  robots: 'noindex, nofollow',
+  title: 'Bank-Ready Pack in 14 Days | FSE Accounting',
+  description: 'Stop chasing documents. We build the lender-ready financial model, debt schedules, and management pack that gets your facility approved faster.',
 };
 
-export default function Page() {
-  return <LendingLandingPage />;
+export default function LendingLandingPage() {
+  return <LendingLP />;
 }
-

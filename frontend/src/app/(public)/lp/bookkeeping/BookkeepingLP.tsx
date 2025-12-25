@@ -1,197 +1,301 @@
-/**
- * Bookkeeping Landing Page - Conversion-focused for paid traffic
- */
-
 'use client';
 
-import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 
 const painPoints = [
   'Books are months behind',
-  'No idea of real cash position',
-  "Can't get reports to lenders",
+  'No idea of your real cash position',
+  "Can't get reports to lenders when they ask",
   'Spending hours on reconciliations',
 ];
 
-const outcomes = [
-  { metric: 'Day 5', label: 'Month-end close' },
-  { metric: '100%', label: 'Reconciliation accuracy' },
-  { metric: 'Real-time', label: 'Cash visibility' },
+const deliverables = [
+  { title: 'Month-end close by day 5', description: 'Reconciled, reviewed, and ready—every single month' },
+  { title: 'Management dashboard', description: 'Real-time visibility into P&L, cash, and key metrics' },
+  { title: 'Bank & card reconciliations', description: 'Every transaction categorized and matched' },
+  { title: 'Cash flow tracking', description: 'Know exactly where you stand, always' },
 ];
 
-const features = [
+const process = [
+  { step: '1', title: 'Cleanup sprint', description: 'We get your books current in 2-3 weeks. Fixed scope, fixed price.' },
+  { step: '2', title: 'Monthly cadence', description: 'Ongoing close, reconciliation, and reporting by day 5.' },
+  { step: '3', title: 'Scale when ready', description: 'Add CFO advisory, modelling, or lending prep as you grow.' },
+];
+
+const faqs = [
   {
-    title: 'Month-End Close by Day 5',
-    description: 'No more waiting weeks for numbers. Get closed, accurate books within 5 business days.',
+    q: 'How far behind can my books be?',
+    a: "We've cleaned up books that were 18+ months behind. We'll assess in the diagnostic call and give you a fixed-scope quote.",
   },
   {
-    title: 'Management Dashboard',
-    description: 'Real-time visibility into revenue, costs, margins, and cash position.',
+    q: 'What accounting software do you use?',
+    a: 'We work with Xero, QuickBooks, and MYOB. We can also migrate you if needed.',
   },
   {
-    title: 'Lender-Ready Records',
-    description: 'Clean, audit-ready documentation that banks and investors trust.',
+    q: 'Do you replace my existing accountant?',
+    a: 'Usually we complement them. We handle the operational bookkeeping; they handle tax and compliance.',
   },
   {
-    title: 'AP/AR Automation',
-    description: 'Streamlined workflows that save you hours every week.',
+    q: 'What does it cost?',
+    a: 'Cleanup sprints: $3–8k depending on complexity. Ongoing: $1,500–4,000/month based on volume.',
   },
 ];
 
-export default function BookkeepingLandingPage() {
+const proofMetrics = [
+  { value: '5 days', label: 'Average month-end close' },
+  { value: '100+', label: 'Businesses supported' },
+  { value: '100%', label: 'Client retention (2024)' },
+];
+
+export default function BookkeepingLP() {
+  const [showStickyCTA, setShowStickyCTA] = useState(false);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowStickyCTA(window.scrollY > 500);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <div className="bg-background min-h-screen">
-      {/* Hero - Above the fold conversion focus */}
-      <section className="relative pt-24 pb-16 overflow-hidden">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-amber-500/5 rounded-full blur-[120px] translate-x-1/4 -translate-y-1/4" />
-        
-        <div className="container relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left - Message */}
-            <div>
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 mb-6"
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-                <span className="text-xs text-amber-400 font-medium">
-                  14-Day Bookkeeping Sprint Available
-                </span>
-              </motion.div>
-
-              <motion.h1
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="font-display text-4xl md:text-5xl text-cream-100 mb-6 leading-[1.1]"
-              >
-                Your books closed.
-                <br />
-                <span className="text-gradient">By day 5. Every month.</span>
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="text-lg text-ink-400 mb-8 leading-relaxed"
-              >
-                Stop chasing messy financials. Get management-ready reporting, 
-                real-time cash visibility, and books that are ready for lenders, 
-                investors, or that acquisition you're planning.
-              </motion.p>
-
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-              >
-                <Link 
-                  href="/contact?service=bookkeeping" 
-                  className="btn btn-primary btn-xl group"
-                >
-                  <span>Book Free Triage Call</span>
-                  <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </Link>
-                <p className="mt-3 text-sm text-ink-500">Free • 15 min • No commitment</p>
-              </motion.div>
+    <main className="bg-cream">
+      {/* Hero */}
+      <section className="py-16 md:py-24">
+        <div className="container-wide">
+          <div className="max-w-3xl">
+            <p className="text-accent font-semibold mb-4">Bookkeeping & Month-End Close</p>
+            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-charcoal mb-6 leading-tight">
+              Your books closed.<br />
+              <span className="text-stone">By day 5. Every month.</span>
+            </h1>
+            <p className="text-xl text-stone mb-8 leading-relaxed">
+              Stop chasing your accountant. We handle month-end close, reconciliations, 
+              and management reporting—so you always know your numbers.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
+              <Link href="/contact" className="btn-primary text-lg px-8 py-4">
+                Book a Free Diagnostic
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
             </div>
-
-            {/* Right - Social Proof / Outcomes */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 }}
-              className="p-8 rounded-2xl border border-ink-700/50 bg-ink-900/50"
-            >
-              <p className="text-xs font-medium tracking-[0.15em] uppercase text-ink-500 mb-6">
-                What You Get
-              </p>
-              <div className="grid grid-cols-3 gap-6 mb-8">
-                {outcomes.map((outcome) => (
-                  <div key={outcome.label} className="text-center">
-                    <div className="text-2xl font-display font-bold text-amber-400 mb-1">
-                      {outcome.metric}
-                    </div>
-                    <div className="text-xs text-ink-500">{outcome.label}</div>
-                  </div>
-                ))}
-              </div>
-              
-              <div className="h-px bg-ink-700/50 mb-6" />
-              
-              <p className="text-xs font-medium tracking-[0.15em] uppercase text-ink-500 mb-4">
-                Sound Familiar?
-              </p>
-              <ul className="space-y-3">
-                {painPoints.map((point) => (
-                  <li key={point} className="flex items-center gap-3 text-sm text-ink-400">
-                    <span className="w-4 h-4 rounded bg-red-500/10 flex items-center justify-center text-red-400 text-xs">✗</span>
-                    {point}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
+            <p className="text-stone text-sm">
+              15 minutes. No pitch. We'll tell you exactly what needs fixing.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* Features */}
-      <section className="py-20 border-t border-ink-800/50">
-        <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="font-display text-3xl text-cream-100 mb-4">
-              What's Included
-            </h2>
-            <p className="text-ink-400">
-              Everything you need for clean, decision-ready financials
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            {features.map((feature, index) => (
-              <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="p-6 rounded-xl border border-ink-700/50 bg-ink-900/30"
-              >
-                <div className="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mb-4">
-                  <span className="text-amber-500 font-bold">✓</span>
-                </div>
-                <h3 className="font-display text-lg text-cream-100 mb-2">{feature.title}</h3>
-                <p className="text-sm text-ink-400">{feature.description}</p>
-              </motion.div>
+      {/* Trust bar */}
+      <section className="py-12 bg-white border-y border-border">
+        <div className="container-wide">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+            {proofMetrics.map((item, i) => (
+              <div key={i} className="text-center">
+                <p className="font-serif text-4xl text-charcoal">{item.value}</p>
+                <p className="text-stone mt-1">{item.label}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="py-20 border-t border-ink-800/50">
-        <div className="container max-w-2xl text-center">
-          <h2 className="font-display text-3xl text-cream-100 mb-4">
-            Ready to fix your books?
-          </h2>
-          <p className="text-ink-400 mb-8">
-            Start with a free Finance Triage call. We'll assess your current state 
-            and recommend the right approach—whether that's a 14-day sprint or ongoing support.
-          </p>
-          <Link 
-            href="/contact?service=bookkeeping" 
-            className="btn btn-primary btn-xl"
-          >
-            Book Free Triage Call
-          </Link>
+      {/* Problem */}
+      <section className="py-16">
+        <div className="container-wide">
+          <div className="max-w-2xl mb-12">
+            <p className="text-accent font-semibold mb-3">Sound familiar?</p>
+            <h2 className="font-serif text-3xl md:text-4xl text-charcoal">
+              You're flying blind on your numbers.
+            </h2>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6">
+            {painPoints.map((pain, i) => (
+              <div key={i} className="flex items-start gap-4 p-6 bg-white rounded-xl border border-border">
+                <div className="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center flex-shrink-0">
+                  <svg className="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </div>
+                <p className="text-graphite font-medium">{pain}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
-    </div>
+
+      {/* Solution */}
+      <section className="py-16 bg-charcoal text-white">
+        <div className="container-wide">
+          <div className="max-w-2xl mb-12">
+            <p className="text-accent-light font-semibold mb-3">What you get</p>
+            <h2 className="font-serif text-3xl md:text-4xl mb-4">
+              Clean books. Clear numbers. Every month.
+            </h2>
+            <p className="text-warm-gray">
+              We treat your books like a product, not an afterthought. You'll always know where you stand.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6">
+            {deliverables.map((item, i) => (
+              <div key={i} className="border-t border-white/20 pt-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-4 h-4 text-accent-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg mb-1">{item.title}</h3>
+                    <p className="text-warm-gray">{item.description}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Case study snippet */}
+      <section className="py-16 bg-warm-white">
+        <div className="container-wide">
+          <div className="max-w-3xl mx-auto">
+            <div className="bg-white rounded-xl border border-border p-8">
+              <p className="text-accent font-semibold text-sm mb-4">CASE STUDY</p>
+              <h3 className="font-serif text-2xl text-charcoal mb-4">
+                E-commerce business goes from 6 months behind to day-5 close
+              </h3>
+              <p className="text-stone mb-6">
+                A $3M e-commerce brand had books 6 months behind and no visibility on cash. 
+                We cleaned up in 3 weeks and implemented a day-5 close cadence. 
+                They now have real-time dashboards and haven't missed a close since.
+              </p>
+              <div className="grid grid-cols-3 gap-4 mb-6 pb-6 border-b border-border">
+                <div>
+                  <p className="font-serif text-2xl text-charcoal">3 weeks</p>
+                  <p className="text-stone text-sm">Cleanup complete</p>
+                </div>
+                <div>
+                  <p className="font-serif text-2xl text-charcoal">Day 5</p>
+                  <p className="text-stone text-sm">Monthly close</p>
+                </div>
+                <div>
+                  <p className="font-serif text-2xl text-charcoal">12 months</p>
+                  <p className="text-stone text-sm">Zero missed closes</p>
+                </div>
+              </div>
+              <blockquote className="italic text-graphite">
+                "For the first time in years, I actually know my numbers. I can make decisions 
+                with confidence instead of guessing."
+              </blockquote>
+              <p className="text-stone text-sm mt-2">— Founder, E-commerce ($3M revenue)</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Process */}
+      <section className="py-16">
+        <div className="container-wide">
+          <div className="max-w-2xl mx-auto text-center mb-12">
+            <p className="text-accent font-semibold mb-3">How it works</p>
+            <h2 className="font-serif text-3xl md:text-4xl text-charcoal">
+              Clean up. Lock in. Scale up.
+            </h2>
+          </div>
+          <div className="max-w-3xl mx-auto">
+            <div className="space-y-8">
+              {process.map((item, i) => (
+                <div key={i} className="flex gap-6">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-charcoal text-white flex items-center justify-center font-serif text-xl">
+                    {item.step}
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-xl text-charcoal mb-2">{item.title}</h3>
+                    <p className="text-stone">{item.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="py-16 bg-white border-y border-border">
+        <div className="container-wide">
+          <div className="max-w-2xl mx-auto">
+            <h2 className="font-serif text-3xl text-charcoal mb-8 text-center">
+              Common questions
+            </h2>
+            <div className="space-y-4">
+              {faqs.map((faq, i) => (
+                <div key={i} className="border border-border rounded-lg">
+                  <button
+                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                    className="w-full px-6 py-4 text-left flex items-center justify-between"
+                  >
+                    <span className="font-medium text-charcoal">{faq.q}</span>
+                    <svg
+                      className={`w-5 h-5 text-stone transition-transform ${openFaq === i ? 'rotate-180' : ''}`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  {openFaq === i && (
+                    <div className="px-6 pb-4">
+                      <p className="text-stone">{faq.a}</p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="py-16">
+        <div className="container-wide">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="font-serif text-3xl md:text-4xl text-charcoal mb-6">
+              Stop flying blind.
+            </h2>
+            <p className="text-stone text-lg mb-8">
+              Book a free diagnostic call. We'll look at your books and tell you exactly 
+              what it takes to get to a day-5 close.
+            </p>
+            <Link href="/contact" className="btn-primary inline-flex text-lg px-8 py-4">
+              Book Your Free Diagnostic
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+            <p className="text-stone text-sm mt-4">
+              15 minutes. No commitment. Just clarity.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Sticky CTA */}
+      <div className={`sticky-cta ${showStickyCTA ? 'visible' : ''}`}>
+        <div className="container-wide flex items-center justify-between">
+          <p className="text-charcoal font-medium hidden sm:block">
+            Get your books closed by day 5
+          </p>
+          <Link href="/contact" className="btn-primary py-3 px-6 text-sm w-full sm:w-auto text-center">
+            Book Free Diagnostic
+          </Link>
+        </div>
+      </div>
+    </main>
   );
 }
-

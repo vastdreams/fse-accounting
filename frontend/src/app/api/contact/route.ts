@@ -39,6 +39,13 @@ interface ContactFormData {
   company?: string;
   details?: string;
   honeypot?: string;
+  // UTM params
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  utm_term?: string;
+  utm_content?: string;
+  landing_page?: string;
 }
 
 async function sendEmailNotification(data: ContactFormData, ip: string): Promise<void> {
@@ -57,6 +64,7 @@ async function sendEmailNotification(data: ContactFormData, ip: string): Promise
     'raising-capital': 'Raising debt or equity',
     'buying-business': 'Buying a business',
     'selling-business': 'Selling / exiting',
+    'rdti-compliance': 'RDTI / R&D Tax compliance',
     'other': 'Something else',
   };
 
@@ -198,6 +206,36 @@ Submitted: ${new Date().toLocaleString('en-AU', { timeZone: 'Australia/Sydney' }
       console.log('✅ Email notification sent via Resend');
     } catch (err) {
       console.error('Email notification failed:', err);
+    }
+  }
+
+  // Send to Google Sheets via Apps Script webhook if configured
+  const sheetsWebhook = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
+  if (sheetsWebhook) {
+    try {
+      await fetch(sheetsWebhook, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          timestamp: new Date().toISOString(),
+          name: data.name,
+          email: data.email,
+          phone: data.phone || '',
+          company: data.company || '',
+          urgency: data.urgency,
+          challenge: data.challenge,
+          revenue: data.revenue,
+          details: data.details || '',
+          utm_source: (data as any).utm_source || '',
+          utm_medium: (data as any).utm_medium || '',
+          utm_campaign: (data as any).utm_campaign || '',
+          landing_page: (data as any).landing_page || '',
+          status: 'new',
+        }),
+      });
+      console.log('✅ Lead sent to Google Sheets');
+    } catch (err) {
+      console.error('Google Sheets webhook failed:', err);
     }
   }
 

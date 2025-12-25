@@ -1,16 +1,26 @@
 'use client';
 
 import Script from 'next/script';
+import { useEffect } from 'react';
+import { initTracking, trackPageView } from '@/lib/tracking';
+import { usePathname } from 'next/navigation';
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 const GOOGLE_ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID;
 const LINKEDIN_PARTNER_ID = process.env.NEXT_PUBLIC_LINKEDIN_PARTNER_ID;
 
 export default function Analytics() {
-  // Only load in production or if IDs are provided
-  if (!GA_MEASUREMENT_ID && !GOOGLE_ADS_ID && !LINKEDIN_PARTNER_ID) {
-    return null;
-  }
+  const pathname = usePathname();
+  
+  // Initialize tracking on mount
+  useEffect(() => {
+    initTracking();
+  }, []);
+  
+  // Track page views on route change
+  useEffect(() => {
+    trackPageView(pathname);
+  }, [pathname]);
 
   return (
     <>
@@ -28,6 +38,7 @@ export default function Analytics() {
               gtag('js', new Date());
               gtag('config', '${GA_MEASUREMENT_ID}', {
                 page_path: window.location.pathname,
+                send_page_view: false
               });
               ${GOOGLE_ADS_ID ? `gtag('config', '${GOOGLE_ADS_ID}');` : ''}
             `}
@@ -68,27 +79,4 @@ export default function Analytics() {
       </noscript>
     </>
   );
-}
-
-// Helper functions to track events
-export function trackEvent(eventName: string, params?: Record<string, any>) {
-  if (typeof window !== 'undefined' && (window as any).gtag) {
-    (window as any).gtag('event', eventName, params);
-  }
-}
-
-export function trackConversion(conversionId: string, value?: number) {
-  if (typeof window !== 'undefined' && (window as any).gtag) {
-    (window as any).gtag('event', 'conversion', {
-      send_to: conversionId,
-      value: value,
-      currency: 'AUD',
-    });
-  }
-}
-
-export function trackLinkedInConversion(conversionId: string) {
-  if (typeof window !== 'undefined' && (window as any).lintrk) {
-    (window as any).lintrk('track', { conversion_id: conversionId });
-  }
 }

@@ -3,6 +3,15 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Script from 'next/script';
+import { 
+  trackFormStart, 
+  trackFormStep, 
+  trackFormSubmit, 
+  trackConversion, 
+  trackCalendarOpen,
+  getStoredUTMParams,
+  getFirstLandingPage 
+} from '@/lib/tracking';
 
 type FormStep = 1 | 2 | 3;
 
@@ -29,6 +38,7 @@ const challengeOptions = [
   { value: 'raising-capital', label: 'Raising debt or equity', description: 'Need lender-ready financials' },
   { value: 'buying-business', label: 'Buying a business', description: 'Need due diligence support' },
   { value: 'selling-business', label: 'Selling / exiting', description: 'Need to prepare for sale' },
+  { value: 'rdti-compliance', label: 'RDTI / R&D Tax compliance', description: 'Need documentation & audit support' },
   { value: 'other', label: 'Something else', description: "Let's discuss" },
 ];
 
@@ -67,50 +77,52 @@ export default function ContactPage() {
   const canProceedStep2 = formData.revenue;
   const canSubmit = formData.name && formData.email;
 
+  // Track form start on mount
+  useEffect(() => {
+    trackFormStart('contact');
+  }, []);
+
   // Track form progress
   useEffect(() => {
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'form_step', {
-        event_category: 'contact',
-        event_label: `step_${step}`,
-        value: step,
-      });
-    }
-  }, [step]);
+    trackFormStep(step, {
+      urgency: formData.urgency,
+      challenge: formData.challenge,
+      revenue: formData.revenue,
+    });
+  }, [step, formData.urgency, formData.challenge, formData.revenue]);
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
     
     try {
+      // Include UTM params in submission
+      const utmParams = getStoredUTMParams();
+      const landingPage = getFirstLandingPage();
+      
+      const submissionData = {
+        ...formData,
+        ...utmParams,
+        landing_page: landingPage,
+      };
+      
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(submissionData),
       });
 
       if (response.ok) {
         setIsSubmitted(true);
         
-        // Track conversion
-        if (typeof window !== 'undefined') {
-          if ((window as any).gtag) {
-            (window as any).gtag('event', 'conversion', {
-              send_to: process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_ID,
-              event_category: 'lead',
-              event_label: formData.challenge,
-              value: formData.revenue === 'over-20m' ? 100 : formData.revenue === '5m-20m' ? 75 : 50,
-            });
-            (window as any).gtag('event', 'generate_lead', {
-              currency: 'AUD',
-              value: 50,
-            });
-          }
-          
-          // LinkedIn conversion
-          if ((window as any).lintrk) {
-            (window as any).lintrk('track', { conversion_id: process.env.NEXT_PUBLIC_LINKEDIN_CONVERSION_ID });
-          }
-        }
+        // Track form submission and conversion
+        trackFormSubmit({
+          challenge: formData.challenge,
+          revenue: formData.revenue,
+          urgency: formData.urgency,
+        });
+        
+        const leadValue = formData.revenue === 'over-20m' ? 100 : formData.revenue === '5m-20m' ? 75 : 50;
+        trackConversion(leadValue);
       }
     } catch (error) {
       console.error('Form submission error:', error);
@@ -120,7 +132,7 @@ export default function ContactPage() {
   };
 
   if (isSubmitted) {
-    return (
+  return (
       <main className="bg-cream min-h-screen flex items-center justify-center py-20">
         <div className="container-narrow text-center">
           <div className="w-16 h-16 bg-success/10 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -130,7 +142,7 @@ export default function ContactPage() {
           </div>
           <h1 className="font-serif text-3xl md:text-4xl text-charcoal mb-4">
             You're on the list, {formData.name.split(' ')[0]}!
-          </h1>
+            </h1>
           <p className="text-stone text-lg mb-8">
             We'll review your situation and reach out within 24 hours.
           </p>
@@ -146,7 +158,10 @@ export default function ContactPage() {
             
             {!showCalendar ? (
               <button
-                onClick={() => setShowCalendar(true)}
+                onClick={() => {
+                  setShowCalendar(true);
+                  trackCalendarOpen();
+                }}
                 className="btn-primary w-full"
               >
                 Book My Call Now
@@ -225,7 +240,7 @@ export default function ContactPage() {
           ))}
         </div>
 
-        {/* Form */}
+            {/* Form */}
         <div className="bg-white border border-border rounded-xl p-6 md:p-8">
           {/* Honeypot */}
           <input
@@ -359,71 +374,71 @@ export default function ContactPage() {
               </div>
 
               <div className="grid md:grid-cols-2 gap-4">
-                <div>
+                    <div>
                   <label htmlFor="name">Your name *</label>
-                  <input
+                      <input
                     id="name"
-                    type="text"
-                    value={formData.name}
+                        type="text"
+                        value={formData.name}
                     onChange={(e) => updateField('name', e.target.value)}
                     placeholder="John Smith"
-                    required
-                  />
-                </div>
-                <div>
+                        required
+                      />
+                    </div>
+                    <div>
                   <label htmlFor="company">Company</label>
-                  <input
+                      <input
                     id="company"
                     type="text"
                     value={formData.company}
                     onChange={(e) => updateField('company', e.target.value)}
                     placeholder="Acme Corp"
-                  />
-                </div>
-              </div>
+                      />
+                    </div>
+                  </div>
 
               <div className="grid md:grid-cols-2 gap-4">
-                <div>
+                    <div>
                   <label htmlFor="email">Email *</label>
-                  <input
+                      <input
                     id="email"
                     type="email"
                     value={formData.email}
                     onChange={(e) => updateField('email', e.target.value)}
                     placeholder="john@company.com"
                     required
-                  />
-                </div>
-                <div>
+                      />
+                    </div>
+                    <div>
                   <label htmlFor="phone">Phone (optional)</label>
-                  <input
+                      <input
                     id="phone"
-                    type="tel"
-                    value={formData.phone}
+                        type="tel"
+                        value={formData.phone}
                     onChange={(e) => updateField('phone', e.target.value)}
-                    placeholder="+61 4XX XXX XXX"
-                  />
-                </div>
-              </div>
+                        placeholder="+61 4XX XXX XXX"
+                      />
+                    </div>
+                  </div>
 
-              <div>
+                  <div>
                 <label htmlFor="details">Anything else we should know? (optional)</label>
-                <textarea
+                    <textarea
                   id="details"
                   value={formData.details}
                   onChange={(e) => updateField('details', e.target.value)}
                   placeholder="Tell us more about your situation..."
                   rows={3}
-                />
-              </div>
+                    />
+                  </div>
 
               <div className="flex gap-3">
-                <button
+                  <button
                   onClick={() => setStep(2)}
                   className="btn-secondary flex-1"
-                >
+                  >
                   Back
-                </button>
+                  </button>
                 <button
                   onClick={handleSubmit}
                   disabled={!canSubmit || isSubmitting}
@@ -438,7 +453,7 @@ export default function ContactPage() {
               </p>
             </div>
           )}
-        </div>
+              </div>
 
         {/* Trust elements */}
         <div className="mt-8 text-center">
