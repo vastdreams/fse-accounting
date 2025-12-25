@@ -192,7 +192,7 @@ export default function HomePage() {
                     </div>
                     <div>
                       <p className="text-xs text-stone">Trusted by</p>
-                      <p className="font-semibold text-charcoal">50+ Growth Companies</p>
+                      <p className="font-semibold text-charcoal">8+ Growth Companies</p>
                     </div>
                   </div>
                 </div>
