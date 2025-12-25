@@ -26,10 +26,10 @@ const principles = [
 ];
 
 const stats = [
-  { value: '$127M+', label: 'Debt facilities structured' },
-  { value: '43', label: 'Transactions supported' },
-  { value: '5 days', label: 'Average month-end close' },
-  { value: '100%', label: 'Client retention (2024)' },
+  { value: 'Day 5', label: 'Close cadence (target)' },
+  { value: '14 days', label: 'Lender pack sprint' },
+  { value: '2–4 wks', label: 'Diligence sprint' },
+  { value: '15 min', label: 'Diagnostic call' },
 ];
 
 export default function AboutPage() {

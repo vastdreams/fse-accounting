@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import Link from 'next/link';
 import Script from 'next/script';
+import { useSearchParams } from 'next/navigation';
 import { 
   trackFormStart, 
   trackFormStep, 
@@ -10,7 +11,12 @@ import {
   trackConversion, 
   trackCalendarOpen,
   getStoredUTMParams,
-  getFirstLandingPage 
+  getFirstLandingPage,
+  getSessionData,
+  getReferrer,
+  getPagesVisited,
+  getTimeOnSite,
+  getPageViewCount
 } from '@/lib/tracking';
 
 type FormStep = 1 | 2 | 3;
@@ -52,7 +58,8 @@ const revenueOptions = [
 // Cal.com booking URL - replace with your actual Cal.com link
 const CALCOM_URL = process.env.NEXT_PUBLIC_CALCOM_URL || 'https://cal.com/fseaccounting/diagnostic';
 
-export default function ContactPage() {
+function ContactPageInner() {
+  const searchParams = useSearchParams();
   const [step, setStep] = useState<FormStep>(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -77,6 +84,34 @@ export default function ContactPage() {
   const canProceedStep2 = formData.revenue;
   const canSubmit = formData.name && formData.email;
 
+  // Prefill from URL params (reduces friction for campaign LPs / service pages)
+  useEffect(() => {
+    const requestedChallenge = searchParams.get('challenge');
+    const requestedService = (searchParams.get('service') || '').toLowerCase();
+
+    const validChallenges = new Set(challengeOptions.map((o) => o.value));
+
+    let desiredChallenge: string | null = null;
+
+    if (requestedChallenge && validChallenges.has(requestedChallenge)) {
+      desiredChallenge = requestedChallenge;
+    } else if (requestedService) {
+      if (requestedService === 'bookkeeping') desiredChallenge = 'books-behind';
+      if (requestedService === 'lending') desiredChallenge = 'raising-capital';
+      if (requestedService === 'acquisitions') desiredChallenge = 'buying-business';
+      if (requestedService === 'acquisitions-exits') desiredChallenge = 'buying-business';
+      if (requestedService === 'rdti' || requestedService === 'rdti-compliance') desiredChallenge = 'rdti-compliance';
+    }
+
+    if (!desiredChallenge) return;
+
+    setFormData((prev) => {
+      // Don't override if user has already picked a challenge.
+      if (prev.challenge) return prev;
+      return { ...prev, challenge: desiredChallenge };
+    });
+  }, [searchParams]);
+
   // Track form start on mount
   useEffect(() => {
     trackFormStart('contact');
@@ -95,14 +130,21 @@ export default function ContactPage() {
     setIsSubmitting(true);
     
     try {
-      // Include UTM params in submission
+      // Include complete session and attribution data
       const utmParams = getStoredUTMParams();
-      const landingPage = getFirstLandingPage();
+      const sessionData = getSessionData();
       
       const submissionData = {
         ...formData,
+        // UTM Attribution
         ...utmParams,
-        landing_page: landingPage,
+        // Session data
+        landing_page: getFirstLandingPage(),
+        referrer: getReferrer(),
+        session_id: sessionData.session_id,
+        page_views: getPageViewCount(),
+        time_on_site: getTimeOnSite(),
+        pages_visited: getPagesVisited(),
       };
       
       const response = await fetch('/api/contact', {
@@ -111,18 +153,26 @@ export default function ContactPage() {
         body: JSON.stringify(submissionData),
       });
 
-      if (response.ok) {
+      const result = await response.json();
+
+      if (response.ok && result.success) {
         setIsSubmitted(true);
         
-        // Track form submission and conversion
+        // Track form submission and conversion with lead ID
         trackFormSubmit({
           challenge: formData.challenge,
           revenue: formData.revenue,
           urgency: formData.urgency,
+          lead_id: result.lead_id,
         });
         
-        const leadValue = formData.revenue === 'over-20m' ? 100 : formData.revenue === '5m-20m' ? 75 : 50;
+        // Calculate lead value for conversion tracking
+        const leadValue = formData.revenue === 'over-20m' ? 150 : 
+                         formData.revenue === '5m-20m' ? 100 : 
+                         formData.revenue === '1m-5m' ? 50 : 25;
         trackConversion(leadValue);
+      } else {
+        console.error('Form submission failed:', result.message);
       }
     } catch (error) {
       console.error('Form submission error:', error);
@@ -475,5 +525,21 @@ export default function ContactPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function ContactPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="bg-cream min-h-screen flex items-center justify-center py-20">
+          <div className="container-narrow text-center">
+            <p className="text-stone">Loading…</p>
+          </div>
+        </main>
+      }
+    >
+      <ContactPageInner />
+    </Suspense>
   );
 }

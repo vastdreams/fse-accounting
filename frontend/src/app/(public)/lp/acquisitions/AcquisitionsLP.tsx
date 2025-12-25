@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { trackLPView, trackCTAClick } from '@/lib/tracking';
 
 const painPoints = [
   "Can't trust the seller's numbers",
@@ -43,14 +44,19 @@ const faqs = [
 ];
 
 const proofMetrics = [
-  { value: '43', label: 'Transactions supported' },
-  { value: '$2.1M', label: 'Avg. issues identified per deal' },
-  { value: '3 weeks', label: 'Typical turnaround' },
+  { value: '2–4 wks', label: 'Diligence sprint' },
+  { value: 'QoE', label: 'Earnings quality + normalization' },
+  { value: 'WC', label: 'Working capital analysis' },
 ];
 
 export default function AcquisitionsLP() {
   const [showStickyCTA, setShowStickyCTA] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  // Track LP view
+  useEffect(() => {
+    trackLPView('acquisitions');
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -59,6 +65,11 @@ export default function AcquisitionsLP() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // CTA tracking helper
+  const handleCTAClick = (location: string, text: string) => {
+    trackCTAClick(location, text, '/contact');
+  };
 
   return (
     <main className="bg-cream">
@@ -76,7 +87,11 @@ export default function AcquisitionsLP() {
               working capital analysis, and deal structuring—so you buy with confidence.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <Link href="/contact" className="btn-primary text-lg px-8 py-4">
+              <Link 
+                href="/contact?service=acquisitions&challenge=buying-business" 
+                className="btn-primary text-lg px-8 py-4"
+                onClick={() => handleCTAClick('hero', 'Book a Free Diagnostic')}
+              >
                 Book a Free Diagnostic
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -163,7 +178,11 @@ export default function AcquisitionsLP() {
               <p className="text-white font-semibold">Typical timeline: 2-4 weeks</p>
               <p className="text-warm-gray text-sm">We move fast because deals don't wait.</p>
             </div>
-            <Link href="/contact" className="inline-flex items-center gap-2 text-white hover:text-accent-light transition-colors font-semibold">
+            <Link
+              href="/contact?service=acquisitions&challenge=buying-business"
+              className="inline-flex items-center gap-2 text-white hover:text-accent-light transition-colors font-semibold"
+              onClick={() => handleCTAClick('solution', 'Start your diligence')}
+            >
               Start your diligence
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -285,7 +304,11 @@ export default function AcquisitionsLP() {
               Book a free diagnostic call. We'll review your deal and tell you exactly 
               what due diligence you need—and what to watch out for.
             </p>
-            <Link href="/contact" className="btn-primary inline-flex text-lg px-8 py-4">
+            <Link
+              href="/contact?service=acquisitions&challenge=buying-business"
+              className="btn-primary inline-flex text-lg px-8 py-4"
+              onClick={() => handleCTAClick('final', 'Book Your Free Diagnostic')}
+            >
               Book Your Free Diagnostic
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -304,7 +327,11 @@ export default function AcquisitionsLP() {
           <p className="text-charcoal font-medium hidden sm:block">
             Know what you're buying
           </p>
-          <Link href="/contact" className="btn-primary py-3 px-6 text-sm w-full sm:w-auto text-center">
+          <Link
+            href="/contact?service=acquisitions&challenge=buying-business"
+            className="btn-primary py-3 px-6 text-sm w-full sm:w-auto text-center"
+            onClick={() => handleCTAClick('sticky', 'Book Free Diagnostic')}
+          >
             Book Free Diagnostic
           </Link>
         </div>

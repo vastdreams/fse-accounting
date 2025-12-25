@@ -78,10 +78,37 @@ JWT_SECRET_KEY=
 
 ## Features
 
-### Public Website
-- Service pages (12 accounting services)
-- About and team pages
-- Contact form with booking
+### Public Website & Marketing
+- **Landing Pages**: Dedicated pages for core offers (Bookkeeping, Lending, Acquisitions)
+- **Case Studies**: Proof of results with real client stories
+- **Conversion-Optimized Contact Form**: Multi-step qualification funnel
+- **Cal.com Integration**: Direct calendar booking for diagnostic calls
+
+### Campaign Tracking & Analytics
+- **Comprehensive Event Tracking**: Page views, CTA clicks, form interactions, scroll depth
+- **UTM Attribution**: Full campaign attribution from first touch to conversion
+- **Session Data**: Device, browser, pages visited, time on site
+- **Lead Storage**: File-based persistence with full attribution data
+- **Real-time Dashboard**: `/admin/campaign` with funnel metrics, source breakdown, lead quality
+- **Multi-channel Notifications**: Slack, email (Resend), Google Sheets webhooks
+
+### Required Environment Variables (Marketing)
+
+```bash
+# Analytics
+NEXT_PUBLIC_GA_MEASUREMENT_ID=      # Google Analytics 4
+NEXT_PUBLIC_GOOGLE_ADS_ID=          # Google Ads
+NEXT_PUBLIC_LINKEDIN_PARTNER_ID=    # LinkedIn Insight Tag
+
+# Notifications  
+SLACK_WEBHOOK_URL=                  # Slack lead alerts
+RESEND_API_KEY=                     # Email notifications
+NOTIFICATION_EMAIL=                 # Where to send lead emails
+GOOGLE_SHEETS_WEBHOOK_URL=          # Spreadsheet logging
+
+# Booking
+NEXT_PUBLIC_CALCOM_URL=             # Cal.com booking URL
+```
 
 ### Client Portal
 - Document upload and management

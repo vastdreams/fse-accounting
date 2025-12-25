@@ -2,13 +2,12 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { trackCTAClick, trackLPView } from '@/lib/tracking';
 
-// Pain points that resonate
-const painPoints = [
-  "Your books are 3 months behind and your accountant doesn't care",
-  "The bank keeps asking for more documents and you're losing the deal",
-  "You're about to buy a business but have no idea what's actually in the numbers",
-  "You're flying blind on cash and it's costing you sleep",
+const credibilityPoints = [
+  'Confidential and discreet',
+  'Fixed scope, fixed price sprints',
+  'Built to lender / investor scrutiny',
 ];
 
 // Who this is for
@@ -36,21 +35,47 @@ const deliverables = [
   },
   {
     number: "02", 
-    title: "Lender-ready pack in 2 weeks",
+    title: "Lender-ready pack in 14 days",
     description: "Financial model, cash flow, debt schedule, management deck. Everything banks ask for.",
   },
   {
     number: "03",
-    title: "Due diligence in 3 weeks",
+    title: "Due diligence in 2–4 weeks",
     description: "Quality of earnings, working capital, normalized EBITDA. Know what you're buying.",
   },
 ];
 
-// Social proof
 const results = [
-  { metric: "$127M", label: "Debt facilities structured" },
-  { metric: "43", label: "Transactions supported" },
-  { metric: "5 days", label: "Average month-end close" },
+  { metric: "Day 5", label: "Month-end close cadence" },
+  { metric: "14 days", label: "Lender pack sprint" },
+  { metric: "2–4 wks", label: "Diligence sprint" },
+];
+
+const offerTracks = [
+  {
+    label: 'Books',
+    title: 'Bookkeeping & Month-End Close',
+    description:
+      'Get to a day‑5 close with clean reconciliations and reporting that management can trust.',
+    href: '/lp/bookkeeping',
+    contactHref: '/contact?service=bookkeeping&challenge=books-behind',
+  },
+  {
+    label: 'Capital',
+    title: 'Lending Readiness Sprint',
+    description:
+      'Build the model + pack lenders expect, so you stop the back-and-forth and move faster.',
+    href: '/lp/lending',
+    contactHref: '/contact?service=lending&challenge=raising-capital',
+  },
+  {
+    label: 'Deals',
+    title: 'Acquisitions & Exits',
+    description:
+      'QoE + working capital + deal risk. Know what you’re buying (or what you’re worth).',
+    href: '/lp/acquisitions',
+    contactHref: '/contact?service=acquisitions&challenge=buying-business',
+  },
 ];
 
 const testimonials = [
@@ -73,7 +98,11 @@ const testimonials = [
 
 export default function HomePage() {
   const [showStickyCTA, setShowStickyCTA] = useState(false);
-  const [currentPain, setCurrentPain] = useState(0);
+
+  // Track homepage view
+  useEffect(() => {
+    trackLPView('homepage');
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -83,57 +112,116 @@ export default function HomePage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentPain((prev) => (prev + 1) % painPoints.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
+  // CTA tracking helper
+  const handleCTAClick = (location: string, text: string, destination: string = '/contact') => {
+    trackCTAClick(location, text, destination);
+  };
 
   return (
     <main className="bg-cream">
-      {/* Hero Section - Hit the pain, show the solution */}
-      <section className="min-h-[90vh] flex items-center py-20">
+      {/* Hero (first-principles): clarity, premium positioning, next step */}
+      <section className="pt-12 md:pt-16 pb-16">
         <div className="container-wide">
-          <div className="max-w-3xl">
-            {/* Pain agitation */}
-            <p className="text-accent font-semibold mb-4 text-lg">
-              Sound familiar?
-            </p>
-            
-            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-charcoal mb-6 leading-tight">
-              <span className="text-stone italic min-h-[1.2em] block transition-all duration-500">
-                "{painPoints[currentPain]}"
-              </span>
-            </h1>
+          <div className="grid lg:grid-cols-12 gap-10 items-start">
+            {/* Left: positioning + promise */}
+            <div className="lg:col-span-7">
+              <p className="text-accent font-semibold mb-4 text-lg">
+                Finance operations for growth-stage operators (typically $1M–$50M revenue)
+              </p>
 
-            <div className="h-px bg-border my-8" />
+              <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-charcoal mb-6 leading-tight">
+                Bank-ready numbers.
+                <br />
+                <span className="text-stone">Delivered in weeks.</span>
+              </h1>
 
-            {/* Solution */}
-            <p className="text-xl md:text-2xl text-graphite mb-8 leading-relaxed">
-              We fix your financial operations in <span className="font-semibold text-charcoal">weeks, not months</span>. 
-              Clean books. Bank-ready numbers. Deal-ready decisions.
-            </p>
+              <p className="text-xl md:text-2xl text-graphite leading-relaxed">
+                Day‑5 close. 14‑day lender pack. 2–4 week diligence.
+              </p>
 
-            {/* CTA */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-8">
-              <Link href="/contact" className="btn-primary text-lg px-8 py-4">
-                Book a Free Diagnostic Call
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </Link>
+              <div className="mt-8 flex flex-col sm:flex-row gap-4">
+                <Link
+                  href="/contact"
+                  className="btn-primary text-lg px-8 py-4"
+                  onClick={() => handleCTAClick('hero', 'Book a 15-Minute Diagnostic')}
+                >
+                  Book a 15‑Minute Diagnostic
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </Link>
+                <Link
+                  href="/case-studies"
+                  className="btn-secondary text-lg px-8 py-4 text-center"
+                  onClick={() => handleCTAClick('hero', 'View case studies', '/case-studies')}
+                >
+                  View case studies
+                </Link>
+              </div>
+
+              <div className="mt-6 grid sm:grid-cols-3 gap-3">
+                {credibilityPoints.map((p) => (
+                  <div key={p} className="flex items-center gap-2 text-sm text-stone">
+                    <svg className="w-4 h-4 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span>{p}</span>
+                  </div>
+                ))}
+              </div>
+
+              <p className="mt-4 text-stone text-sm">
+                Confidential. No pitch. You leave with clear next steps.
+              </p>
             </div>
 
-            <p className="text-stone text-sm">
-              15 minutes. No pitch. We'll tell you exactly what's broken and how to fix it.
-            </p>
+            {/* Right: choose track */}
+            <div className="lg:col-span-5">
+              <div className="bg-white border border-border rounded-xl p-6">
+                <p className="text-xs font-semibold text-stone uppercase tracking-wide mb-4">
+                  Choose your track
+                </p>
+                <div className="space-y-4">
+                  {offerTracks.map((t) => (
+                    <div key={t.label} className="bg-cream border border-border rounded-lg p-4">
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <p className="text-xs font-semibold text-stone uppercase tracking-wide">{t.label}</p>
+                          <p className="font-semibold text-charcoal">{t.title}</p>
+                          <p className="text-stone text-sm mt-1">{t.description}</p>
+                        </div>
+                      </div>
+                      <div className="mt-4 grid grid-cols-2 gap-3">
+                        <Link
+                          href={t.contactHref}
+                          className="btn-primary justify-center"
+                          onClick={() => handleCTAClick('hero_track', `Book diagnostic: ${t.label}`, t.contactHref)}
+                        >
+                          Book
+                        </Link>
+                        <Link
+                          href={t.href}
+                          className="btn-secondary justify-center text-center"
+                          onClick={() => handleCTAClick('hero_track', `View details: ${t.label}`, t.href)}
+                        >
+                          Details
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <p className="mt-3 text-xs text-stone">
+                If you only need compliance or a tax return, we’ll point you to a partner. We focus on operational finance for growth-stage decisions.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Trust bar */}
-      <section className="py-12 border-y border-border bg-white">
+      <section className="py-12 border-b border-border bg-white">
         <div className="container-wide">
           <div className="flex flex-col md:flex-row justify-between items-center gap-8">
             {results.map((item, i) => (
@@ -143,7 +231,7 @@ export default function HomePage() {
               </div>
             ))}
           </div>
-        </div>
+                          </div>
       </section>
 
       {/* Who this is for - Qualification */}
@@ -152,12 +240,12 @@ export default function HomePage() {
           <div className="max-w-2xl mb-12">
             <p className="text-accent font-semibold mb-3">Is this you?</p>
             <h2 className="font-serif text-3xl md:text-4xl text-charcoal mb-4">
-              We work with operators who are done with excuses
+              We work with operators who value speed and precision
             </h2>
             <p className="text-stone text-lg">
               Not everyone is a fit. Here's who gets the most value from working with us.
-            </p>
-          </div>
+                            </p>
+                          </div>
 
           <div className="grid md:grid-cols-3 gap-6">
             {idealClients.map((client, i) => (
@@ -165,14 +253,14 @@ export default function HomePage() {
                 <div className="w-10 h-10 rounded-full bg-cream flex items-center justify-center mb-4">
                   <svg className="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
+                            </svg>
+                          </div>
                 <h3 className="font-semibold text-lg text-charcoal mb-2">{client.title}</h3>
                 <p className="text-stone">{client.description}</p>
               </div>
             ))}
-          </div>
-        </div>
+                        </div>
+                      </div>
       </section>
 
       {/* What you get - Deliverables */}
@@ -196,10 +284,14 @@ export default function HomePage() {
                 <p className="text-warm-gray">{item.description}</p>
               </div>
             ))}
-          </div>
+            </div>
 
           <div className="mt-12 pt-8 border-t border-white/20">
-            <Link href="/contact" className="inline-flex items-center gap-2 text-white hover:text-accent-light transition-colors font-semibold">
+            <Link 
+              href="/contact" 
+              className="inline-flex items-center gap-2 text-white hover:text-accent-light transition-colors font-semibold"
+              onClick={() => handleCTAClick('deliverables', 'See if you qualify')}
+            >
               See if you qualify for our diagnostic call
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -245,12 +337,12 @@ export default function HomePage() {
             <p className="text-accent font-semibold mb-3">How it works</p>
             <h2 className="font-serif text-3xl md:text-4xl text-charcoal mb-4">
               Three steps. No surprises.
-            </h2>
+              </h2>
           </div>
-
+              
           <div className="max-w-3xl mx-auto">
-            <div className="space-y-8">
-              {[
+              <div className="space-y-8">
+                {[
                 {
                   step: "1",
                   title: "Free Diagnostic Call (15 min)",
@@ -270,14 +362,14 @@ export default function HomePage() {
                 <div key={i} className="flex gap-6">
                   <div className="flex-shrink-0 w-12 h-12 rounded-full bg-charcoal text-white flex items-center justify-center font-serif text-xl">
                     {item.step}
-                  </div>
-                  <div>
+                    </div>
+                    <div>
                     <h3 className="font-semibold text-xl text-charcoal mb-2">{item.title}</h3>
                     <p className="text-stone">{item.description}</p>
                   </div>
                 </div>
               ))}
-            </div>
+              </div>
           </div>
         </div>
       </section>
@@ -293,16 +385,20 @@ export default function HomePage() {
               Book a free 15-minute diagnostic. We'll tell you exactly what's wrong and what it takes to fix it. 
               If we're not the right fit, we'll point you to someone who is.
             </p>
-            <Link href="/contact" className="btn-primary text-lg px-8 py-4">
+              <Link 
+                href="/contact" 
+              className="btn-primary text-lg px-8 py-4"
+              onClick={() => handleCTAClick('footer', 'Book Your Free Diagnostic Call')}
+            >
               Book Your Free Diagnostic Call
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
-            </Link>
+              </Link>
             <p className="text-stone text-sm mt-4">
               No credit card. No commitment. Just answers.
             </p>
-          </div>
+            </div>
         </div>
       </section>
 
@@ -312,11 +408,15 @@ export default function HomePage() {
           <p className="text-charcoal font-medium hidden sm:block">
             Ready to fix your financial operations?
           </p>
-          <Link href="/contact" className="btn-primary py-3 px-6 text-sm w-full sm:w-auto text-center">
+          <Link 
+            href="/contact" 
+            className="btn-primary py-3 px-6 text-sm w-full sm:w-auto text-center"
+            onClick={() => handleCTAClick('sticky', 'Book Free Diagnostic')}
+          >
             Book Free Diagnostic
           </Link>
         </div>
-      </div>
+    </div>
     </main>
   );
 }

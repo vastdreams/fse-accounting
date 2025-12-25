@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { trackLPView, trackCTAClick } from '@/lib/tracking';
 
 const painPoints = [
   'Books are months behind',
@@ -43,14 +44,19 @@ const faqs = [
 ];
 
 const proofMetrics = [
-  { value: '5 days', label: 'Average month-end close' },
-  { value: '100+', label: 'Businesses supported' },
-  { value: '100%', label: 'Client retention (2024)' },
+  { value: 'Day 5', label: 'Close cadence (target)' },
+  { value: '2–3 wks', label: 'Cleanup sprint' },
+  { value: 'Monthly', label: 'Management reporting' },
 ];
 
 export default function BookkeepingLP() {
   const [showStickyCTA, setShowStickyCTA] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  // Track LP view
+  useEffect(() => {
+    trackLPView('bookkeeping');
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -59,6 +65,11 @@ export default function BookkeepingLP() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // CTA tracking helper
+  const handleCTAClick = (location: string, text: string) => {
+    trackCTAClick(location, text, '/contact');
+  };
 
   return (
     <main className="bg-cream">
@@ -76,7 +87,11 @@ export default function BookkeepingLP() {
               and management reporting—so you always know your numbers.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <Link href="/contact" className="btn-primary text-lg px-8 py-4">
+              <Link 
+                href="/contact?service=bookkeeping&challenge=books-behind" 
+                className="btn-primary text-lg px-8 py-4"
+                onClick={() => handleCTAClick('hero', 'Book a Free Diagnostic')}
+              >
                 Book a Free Diagnostic
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -272,7 +287,11 @@ export default function BookkeepingLP() {
               Book a free diagnostic call. We'll look at your books and tell you exactly 
               what it takes to get to a day-5 close.
             </p>
-            <Link href="/contact" className="btn-primary inline-flex text-lg px-8 py-4">
+            <Link
+              href="/contact?service=bookkeeping&challenge=books-behind"
+              className="btn-primary inline-flex text-lg px-8 py-4"
+              onClick={() => handleCTAClick('final', 'Book Your Free Diagnostic')}
+            >
               Book Your Free Diagnostic
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -291,7 +310,11 @@ export default function BookkeepingLP() {
           <p className="text-charcoal font-medium hidden sm:block">
             Get your books closed by day 5
           </p>
-          <Link href="/contact" className="btn-primary py-3 px-6 text-sm w-full sm:w-auto text-center">
+          <Link
+            href="/contact?service=bookkeeping&challenge=books-behind"
+            className="btn-primary py-3 px-6 text-sm w-full sm:w-auto text-center"
+            onClick={() => handleCTAClick('sticky', 'Book Free Diagnostic')}
+          >
             Book Free Diagnostic
           </Link>
         </div>

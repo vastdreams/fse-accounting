@@ -22,7 +22,7 @@ const coreServices = [
   },
   {
     title: 'Lending & Capital Advisory',
-    slug: 'lending-advisory',
+    slug: 'lending',
     outcome: 'Bank-ready pack in 2 weeks.',
     description: 'Banks keep asking for more documents? We build the financial model, debt schedules, and management pack that lenders actually need. Fewer questions, faster approval.',
     deliverables: [
@@ -35,7 +35,7 @@ const coreServices = [
   },
   {
     title: 'Acquisitions & Exits',
-    slug: 'acquisitions-exits',
+    slug: 'acquisitions',
     outcome: 'Know what you\'re buying. Know what you\'re worth.',
     description: 'Financial due diligence that catches what audits miss. Quality of earnings, working capital analysis, normalized EBITDA. Whether buying or selling.',
     deliverables: [
@@ -100,7 +100,7 @@ export default function ServicesPage() {
                       {service.description}
                     </p>
                     <Link
-                      href="/contact"
+                      href={`/contact?service=${service.slug}`}
                       className="btn-primary inline-flex"
                     >
                       Get started

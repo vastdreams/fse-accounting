@@ -37,12 +37,12 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/services/lending-advisory" className="hover:text-white transition-colors">
+                <Link href="/services/lending" className="hover:text-white transition-colors">
                   Lending Advisory
                 </Link>
               </li>
               <li>
-                <Link href="/services/acquisitions-exits" className="hover:text-white transition-colors">
+                <Link href="/services/acquisitions" className="hover:text-white transition-colors">
                   Acquisitions & Exits
                 </Link>
               </li>

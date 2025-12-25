@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { trackLPView, trackCTAClick } from '@/lib/tracking';
 
 const painPoints = [
   'Banks keep asking for more documents',
@@ -43,14 +44,19 @@ const faqs = [
 ];
 
 const proofMetrics = [
-  { value: '$127M+', label: 'Facilities structured' },
-  { value: '14 days', label: 'Average pack delivery' },
-  { value: '92%', label: 'First-submission approval' },
+  { value: '14 days', label: 'Lender pack sprint' },
+  { value: 'Fixed scope', label: 'Fixed price' },
+  { value: 'Q&A', label: 'Handled end-to-end' },
 ];
 
 export default function LendingLP() {
   const [showStickyCTA, setShowStickyCTA] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  // Track LP view
+  useEffect(() => {
+    trackLPView('lending');
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -59,6 +65,11 @@ export default function LendingLP() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // CTA tracking helper
+  const handleCTAClick = (location: string, text: string) => {
+    trackCTAClick(location, text, '/contact');
+  };
 
   return (
     <main className="bg-cream">
@@ -76,7 +87,11 @@ export default function LendingLP() {
               debt schedules, and management pack that gets your facility approved faster.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <Link href="/contact" className="btn-primary text-lg px-8 py-4">
+              <Link 
+                href="/contact?service=lending&challenge=raising-capital" 
+                className="btn-primary text-lg px-8 py-4"
+                onClick={() => handleCTAClick('hero', 'Book a Free Diagnostic')}
+              >
                 Book a Free Diagnostic
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -162,7 +177,11 @@ export default function LendingLP() {
               <p className="text-white font-semibold">Timeline: 14 days</p>
               <p className="text-warm-gray text-sm">Fixed scope. Fixed price. No surprises.</p>
             </div>
-            <Link href="/contact" className="inline-flex items-center gap-2 text-white hover:text-accent-light transition-colors font-semibold">
+            <Link
+              href="/contact?service=lending&challenge=raising-capital"
+              className="inline-flex items-center gap-2 text-white hover:text-accent-light transition-colors font-semibold"
+              onClick={() => handleCTAClick('solution', 'Start your sprint')}
+            >
               Start your sprint
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -283,7 +302,11 @@ export default function LendingLP() {
               Book a free diagnostic call. We'll review your situation and tell you exactly 
               what's needed to get your facility approved—fast.
             </p>
-            <Link href="/contact" className="btn-primary inline-flex text-lg px-8 py-4">
+            <Link
+              href="/contact?service=lending&challenge=raising-capital"
+              className="btn-primary inline-flex text-lg px-8 py-4"
+              onClick={() => handleCTAClick('final', 'Book Your Free Diagnostic')}
+            >
               Book Your Free Diagnostic
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -302,7 +325,11 @@ export default function LendingLP() {
           <p className="text-charcoal font-medium hidden sm:block">
             Get your bank-ready pack in 14 days
           </p>
-          <Link href="/contact" className="btn-primary py-3 px-6 text-sm w-full sm:w-auto text-center">
+          <Link
+            href="/contact?service=lending&challenge=raising-capital"
+            className="btn-primary py-3 px-6 text-sm w-full sm:w-auto text-center"
+            onClick={() => handleCTAClick('sticky', 'Book Free Diagnostic')}
+          >
             Book Free Diagnostic
           </Link>
         </div>
