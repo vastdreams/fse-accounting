@@ -4,6 +4,85 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { trackCTAClick, trackLPView } from '@/lib/tracking';
 
+// Australian accounting software integrations
+const otherIntegrations = [
+  'Sage',
+  'Reckon',
+  'Saasu',
+  'Cashflow Manager',
+  'Wave',
+  'FreshBooks',
+  'Zoho Books',
+  'Deputy',
+  'KeyPay',
+  'Employment Hero',
+];
+
+// Integrations bar component
+function IntegrationsBar() {
+  const [showMore, setShowMore] = useState(false);
+
+  return (
+    <div className="mt-6 pt-6 border-t border-border">
+      <p className="text-xs text-stone mb-4">Supported integrations</p>
+      <div className="flex items-center gap-5 flex-wrap">
+        {/* Xero - Official logo colors */}
+        <div className="flex items-center gap-2 group">
+          <svg className="w-7 h-7" viewBox="0 0 32 32" fill="none">
+            <circle cx="16" cy="16" r="16" fill="#13B5EA"/>
+            <path d="M9.5 16l3.5-3.5M13 12.5L16.5 16M16.5 16l3.5 3.5M20 19.5l3.5-3.5M13 19.5L9.5 16M16.5 16L13 19.5M20 12.5l3.5 3.5M16.5 16l3.5-3.5" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+          </svg>
+          <span className="text-sm font-medium text-charcoal">Xero</span>
+        </div>
+
+        {/* QuickBooks - Official logo colors */}
+        <div className="flex items-center gap-2 group">
+          <svg className="w-7 h-7" viewBox="0 0 32 32" fill="none">
+            <circle cx="16" cy="16" r="16" fill="#2CA01C"/>
+            <path d="M16 8v16M10 16h12" stroke="white" strokeWidth="3" strokeLinecap="round"/>
+          </svg>
+          <span className="text-sm font-medium text-charcoal">QuickBooks</span>
+        </div>
+
+        {/* MYOB - Official purple */}
+        <div className="flex items-center gap-2 group">
+          <svg className="w-7 h-7" viewBox="0 0 32 32" fill="none">
+            <rect width="32" height="32" rx="6" fill="#6D28D9"/>
+            <text x="16" y="21" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold" fontFamily="Arial">MYOB</text>
+          </svg>
+          <span className="text-sm font-medium text-charcoal">MYOB</span>
+        </div>
+
+        {/* More dropdown */}
+        <div className="relative">
+          <button
+            onClick={() => setShowMore(!showMore)}
+            className="flex items-center gap-1 text-sm text-stone hover:text-charcoal transition-colors"
+          >
+            <span>+ more</span>
+            <svg className={`w-4 h-4 transition-transform ${showMore ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          {showMore && (
+            <div className="absolute top-full left-0 mt-2 bg-white border border-border rounded-lg shadow-lg p-3 z-10 min-w-[180px]">
+              <p className="text-xs text-stone mb-2 font-medium">Also supported</p>
+              <div className="space-y-1">
+                {otherIntegrations.map((name) => (
+                  <div key={name} className="text-sm text-graphite py-1">
+                    {name}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const credibilityPoints = [
   'Confidential and discreet',
   'Fixed scope, fixed price sprints',
@@ -241,34 +320,7 @@ export default function HomePage() {
               </p>
 
               {/* Integrations */}
-              <div className="mt-6 pt-6 border-t border-border">
-                <p className="text-xs text-stone mb-4">Supported integrations</p>
-                <div className="flex items-center gap-6 flex-wrap">
-                  {/* Xero */}
-                  <div className="flex items-center gap-2 text-stone hover:text-charcoal transition-colors">
-                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 14.24l-2.837-2.837 2.837-2.837a.75.75 0 00-1.06-1.06L14 10.34l-2.834-2.834a.75.75 0 00-1.06 1.06L12.94 11.4l-2.834 2.834a.75.75 0 001.06 1.06L14 12.46l2.834 2.834a.75.75 0 001.06-1.06v.006z"/>
-                    </svg>
-                    <span className="text-sm font-medium">Xero</span>
-                  </div>
-                  {/* QuickBooks */}
-                  <div className="flex items-center gap-2 text-stone hover:text-charcoal transition-colors">
-                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm0 21.6c-5.292 0-9.6-4.308-9.6-9.6S6.708 2.4 12 2.4s9.6 4.308 9.6 9.6-4.308 9.6-9.6 9.6zm3.6-12H13.2V7.2a1.2 1.2 0 00-2.4 0v2.4H8.4a1.2 1.2 0 000 2.4h2.4v2.4a1.2 1.2 0 002.4 0V12h2.4a1.2 1.2 0 000-2.4z"/>
-                    </svg>
-                    <span className="text-sm font-medium">QuickBooks</span>
-                  </div>
-                  {/* MYOB */}
-                  <div className="flex items-center gap-2 text-stone hover:text-charcoal transition-colors">
-                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-4-4 1.41-1.41L11 14.17l6.59-6.59L19 9l-8 8z"/>
-                    </svg>
-                    <span className="text-sm font-medium">MYOB</span>
-                  </div>
-                  {/* More */}
-                  <span className="text-sm text-stone">+ more</span>
-                </div>
-              </div>
+              <IntegrationsBar />
             </div>
           </div>
         </div>
