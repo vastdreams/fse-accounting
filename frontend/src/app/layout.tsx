@@ -4,21 +4,22 @@
  */
 
 import type { Metadata } from 'next'
-import { Bricolage_Grotesque, Geist } from 'next/font/google'
+import { DM_Serif_Display, Inter } from 'next/font/google'
 import './globals.css'
 import Analytics from '@/components/Analytics'
 
 // Self-hosted fonts for performance
-const bricolage = Bricolage_Grotesque({
+const dmSerif = DM_Serif_Display({
+  weight: '400',
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-bricolage',
+  variable: '--font-serif',
 })
 
-const geist = Geist({
+const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-geist',
+  variable: '--font-sans',
 })
 
 export const metadata: Metadata = {
@@ -71,7 +72,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${bricolage.variable} ${geist.variable}`}>
+    <html lang="en" className={`${dmSerif.variable} ${inter.variable}`}>
       <body className="antialiased">
         {children}
         <Analytics />

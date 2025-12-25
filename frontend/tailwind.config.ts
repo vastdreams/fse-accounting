@@ -21,8 +21,8 @@ const config: Config = {
         border: '#E7E5E4',
       },
       fontFamily: {
-        serif: ['var(--font-bricolage)', 'Georgia', 'serif'],
-        sans: ['var(--font-geist)', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        serif: ['var(--font-serif)', 'Georgia', 'serif'],
+        sans: ['var(--font-sans)', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
       },
       maxWidth: {
         'narrow': '720px',
