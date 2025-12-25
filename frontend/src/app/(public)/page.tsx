@@ -173,6 +173,30 @@ export default function HomePage() {
               <p className="mt-4 text-stone text-sm">
                 Confidential. No pitch. You leave with clear next steps.
               </p>
+
+              {/* Hero image */}
+              <div className="mt-8 relative">
+                <div className="aspect-[16/9] rounded-xl overflow-hidden bg-stone/10">
+                  <img
+                    src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80"
+                    alt="Financial analysis and reporting"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="absolute -bottom-4 -right-4 bg-white rounded-lg shadow-lg p-4 border border-border">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-success/10 rounded-full flex items-center justify-center">
+                      <svg className="w-5 h-5 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="text-xs text-stone">Trusted by</p>
+                      <p className="font-semibold text-charcoal">50+ Growth Companies</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Right: choose track */}
