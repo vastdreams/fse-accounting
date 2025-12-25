@@ -237,8 +237,38 @@ export default function HomePage() {
               </div>
 
               <p className="mt-3 text-xs text-stone">
-                If you only need compliance or a tax return, we’ll point you to a partner. We focus on operational finance for growth-stage decisions.
+                If you only need compliance or a tax return, we'll point you to a partner. We focus on operational finance for growth-stage decisions.
               </p>
+
+              {/* Integrations */}
+              <div className="mt-6 pt-6 border-t border-border">
+                <p className="text-xs text-stone mb-4">Supported integrations</p>
+                <div className="flex items-center gap-6 flex-wrap">
+                  {/* Xero */}
+                  <div className="flex items-center gap-2 text-stone hover:text-charcoal transition-colors">
+                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 14.24l-2.837-2.837 2.837-2.837a.75.75 0 00-1.06-1.06L14 10.34l-2.834-2.834a.75.75 0 00-1.06 1.06L12.94 11.4l-2.834 2.834a.75.75 0 001.06 1.06L14 12.46l2.834 2.834a.75.75 0 001.06-1.06v.006z"/>
+                    </svg>
+                    <span className="text-sm font-medium">Xero</span>
+                  </div>
+                  {/* QuickBooks */}
+                  <div className="flex items-center gap-2 text-stone hover:text-charcoal transition-colors">
+                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm0 21.6c-5.292 0-9.6-4.308-9.6-9.6S6.708 2.4 12 2.4s9.6 4.308 9.6 9.6-4.308 9.6-9.6 9.6zm3.6-12H13.2V7.2a1.2 1.2 0 00-2.4 0v2.4H8.4a1.2 1.2 0 000 2.4h2.4v2.4a1.2 1.2 0 002.4 0V12h2.4a1.2 1.2 0 000-2.4z"/>
+                    </svg>
+                    <span className="text-sm font-medium">QuickBooks</span>
+                  </div>
+                  {/* MYOB */}
+                  <div className="flex items-center gap-2 text-stone hover:text-charcoal transition-colors">
+                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-4-4 1.41-1.41L11 14.17l6.59-6.59L19 9l-8 8z"/>
+                    </svg>
+                    <span className="text-sm font-medium">MYOB</span>
+                  </div>
+                  {/* More */}
+                  <span className="text-sm text-stone">+ more</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
